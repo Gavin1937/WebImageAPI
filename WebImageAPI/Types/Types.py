@@ -2,6 +2,8 @@ from __future__ import annotations
 from enum import IntEnum
 
 class DOMAIN(IntEnum):
+    'enum class to represent & handle Website domains'
+    
     INVALID   = -1,
     EMPTY     = 0,
     PIXIV     = 1,
@@ -60,6 +62,8 @@ class DOMAIN(IntEnum):
 
 
 class PARENT_CHILD(IntEnum):
+    'enum class to represent a parent/child state'
+    
     INVALID   = -1,
     EMPTY     = 0,
     PARENT    = 1,

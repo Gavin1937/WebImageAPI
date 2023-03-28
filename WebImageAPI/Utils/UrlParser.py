@@ -1,7 +1,8 @@
 from typing import Union
-from urllib.parse import urlparse
+from urllib.parse import urlparse, parse_qs, urlencode
 
 class UrlParser:
+    'A simple url parser build on top of urllib.parse.urlparse()'
     
     def __init__(self, url:str):
         self.url = url
@@ -9,7 +10,7 @@ class UrlParser:
         self.domain = self.__parser.hostname
         self.path = self.__parser.path
         self.pathlist = self.path.split('/')[1:]
-        self.query = dict(map((lambda s:s.split('=')), self.__parser.query.split('&')))
+        self.query = parse_qs(self.__parser.query)
     
     def __repr__(self):
         return f'<domain="{self.domain}", path="{self.path}", query="{self.query}">'
@@ -30,7 +31,7 @@ class UrlParser:
         if isinstance(query, str):
             url += '?' + query
         elif isinstance(query, dict):
-            url += '?' + '&'.join(map(lambda i:f'{i[0]}={i[1]}',query.items()))
+            url += '?' + urlencode([(k,v) for k,vlist in query.items() for v in vlist])
         
         return url
     

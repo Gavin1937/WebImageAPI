@@ -4,5 +4,6 @@ from .Types import (
 )
 
 from .WebItemInfo import (
-    WebItemInfo
+    WebItemInfo,
+    PixivItemInfo
 )
