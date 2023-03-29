@@ -3,7 +3,6 @@ class BaseAgent:
     'Base class for agents'
     
     def __init__(self):
-        self.data = 'hello from base'
         pass
     
     

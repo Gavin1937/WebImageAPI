@@ -30,11 +30,35 @@ class PixivItemInfo(WebItemInfo):
             self.pid = int(pathlist[-1].split('_')[0])
     
     def FromChildDetails(details) -> PixivItemInfo:
-        output = PixivItemInfo(f'https://www.pixiv.net/artworks/{details["id"]}')
+        output = PixivItemInfo(
+            f'https://www.pixiv.net/artworks/{details["id"]}'
+        )
         output.details = details
         return output
 
 
 class TwitterItemInfo(WebItemInfo):
+    def __init__(self, url) -> None:
+        self.screen_name:str = None
+        self.status_id:str = None
+        super().__init__(url)
+    
     def _PostInitAnalyzing(self) -> None:
-        pass
+        if self.domain != DOMAIN.TWITTER:
+            raise ValueError('Invalid url, you must supply a twitter url.')
+        
+        pathlist = self.parsed_url.pathlist
+        if 'status' in pathlist:
+            self.parent_child = PARENT_CHILD.CHILD
+            self.screen_name = pathlist[0]
+            self.status_id = pathlist[2]
+        else: # 'status' not in pathlist
+            self.parent_child = PARENT_CHILD.PARENT
+            self.screen_name = pathlist[0]
+    
+    def FromChildDetails(details) -> TwitterItemInfo:
+        output = TwitterItemInfo(
+            f'https://twitter.com/{details["user"]["screen_name"]}/status/{details["id_str"]}'
+        )
+        output.details = details
+        return output

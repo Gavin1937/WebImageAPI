@@ -34,7 +34,6 @@ class PixivAgent(BaseAgent):
             # only enter this else branch if
             # above for-loop finished without breaking
             raise exception
-        pass
     
     
     # interfaces
@@ -125,6 +124,5 @@ class PixivAgent(BaseAgent):
                 path=str(output_path.resolve()),
                 replace=replace
             )
-    
     
 
