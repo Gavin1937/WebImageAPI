@@ -3,18 +3,24 @@ from typing import Union
 from .Types import DOMAIN, PARENT_CHILD
 from ..Utils import UrlParser
 
-# base class
-
 class WebItemInfo:
-    'Basic class contains Web Item Information'
+    'Base class contains Web Item Information'
     
     def __init__(self, url:str):
         self.url:str = url
-        self.url_parser = UrlParser(self.url)
-        self.domain:DOMAIN = DOMAIN.FromStr(self.url_parser.domain)
+        self.parsed_url = UrlParser(self.url)
+        self.domain:DOMAIN = DOMAIN.FromStr(self.parsed_url.domain)
         self.parent_child:PARENT_CHILD = PARENT_CHILD.EMPTY
+        self.details = None
         self._PostInitAnalyzing()
     
+    def __repr__(self):
+        return f'<domain="{DOMAIN.ToStr(self.domain)}", parent_children="{PARENT_CHILD.ToStr(self.parent_child)}">'
+    
+    def __str__(self):
+        return f'<domain="{DOMAIN.ToStr(self.domain)}", parent_children="{PARENT_CHILD.ToStr(self.parent_child)}">'
+    
+    # interfaces
     def IsParent(self) -> bool:
         return self.parent_child == PARENT_CHILD.PARENT
     
@@ -35,24 +41,3 @@ class WebItemInfo:
     def _PostInitAnalyzing(self) -> None:
         raise NotImplementedError('Subclass must implement this method')
     
-
-
-# children classes
-
-class PixivItemInfo(WebItemInfo):
-    def _PostInitAnalyzing(self) -> None:
-        if self.domain != DOMAIN.PIXIV:
-            raise ValueError('Invalid url, you must supply a pixiv url.')
-        
-        if 'users' in self.url_parser.pathlist:
-            self.parent_child = PARENT_CHILD.PARENT
-        elif 'artworks' in self.url_parser.pathlist:
-            self.parent_child = PARENT_CHILD.CHILD
-        elif 'member.php' == self.url_parser.pathlist[-1]:
-            self.parent_child = PARENT_CHILD.PARENT
-        elif 'member_illust.php' == self.url_parser.pathlist[-1]:
-            self.parent_child = PARENT_CHILD.CHILD
-        elif 'pximg.net' in self.url_parser.domain:
-            self.parent_child = PARENT_CHILD.CHILD
-
-

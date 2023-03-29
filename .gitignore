@@ -2,8 +2,16 @@
 # files
 *main*
 *test*
+*.json
+*.jpg
+*.jpeg
+*.png
+*.bmp
 
 # folders
 /.vscode/
 /__pycache__/
 /**/__pycache__/
+/down/
+/**/down/
+

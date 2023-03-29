@@ -68,5 +68,15 @@ class PARENT_CHILD(IntEnum):
     EMPTY     = 0,
     PARENT    = 1,
     CHILD     = 2,
+    
+    def ToStr(parent_child:PARENT_CHILD) -> str:
+        if parent_child == PARENT_CHILD.PARENT:
+            return 'PARENT'
+        elif parent_child == PARENT_CHILD.CHILD:
+            return 'CHILD'
+        elif parent_child == PARENT_CHILD.INVALID:
+            return 'INVALID'
+        elif parent_child == PARENT_CHILD.EMPTY:
+            return 'EMPTY'
 
 
