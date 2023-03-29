@@ -2,7 +2,10 @@
 from .BaseAgent import BaseAgent
 from .Singleton import Singleton
 from ..Types import TwitterItemInfo
-from ..Utils import TypeChecker, TypeMatcher, Clamp, UrlParser, downloadFile
+from ..Utils import (
+    TypeChecker, TypeMatcher, Clamp,
+    downloadFile, UrlParser
+)
 from tweepy import OAuth1UserHandler, API, Cursor
 from tweepy.errors import TweepyException
 from time import sleep

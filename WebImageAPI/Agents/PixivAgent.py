@@ -2,7 +2,9 @@
 from .BaseAgent import BaseAgent
 from .Singleton import Singleton
 from ..Types import PixivItemInfo
-from ..Utils import TypeChecker, TypeMatcher, Clamp
+from ..Utils import (
+    TypeChecker, TypeMatcher, Clamp
+)
 from typing import Union
 from pathlib import Path
 from pixivpy3 import AppPixivAPI, PixivError

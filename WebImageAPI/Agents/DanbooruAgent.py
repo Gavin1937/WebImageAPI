@@ -2,7 +2,11 @@
 from .BaseAgent import BaseAgent
 from .Singleton import Singleton
 from ..Types import DanbooruItemInfo
-from ..Utils import TypeChecker, TypeMatcher, Clamp, getSrcJson, getSrcStr, downloadFile, PROJECT_USERAGENT, UrlParser
+from ..Utils import (
+    TypeChecker, TypeMatcher, Clamp,
+    getSrcJson, getSrcStr, downloadFile,
+    PROJECT_USERAGENT, UrlParser
+)
 from typing import Union
 from pathlib import Path
 from bs4 import BeautifulSoup
