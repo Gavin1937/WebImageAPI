@@ -62,3 +62,22 @@ class TwitterItemInfo(WebItemInfo):
         )
         output.details = details
         return output
+
+
+class DanbooruItemInfo(WebItemInfo):
+    def _PostInitAnalyzing(self) -> None:
+        if self.domain != DOMAIN.DANBOORU:
+            raise ValueError('Invalid url, you must supply a danbooru url.')
+        
+        pathlist = self.parsed_url.pathlist
+        if 'posts' == pathlist[-1]:
+            self.parent_child = PARENT_CHILD.PARENT
+        elif 'posts' == pathlist[-2]:
+            self.parent_child = PARENT_CHILD.CHILD
+    
+    def FromChildDetails(details) -> DanbooruItemInfo:
+        output = DanbooruItemInfo(
+            f'https://danbooru.donmai.us/posts/{details["id"]}'
+        )
+        output.details = details
+        return output

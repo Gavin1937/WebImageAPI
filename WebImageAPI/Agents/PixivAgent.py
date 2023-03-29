@@ -62,7 +62,7 @@ class PixivAgent(BaseAgent):
                     }
                 }]
         else:
-            raise ValueError('Empty or Invalid PixivItemInfo.')
+            raise ValueError('Input PixivItemInfo is empty or invalid.')
         return item_info
     
     @TypeMatcher(['self', PixivItemInfo, int])

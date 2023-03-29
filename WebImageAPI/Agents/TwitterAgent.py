@@ -49,12 +49,14 @@ class TwitterAgent(BaseAgent):
             item_info.details = self.__api.get_user(screen_name=item_info.screen_name)._json
         elif item_info.IsChild():
             item_info.details = self.__api.get_status(item_info.status_id, include_entities=True, tweet_mode='extended')._json
+        else:
+            raise ValueError('Input TwitterItemInfo is empty or invalid.')
         
         return item_info
     
     
     @TypeMatcher(['self', TwitterItemInfo, int])
-    def FetchParentChildren(self, item_info:TwitterItemInfo, count:int=30):
+    def FetchParentChildren(self, item_info:TwitterItemInfo, count:int=30) -> list:
         '''
         Fetch a Parent TwitterItemInfo\' Children
         Param:
@@ -119,6 +121,6 @@ class TwitterAgent(BaseAgent):
             imgid,ext = parsed.pathlist[-1].split('.')
             filename = parsed.pathlist[-1]
             url = f'https://pbs.twimg.com/media/{imgid}?format={ext}&name=orig'
-            downloadFile(url, output_path/filename)
+            downloadFile(url, output_path/filename, overwrite=replace)
     
 

@@ -9,6 +9,10 @@ from .Functions import (
     Clamp
 )
 
+from .Variables import (
+    PROJECT_USERAGENT
+)
+
 from .httpUtilities import (
     HEADERS, pathCvt,
     randDelay, getSrc,

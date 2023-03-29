@@ -9,6 +9,8 @@
 #                                                                                     #
 #######################################################################################
 
+# modified a bit for this this project
+
 # public variable for http request
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36',
@@ -34,16 +36,16 @@ def randDelay(min:float, max:float) -> None:
     n = uniform(min, max)
     sleep(round(n, 2))
 
-def getSrc(url:str) -> Union[str,bytes]:
-    resp = requests.get(url=url, headers=HEADERS)
+def getSrc(url:str, custom_headers:dict=None) -> Union[str,bytes]:
+    resp = requests.get(url=url, headers=HEADERS if custom_headers is None else custom_headers)
     return resp.content
 
-def getSrcStr(url:str) -> str:
-    resp = requests.get(url=url, headers=HEADERS)
+def getSrcStr(url:str, custom_headers:dict=None) -> str:
+    resp = requests.get(url=url, headers=HEADERS if custom_headers is None else custom_headers)
     return resp.content.decode('utf-8')
 
-def getSrcJson(url:str) -> Union[dict,list]:
-    resp = requests.get(url=url, headers=HEADERS)
+def getSrcJson(url:str, custom_headers:dict=None) -> Union[dict,list]:
+    resp = requests.get(url=url, headers=HEADERS if custom_headers is None else custom_headers)
     return resp.json()
 
 def writeStr2File(data:str, filepath:Union[str,Path], encoding="ascii") -> None:
