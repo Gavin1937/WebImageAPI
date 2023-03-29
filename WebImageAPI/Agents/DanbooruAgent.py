@@ -21,6 +21,7 @@ class DanbooruAgent(BaseAgent):
         # instead of pretending to be a browser,
         # which will make the project get banned by cloudflare
         # details: https://github.com/mikf/gallery-dl/issues/3665
+        # danbooru api: https://danbooru.donmai.us/wiki_pages/help%3Aapi
         self.__headers = { 'User-Agent': PROJECT_USERAGENT }
         super().__init__()
     

@@ -13,6 +13,10 @@ class WebItemInfo:
         self.parent_child:PARENT_CHILD = PARENT_CHILD.EMPTY
         self.details = None
         self._PostInitAnalyzing()
+        if self.parent_child == PARENT_CHILD.EMPTY or self.parent_child == PARENT_CHILD.INVALID:
+            raise ValueError('Empty or Invalid parent_child.')
+        if self.domain == DOMAIN.EMPTY or self.domain == DOMAIN.INVALID:
+            raise ValueError('Empty or Invalid domain.')
     
     def __repr__(self):
         return f'<domain="{DOMAIN.ToStr(self.domain)}", parent_children="{PARENT_CHILD.ToStr(self.parent_child)}">'
