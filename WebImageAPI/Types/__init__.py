@@ -7,5 +7,5 @@ from .WebItemInfo import WebItemInfo
 
 from .ItemInfoChildren import (
     PixivItemInfo, TwitterItemInfo,
-    DanbooruItemInfo
+    DanbooruItemInfo, YandereItemInfo,
 )

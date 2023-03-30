@@ -81,3 +81,22 @@ class DanbooruItemInfo(WebItemInfo):
         )
         output.details = details
         return output
+
+
+class YandereItemInfo(WebItemInfo):
+    def _PostInitAnalyzing(self) -> None:
+        if self.domain != DOMAIN.YANDERE:
+            raise ValueError('Invalid url, you must supply a yande.re url.')
+        
+        pathlist = self.parsed_url.pathlist
+        if 'post' == pathlist[0] and len(pathlist) == 1:
+            self.parent_child = PARENT_CHILD.PARENT
+        elif 'post' == pathlist[0] and 'show' == pathlist[1]:
+            self.parent_child = PARENT_CHILD.CHILD
+    
+    def FromChildDetails(details) -> YandereItemInfo:
+        output = YandereItemInfo(
+            f'https://yande.re/post/show/{details["id"]}'
+        )
+        output.details = details
+        return output
