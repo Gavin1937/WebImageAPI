@@ -9,7 +9,7 @@ class WebItemInfo:
     def __init__(self, url:str):
         self.url:str = url
         self.parsed_url = UrlParser(self.url)
-        self.domain:DOMAIN = DOMAIN.FromStr(self.parsed_url.domain)
+        self.domain:DOMAIN = DOMAIN.FromUrl(self.url)
         self.parent_child:PARENT_CHILD = PARENT_CHILD.EMPTY
         self.details = None
         self._PostInitAnalyzing()

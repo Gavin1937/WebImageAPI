@@ -19,9 +19,9 @@ class DOMAIN(IntEnum):
         if not isinstance(domain, str):
             raise ValueError('Invalid parameter "domain", it must be a string.')
         domain = domain.lower()
-        if domain in ['pixiv','pixiv.net','www.pixiv.net']:
+        if domain in ['pixiv','pixiv.net','pximg.net']:
             return DOMAIN.PIXIV
-        elif domain in ['twitter','twitter.com','www.twitter.com','m.twitter.com']:
+        elif domain in ['twitter','twitter.com','m.twitter.com']:
             return DOMAIN.TWITTER
         elif domain in ['danbooru','danbooru.donmai.us']:
             return DOMAIN.DANBOORU
@@ -36,6 +36,26 @@ class DOMAIN(IntEnum):
         else: # Invalid
             return DOMAIN.INVALID
     
+    def FromUrl(url:str) -> DOMAIN:
+        if not isinstance(url, str):
+            raise ValueError('Invalid parameter "url", it must be a string.')
+        if 'pixiv.net' in url or 'pximg.net' in url:
+            return DOMAIN.PIXIV
+        elif 'twitter.com' in url:
+            return DOMAIN.TWITTER
+        elif 'danbooru.donmai.us' in url:
+            return DOMAIN.DANBOORU
+        elif 'yande.re' in url:
+            return DOMAIN.YANDERE
+        elif 'konachan.com' in url:
+            return DOMAIN.KONACHAN
+        elif 'weibo.cn' in url:
+            return DOMAIN.WEIBO
+        elif 'e-hentai.org' in url:
+            return DOMAIN.EHENTAI
+        else: # Invalid
+            return DOMAIN.INVALID
+    
     def FromInt(domain:int) -> DOMAIN:
         if not isinstance(domain, int):
             raise ValueError('Invalid parameter "domain", it must be an integer.')
@@ -45,19 +65,19 @@ class DOMAIN(IntEnum):
         if not isinstance(domain, DOMAIN):
             raise ValueError('Invalid parameter "domain", it must be a DOMAIN enum.')
         if domain == DOMAIN.PIXIV:
-            return "pixiv"
+            return "PIXIV"
         elif domain == DOMAIN.TWITTER:
-            return "twitter"
+            return "TWITTER"
         elif domain == DOMAIN.DANBOORU:
-            return "danbooru"
+            return "DANBOORU"
         elif domain == DOMAIN.YANDERE:
-            return "yandere"
+            return "YANDERE"
         elif domain == DOMAIN.KONACHAN:
-            return "konachan"
+            return "KONACHAN"
         elif domain == DOMAIN.WEIBO:
-            return "weibo"
+            return "WEIBO"
         elif domain == DOMAIN.EHENTAI:
-            return "ehentai"
+            return "EHENTAI"
         elif domain == DOMAIN.INVALID or domain == DOMAIN.EMPTY:
             return None
 
