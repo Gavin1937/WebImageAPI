@@ -1,5 +1,4 @@
 
-
 # helper functions
 
 def Clamp(val, bottom=None, top=None):
@@ -9,5 +8,4 @@ def Clamp(val, bottom=None, top=None):
     elif top is not None and val >= top:
         return top
     return val
-
 

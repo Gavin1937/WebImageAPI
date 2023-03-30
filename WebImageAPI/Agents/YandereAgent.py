@@ -61,9 +61,9 @@ class YandereAgent(BaseAgent):
             raise ValueError('Input YandereItemInfo must be a parent.')
         
         page = Clamp(page, 1)
-        new_qs = {**item_info.parsed_url.query}
-        new_qs['page'] = [page]
-        url = self.__NormalURLToApi(item_info.url, item_info.parent_child, new_qs)
+        new_query = {**item_info.parsed_url.query}
+        new_query['page'] = [page]
+        url = self.__NormalURLToApi(item_info.url, item_info.parent_child, new_query)
         item_info.details = getSrcJson(url, self.__headers)
         
         output = []

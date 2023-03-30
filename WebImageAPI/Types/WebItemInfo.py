@@ -1,7 +1,7 @@
 
-from typing import Union
+from __future__ import annotations
 from .Types import DOMAIN, PARENT_CHILD
-from ..Utils import UrlParser
+from ..Utils import UrlParser, TypeChecker
 
 class WebItemInfo:
     'Base class contains Web Item Information'
@@ -39,6 +39,18 @@ class WebItemInfo:
             self.parent_child == PARENT_CHILD.EMPTY or 
             self.parent_child == PARENT_CHILD.INVALID
         )
+    
+    @TypeChecker(str, (1,))
+    def UpdateUrl(self, url:str) -> WebItemInfo:
+        self.url = url
+        self.parsed_url = UrlParser(self.url)
+        return self
+    
+    @TypeChecker(UrlParser, (1,))
+    def UpdateParsedUrl(self, parsed_url:UrlParser) -> WebItemInfo:
+        self.url = parsed_url.url
+        self.parsed_url = parsed_url
+        return self
     
     
     # protected virtual functions
