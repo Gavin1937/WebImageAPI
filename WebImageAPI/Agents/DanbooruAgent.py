@@ -96,10 +96,8 @@ class DanbooruAgent(BaseAgent):
     def __NormalURLToApi(self, url:str, update_qs:dict={}) -> str:
         parsed = UrlParser(url)
         parsed.pathlist[-1] += '.json'
+        parsed.UpdatePathList(parsed.pathlist)
         parsed.query.update(update_qs)
-        return UrlParser.BuildUrl(
-            parsed.domain,
-            parsed.pathlist,
-            parsed.query
-        )
+        parsed.UpdateQuery(parsed.query)
+        return parsed.url
 
