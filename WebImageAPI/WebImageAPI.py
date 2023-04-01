@@ -7,6 +7,7 @@ from pathlib import Path
 
 
 class WebImageAPI:
+    'Handles all Agents & WebItemInfo in one place'
     
     def __init__(self):
         self.__pixiv_agent:PixivAgent          = None
@@ -116,6 +117,36 @@ class WebImageAPI:
         #     return self.GetWeiboAgent().FetchParentChildren(item_info, page)
         # elif isinstance(item_info, EHentaiItemInfo):
         #     return self.GetEHentaiAgent().FetchParentChildren(item_info, page)
+        else:
+            raise ValueError('Empty or Invalid WebItemInfo.')
+    
+    def FetchUserInfo(self, item_info:WebItemInfo, old_user_info:UserInfo=None) -> UserInfo:
+        '''
+        Fetch a WebItemInfo\' UserInfo
+        Param:
+            item_info        => WebItemInfo Parent to fetch
+            old_user_info    => UserInfo that already fill up by other agents,
+                                this function will collect additional UserInfo from current domain,
+                                and append to old_user_info and return it at the end.
+                                (default None)
+        Returns:
+            UserInfo object
+        '''
+        
+        if isinstance(item_info, PixivItemInfo):
+            return self.GetPixivAgent().FetchUserInfo(item_info, old_user_info)
+        elif isinstance(item_info, TwitterItemInfo):
+            return self.GetTwitterAgent().FetchUserInfo(item_info, old_user_info)
+        elif isinstance(item_info, DanbooruItemInfo):
+            return self.GetDanbooruAgent().FetchUserInfo(item_info, old_user_info)
+        elif isinstance(item_info, YandereItemInfo):
+            return self.GetYandereAgent().FetchUserInfo(item_info, old_user_info)
+        # elif isinstance(item_info, KonachanItemInfo):
+        #     return self.GetKonachanAgent().FetchUserInfo(item_info, old_user_info)
+        # elif isinstance(item_info, WeiboItemInfo):
+        #     return self.GetWeiboAgent().FetchUserInfo(item_info, old_user_info)
+        # elif isinstance(item_info, EHentaiItemInfo):
+        #     return self.GetEHentaiAgent().FetchUserInfo(item_info, old_user_info)
         else:
             raise ValueError('Empty or Invalid WebItemInfo.')
     

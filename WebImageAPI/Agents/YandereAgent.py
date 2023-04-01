@@ -1,9 +1,10 @@
 
 from .BaseAgent import BaseAgent
 from .Singleton import Singleton
-from ..Types import YandereItemInfo, PARENT_CHILD
+from ..Types import YandereItemInfo, UserInfo, DOMAIN, PARENT_CHILD
 from ..Utils import (
-    TypeChecker, TypeMatcher, Clamp,
+    TypeChecker, TypeMatcher,
+    Clamp, MergeDeDuplicate,
     getSrcJson, downloadFile,
     PROJECT_USERAGENT, UrlParser
 )
@@ -21,7 +22,7 @@ class YandereAgent(BaseAgent):
         # instead of pretending to be a browser,
         # which will make the project get banned by cloudflare
         # details: https://github.com/mikf/gallery-dl/issues/3665
-        # yande.re api: https://yande.re/help/api#posts
+        # yande.re api: https://yande.re/help/api
         self.__headers = { 'User-Agent': PROJECT_USERAGENT }
         super().__init__()
     
@@ -73,6 +74,46 @@ class YandereAgent(BaseAgent):
         return output
     
     @TypeChecker(YandereItemInfo, (1,))
+    def FetchUserInfo(self, item_info:YandereItemInfo, old_user_info:UserInfo=None) -> UserInfo:
+        '''
+        Fetch a WebItemInfo\' UserInfo
+        Param:
+            item_info        => YandereItemInfo Parent to fetch
+            old_user_info    => UserInfo that already fill up by other agents,
+                                this function will collect additional UserInfo from current domain,
+                                and append to old_user_info and return it at the end.
+                                (default None)
+        Returns:
+            UserInfo object
+        '''
+        
+        if item_info.details is None:
+            item_info = self.FetchItemInfoDetail(item_info)
+        
+        tags = item_info.details['tags']
+        artist_tag = None
+        for tag,type in tags.items():
+            if type == 'artist':
+                artist_tag = tag
+                break
+        url = f'https://yande.re/artist.json?name={artist_tag}'
+        user = getSrcJson(url, self.__headers)[0]
+        
+        domain = DOMAIN.DANBOORU
+        name_list = [user['name']]
+        url_dict = {domain:user['urls']}
+        if old_user_info is not None:
+            old_user_info.name_list = MergeDeDuplicate(old_user_info.name_list, name_list)
+            if domain in old_user_info.url_dict:
+                old_user_info.url_dict[domain] += url_dict[domain]
+            else:
+                old_user_info.url_dict[domain] = url_dict[domain]
+            old_user_info.url_dict[domain] = MergeDeDuplicate(old_user_info.url_dict[domain])
+            old_user_info.details[domain] = user
+            return old_user_info
+        return UserInfo(name_list, url_dict, {domain:user})
+    
+    @TypeChecker(YandereItemInfo, (1,))
     def DownloadItem(self, item_info:YandereItemInfo, output_path:Union[str,Path], replace:bool=False):
         '''
         Download a supplied YandereItemInfo
@@ -105,7 +146,10 @@ class YandereAgent(BaseAgent):
                 parsed.query['tags'] = [f'id:{parsed.pathlist[-1]}']
             else:
                 parsed.query['tags'] += [f'id:{parsed.pathlist[-1]}']
-        parsed.query.update(update_qs)
+        parsed.query.update({
+            **update_qs, 'api_version':[2],
+            'include_tags':[1], 'include_pools':[1]
+        })
         parsed.UpdatePath('post.json')
         parsed.UpdateQuery(parsed.query)
         return parsed.url

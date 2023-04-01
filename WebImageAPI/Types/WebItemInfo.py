@@ -19,10 +19,10 @@ class WebItemInfo:
             raise ValueError('Empty or Invalid domain.')
     
     def __repr__(self):
-        return f'<domain="{DOMAIN.ToStr(self.domain)}", parent_children="{PARENT_CHILD.ToStr(self.parent_child)}">'
+        return f'<domain={DOMAIN.ToStr(self.domain)}, parent_children={PARENT_CHILD.ToStr(self.parent_child)}>'
     
     def __str__(self):
-        return f'<domain="{DOMAIN.ToStr(self.domain)}", parent_children="{PARENT_CHILD.ToStr(self.parent_child)}">'
+        return f'<domain={DOMAIN.ToStr(self.domain)}, parent_children={PARENT_CHILD.ToStr(self.parent_child)}>'
     
     # interfaces
     def IsParent(self) -> bool:

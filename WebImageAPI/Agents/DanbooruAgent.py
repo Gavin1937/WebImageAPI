@@ -1,9 +1,10 @@
 
 from .BaseAgent import BaseAgent
 from .Singleton import Singleton
-from ..Types import DanbooruItemInfo
+from ..Types import DanbooruItemInfo, UserInfo, DOMAIN
 from ..Utils import (
-    TypeChecker, TypeMatcher, Clamp,
+    TypeChecker, TypeMatcher,
+    Clamp, MergeDeDuplicate,
     getSrcJson, getSrcStr, downloadFile,
     PROJECT_USERAGENT, UrlParser
 )
@@ -68,6 +69,44 @@ class DanbooruAgent(BaseAgent):
         return output
     
     @TypeChecker(DanbooruItemInfo, (1,))
+    def FetchUserInfo(self, item_info:DanbooruItemInfo, old_user_info:UserInfo=None) -> UserInfo:
+        '''
+        Fetch a WebItemInfo\' UserInfo
+        Param:
+            item_info        => DanbooruItemInfo Parent to fetch
+            old_user_info    => UserInfo that already fill up by other agents,
+                                this function will collect additional UserInfo from current domain,
+                                and append to old_user_info and return it at the end.
+                                (default None)
+        Returns:
+            UserInfo object
+        '''
+        
+        if item_info.details is None:
+            item_info = self.FetchItemInfoDetail(item_info)
+        
+        if item_info.IsParent():
+            artist_tag = item_info.details[0]['tag_string_artist'].split(' ')[0]
+        elif item_info.IsChild():
+            artist_tag = item_info.details['tag_string_artist'].split(' ')[0]
+        url = f'https://danbooru.donmai.us/artists.json?only=id,name,group_name,other_names,is_banned,is_deleted,created_at,updated_at,urls&search[name]={artist_tag}'
+        user = getSrcJson(url, self.__headers)[0]
+        
+        domain = DOMAIN.DANBOORU
+        name_list = [user['name'], *user['other_names']]
+        url_dict = {domain:[url['url'] for url in user['urls'] if url['is_active']]}
+        if old_user_info is not None:
+            old_user_info.name_list = MergeDeDuplicate(old_user_info.name_list, name_list)
+            if domain in old_user_info.url_dict:
+                old_user_info.url_dict[domain] += url_dict[domain]
+            else:
+                old_user_info.url_dict[domain] = url_dict[domain]
+            old_user_info.url_dict[domain] = MergeDeDuplicate(old_user_info.url_dict[domain])
+            old_user_info.details[domain] = user
+            return old_user_info
+        return UserInfo(name_list, url_dict, {domain:user})
+    
+    @TypeChecker(DanbooruItemInfo, (1,))
     def DownloadItem(self, item_info:DanbooruItemInfo, output_path:Union[str,Path], replace:bool=False):
         '''
         Download a supplied DanbooruItemInfo
@@ -100,4 +139,65 @@ class DanbooruAgent(BaseAgent):
         parsed.query.update(update_qs)
         parsed.UpdateQuery(parsed.query)
         return parsed.url
-
+    
+    # danbooru's api provides a file_url with filename:
+    # {filemd5}.{filext}
+    # 
+    # but its html posts page provides a file_url with filename:
+    # __{character_tags}_{copyright_tag}_drawn_by_{artist_tag}__{filemd5}.{filext}
+    # 
+    # this function tries to generate tagged posts filename just like the one show up in html.
+    # however, all the tags in html page filename are sorted ascending by their posts count.
+    # currently, the only way we can achieve the same thing is to search tags one by one,
+    # which is useless comparing to just fetch the whole html page.
+    # 
+    # this function's filename output is valid even with wrong tag order.
+    # if you remove the filename in file_url returned by danbooru posts api,
+    # and replace with this one, it's a valid file_url.
+    def __GenTaggedFilename(
+        self,
+        character_taglist:list,
+        copyright_taglist:list,
+        artist_taglist:list,
+        filemd5:str, fileext:str
+    ) -> str:
+        
+        
+        # tag string pre-process logic
+        # danbooru source:
+        # https://github.com/danbooru/danbooru/blob/master/app/presenters/tag_set_presenter.rb
+        # function humanized_essential_tag_string
+        
+        # character tags
+        # removes meta tags inside character tags (quoted in parentheses "()")
+        # cause I think danbooru can get pure name tags from their database
+        characters = map(lambda c:re.sub(r'_\(.*\)','',c), character_taglist[:5])
+        characters = '_'+'_'.join(characters)
+        characters += f'_and_{len(character_taglist)-5}_more' if len(character_taglist) > 5 else ''
+        
+        # copyright tags
+        copyrights = '_'+'_'.join(copyright_taglist[:1])
+        copyrights += f'_and_{len(copyright_taglist)-1}_more' if len(copyright_taglist) > 1 else ''
+        copyrights = copyrights if characters and len(characters) > 0 and copyrights and len(copyrights) > 0 else ''
+        
+        # artist tags
+        artists = '_'+'_'.join(filter(('banned_artist').__ne__, artist_taglist))
+        artists = f'_drawn_by{artists}'
+        
+        # tag string combination & post-processing
+        # danbooru source:
+        # https://github.com/danbooru/danbooru/blob/master/app/models/post.rb
+        # function seo_tags
+        # danbooru uses following regex substitution to post-process tag strings
+        # I modify it a bit to match the final filename
+        
+        import re
+        
+        # final regex sub
+        filename = '_' + characters.strip() + copyrights.strip() + artists.strip()
+        filename = re.sub(r'[^a-z0-9]+', r'_', filename)
+        filename = re.sub(r'(?:^_+)|(?:_+$)', r'', filename)
+        filename = re.sub(r'_{2,}', r'_', filename)
+        filename = '__' + filename + '__' + filemd5 + '.' + fileext
+        
+        return filename

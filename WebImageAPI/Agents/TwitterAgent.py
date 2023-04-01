@@ -1,9 +1,10 @@
 
 from .BaseAgent import BaseAgent
 from .Singleton import Singleton
-from ..Types import TwitterItemInfo
+from ..Types import TwitterItemInfo, UserInfo, DOMAIN
 from ..Utils import (
-    TypeChecker, TypeMatcher, Clamp,
+    TypeChecker, TypeMatcher,
+    Clamp, MergeDeDuplicate,
     downloadFile, UrlParser
 )
 from tweepy import OAuth1UserHandler, API, Cursor
@@ -90,6 +91,42 @@ class TwitterAgent(BaseAgent):
         item_info.details = details
         
         return output
+    
+    @TypeChecker(TwitterItemInfo, (1,))
+    def FetchUserInfo(self, item_info:TwitterItemInfo, old_user_info:UserInfo=None) -> UserInfo:
+        '''
+        Fetch a WebItemInfo\' UserInfo
+        Param:
+            item_info        => TwitterItemInfo Parent to fetch
+            old_user_info    => UserInfo that already fill up by other agents,
+                                this function will collect additional UserInfo from current domain,
+                                and append to old_user_info and return it at the end.
+                                (default None)
+        Returns:
+            UserInfo object
+        '''
+        
+        if item_info.details is None:
+            item_info = self.FetchItemInfoDetail(item_info)
+        
+        domain = DOMAIN.TWITTER
+        if item_info.IsParent():
+            user = item_info.details
+        if item_info.IsChild():
+            user = item_info.details['user']
+        
+        name_list = [user['name']]
+        url_dict = {domain:f'https://twitter.com/{user["screen_name"]}'}
+        if old_user_info is not None:
+            old_user_info.name_list = MergeDeDuplicate(old_user_info.name_list, name_list)
+            if domain in old_user_info.url_dict:
+                old_user_info.url_dict[domain] += url_dict[domain]
+            else:
+                old_user_info.url_dict[domain] = url_dict[domain]
+            old_user_info.url_dict[domain] = MergeDeDuplicate(old_user_info.url_dict[domain])
+            old_user_info.details[domain] = user
+            return old_user_info
+        return UserInfo(name_list, url_dict, {domain:user})
     
     @TypeChecker(TwitterItemInfo, (1,))
     def DownloadItem(self, item_info:TwitterItemInfo, output_path:Union[str,Path], replace:bool=False):

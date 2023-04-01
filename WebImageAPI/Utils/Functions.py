@@ -9,3 +9,5 @@ def Clamp(val, bottom=None, top=None):
         return top
     return val
 
+def MergeDeDuplicate(iterable_1, *args) -> list:
+    return list(set([*iterable_1, *[a for arg in args for a in arg]]))

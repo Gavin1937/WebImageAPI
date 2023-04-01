@@ -1,9 +1,10 @@
 
 from .BaseAgent import BaseAgent
 from .Singleton import Singleton
-from ..Types import PixivItemInfo
+from ..Types import PixivItemInfo, UserInfo, DOMAIN
 from ..Utils import (
-    TypeChecker, TypeMatcher, Clamp
+    TypeChecker, TypeMatcher,
+    Clamp, MergeDeDuplicate
 )
 from typing import Union
 from pathlib import Path
@@ -96,6 +97,42 @@ class PixivAgent(BaseAgent):
             output.append(PixivItemInfo.FromChildDetails(illust))
         
         return output
+    
+    @TypeChecker(PixivItemInfo, (1,))
+    def FetchUserInfo(self, item_info:PixivItemInfo, old_user_info:UserInfo=None) -> UserInfo:
+        '''
+        Fetch a WebItemInfo\' UserInfo
+        Param:
+            item_info        => PixivItemInfo Parent to fetch
+            old_user_info    => UserInfo that already fill up by other agents,
+                                this function will collect additional UserInfo from current domain,
+                                and append to old_user_info and return it at the end.
+                                (default None)
+        Returns:
+            UserInfo object
+        '''
+        
+        if item_info.details is None:
+            item_info = self.FetchItemInfoDetail(item_info)
+        
+        domain = DOMAIN.PIXIV
+        if item_info.IsParent():
+            user = item_info.details['user']
+        if item_info.IsChild():
+            user = item_info.details['illust']['user']
+        
+        name_list = [user['name']]
+        url_dict = {domain:[f'https://www.pixiv.net/users/{user["id"]}']}
+        if old_user_info is not None:
+            old_user_info.name_list = MergeDeDuplicate(old_user_info.name_list, name_list)
+            if domain in old_user_info.url_dict:
+                old_user_info.url_dict[domain] += url_dict[domain]
+            else:
+                old_user_info.url_dict[domain] = url_dict[domain]
+            old_user_info.url_dict[domain] = MergeDeDuplicate(old_user_info.url_dict[domain])
+            old_user_info.details[domain] = user
+            return old_user_info
+        return UserInfo(name_list, url_dict, {domain:user})
     
     @TypeChecker(PixivItemInfo, (1,))
     def DownloadItem(self, item_info:PixivItemInfo, output_path:Union[str,Path], replace:bool=False):

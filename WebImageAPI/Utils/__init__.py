@@ -6,7 +6,7 @@ from .Decorators import (
 )
 
 from .Functions import (
-    Clamp
+    Clamp, MergeDeDuplicate
 )
 
 from .Variables import (
