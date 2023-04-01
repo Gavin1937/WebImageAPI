@@ -71,7 +71,7 @@ class PixivAgent(BaseAgent):
     @TypeMatcher(['self', PixivItemInfo, int])
     def FetchParentChildren(self, item_info:PixivItemInfo, page:int=1) -> list:
         '''
-        Fetch a Parent PixivItemInfo\' Children
+        Fetch a Parent PixivItemInfo\'s Children
         Param:
             item_info  => PixivItemInfo Parent to fetch
             page       => int page number >= 1
@@ -101,7 +101,7 @@ class PixivAgent(BaseAgent):
     @TypeChecker(PixivItemInfo, (1,))
     def FetchUserInfo(self, item_info:PixivItemInfo, old_user_info:UserInfo=None) -> UserInfo:
         '''
-        Fetch a WebItemInfo\' UserInfo
+        Fetch a PixivItemInfo\'s UserInfo
         Param:
             item_info        => PixivItemInfo Parent to fetch
             old_user_info    => UserInfo that already fill up by other agents,

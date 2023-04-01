@@ -62,7 +62,7 @@ class TwitterAgent(BaseAgent):
     @TypeMatcher(['self', TwitterItemInfo, int])
     def FetchParentChildren(self, item_info:TwitterItemInfo, count:int=30) -> list:
         '''
-        Fetch a Parent TwitterItemInfo\' Children
+        Fetch a Parent TwitterItemInfo\'s Children
         Param:
             item_info  => TwitterItemInfo Parent to fetch
             count      => int count number >= 1
@@ -95,7 +95,7 @@ class TwitterAgent(BaseAgent):
     @TypeChecker(TwitterItemInfo, (1,))
     def FetchUserInfo(self, item_info:TwitterItemInfo, old_user_info:UserInfo=None) -> UserInfo:
         '''
-        Fetch a WebItemInfo\' UserInfo
+        Fetch a TwitterItemInfo\'s UserInfo
         Param:
             item_info        => TwitterItemInfo Parent to fetch
             old_user_info    => UserInfo that already fill up by other agents,

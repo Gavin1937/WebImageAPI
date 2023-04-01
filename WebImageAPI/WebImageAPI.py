@@ -95,7 +95,7 @@ class WebImageAPI:
     
     def FetchParentChildren(self, item_info:WebItemInfo, page:int=1) -> list:
         '''
-        Fetch a Parent WebItemInfo\' Children
+        Fetch a Parent WebItemInfo\'s Children
         Param:
             item_info  => WebItemInfo Parent to fetch
             page       => int page number >= 1
@@ -122,7 +122,7 @@ class WebImageAPI:
     
     def FetchUserInfo(self, item_info:WebItemInfo, old_user_info:UserInfo=None) -> UserInfo:
         '''
-        Fetch a WebItemInfo\' UserInfo
+        Fetch a WebItemInfo\'s UserInfo
         Param:
             item_info        => WebItemInfo Parent to fetch
             old_user_info    => UserInfo that already fill up by other agents,

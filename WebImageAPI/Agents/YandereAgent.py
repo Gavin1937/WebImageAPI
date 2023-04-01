@@ -50,7 +50,7 @@ class YandereAgent(BaseAgent):
     @TypeMatcher(['self', YandereItemInfo, int])
     def FetchParentChildren(self, item_info:YandereItemInfo, page:int=1) -> list:
         '''
-        Fetch a Parent YandereItemInfo\' Children
+        Fetch a Parent YandereItemInfo\'s Children
         Param:
             item_info  => YandereItemInfo Parent to fetch
             page       => int page number >= 1
@@ -76,7 +76,7 @@ class YandereAgent(BaseAgent):
     @TypeChecker(YandereItemInfo, (1,))
     def FetchUserInfo(self, item_info:YandereItemInfo, old_user_info:UserInfo=None) -> UserInfo:
         '''
-        Fetch a WebItemInfo\' UserInfo
+        Fetch a YandereItemInfo\'s UserInfo
         Param:
             item_info        => YandereItemInfo Parent to fetch
             old_user_info    => UserInfo that already fill up by other agents,

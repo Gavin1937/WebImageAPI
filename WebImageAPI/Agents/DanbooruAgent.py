@@ -47,7 +47,7 @@ class DanbooruAgent(BaseAgent):
     @TypeMatcher(['self', DanbooruItemInfo, int])
     def FetchParentChildren(self, item_info:DanbooruItemInfo, page:int=1) -> list:
         '''
-        Fetch a Parent DanbooruItemInfo\' Children
+        Fetch a Parent DanbooruItemInfo\'s Children
         Param:
             item_info  => DanbooruItemInfo Parent to fetch
             page       => int page number >= 1
@@ -71,7 +71,7 @@ class DanbooruAgent(BaseAgent):
     @TypeChecker(DanbooruItemInfo, (1,))
     def FetchUserInfo(self, item_info:DanbooruItemInfo, old_user_info:UserInfo=None) -> UserInfo:
         '''
-        Fetch a WebItemInfo\' UserInfo
+        Fetch a DanbooruItemInfo\'s UserInfo
         Param:
             item_info        => DanbooruItemInfo Parent to fetch
             old_user_info    => UserInfo that already fill up by other agents,

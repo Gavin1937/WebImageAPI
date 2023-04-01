@@ -13,11 +13,11 @@ class BaseAgent:
         raise NotImplementedError('Subclass must implement this method')
     
     def FetchParentChildren(self):
-        'Fetch a Parent WebItemInfo\' Children'
+        'Fetch a Parent WebItemInfo\'s Children'
         raise NotImplementedError('Subclass must implement this method')
     
     def FetchUserInfo(self):
-        'Fetch a WebItemInfo\' UserInfo'
+        'Fetch a WebItemInfo\'s UserInfo'
         raise NotImplementedError('Subclass must implement this method')
     
     def DownloadItem(self):
