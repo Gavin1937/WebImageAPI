@@ -8,7 +8,7 @@ class WebItemInfo:
     
     def __init__(self, url:str):
         self.url:str = url
-        self.parsed_url = UrlParser(self.url)
+        self.parsed_url:UrlParser = UrlParser(self.url)
         self.domain:DOMAIN = DOMAIN.FromUrl(self.url)
         self.parent_child:PARENT_CHILD = PARENT_CHILD.EMPTY
         self.details = None
@@ -51,6 +51,9 @@ class WebItemInfo:
         self.url = parsed_url.url
         self.parsed_url = parsed_url
         return self
+    
+    def FromChildDetails(details):
+        raise NotImplementedError('Subclass must implement this method')
     
     
     # protected virtual functions

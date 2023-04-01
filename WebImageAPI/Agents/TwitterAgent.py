@@ -37,6 +37,7 @@ class TwitterAgent(BaseAgent):
     
     # interfaces
     def GetAPI(self) -> API:
+        'Get tweepy.API object'
         return self.__api
     
     @TypeChecker(TwitterItemInfo, (1,))

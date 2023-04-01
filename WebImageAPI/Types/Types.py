@@ -90,6 +90,11 @@ class PARENT_CHILD(IntEnum):
     PARENT    = 1,
     CHILD     = 2,
     
+    def FromInt(parent_child:int) -> PARENT_CHILD:
+        if not isinstance(parent_child, int):
+            raise ValueError('Invalid parameter "parent_child", it must be an integer.')
+        return PARENT_CHILD(parent_child)
+    
     def ToStr(parent_child:PARENT_CHILD) -> str:
         if parent_child == PARENT_CHILD.PARENT:
             return 'PARENT'

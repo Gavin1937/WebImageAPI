@@ -21,7 +21,7 @@ class WebImageAPI:
     
     # interfaces
     
-    # setup agents
+    # agent setup 
     def SetPixivTokens(self, refresh_token:str):
         self.__InitAgent(DOMAIN.PIXIV, refresh_token=refresh_token)
     
@@ -66,7 +66,7 @@ class WebImageAPI:
     #     return self.__ehentai_agent
     
     
-    # BaseAgent features
+    # agent common features
     def FetchItemInfoDetail(self, item_info:WebItemInfo) -> WebItemInfo:
         '''
         Fetch & Fill-In "detail" parameter for supplied WebItemInfo.

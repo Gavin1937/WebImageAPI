@@ -32,6 +32,9 @@ class PixivAgent(BaseAgent):
                 break
             except PixivError as err:
                 exception = err
+                print(f'PixivError: {err}')
+                wakeup_in = sleeptime * count
+                print(f'[{count+1}/{max_try}] Sleep for {wakeup_in} sec before retry')
                 sleep(sleeptime * count)
         else:
             # only enter this else branch if
