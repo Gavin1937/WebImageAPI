@@ -165,7 +165,7 @@ class DanbooruAgent(BaseAgent):
         
         # tag string pre-process logic
         # danbooru source:
-        # https://github.com/danbooru/danbooru/blob/master/app/presenters/tag_set_presenter.rb
+        # https://github.com/danbooru/danbooru/blob/9a25b512b5dbe0dda0b0fcaf196c042fe0591a04/app/presenters/tag_set_presenter.rb#L26-L42
         # function humanized_essential_tag_string
         
         # character tags
@@ -186,7 +186,7 @@ class DanbooruAgent(BaseAgent):
         
         # tag string combination & post-processing
         # danbooru source:
-        # https://github.com/danbooru/danbooru/blob/master/app/models/post.rb
+        # https://github.com/danbooru/danbooru/blob/9a25b512b5dbe0dda0b0fcaf196c042fe0591a04/app/models/post.rb#L129-L131
         # function seo_tags
         # danbooru uses following regex substitution to post-process tag strings
         # I modify it a bit to match the final filename
