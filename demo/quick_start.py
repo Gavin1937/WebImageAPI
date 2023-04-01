@@ -4,6 +4,9 @@
 #                                                       #
 #   Quick Start guild for WebImageAPI                   #
 #                                                       #
+#   Make sure you run this file from "demo" directory,  #
+#   so it can load the WebImageAPI package properly     #
+#                                                       #
 #   Author: Gavin1937                                   #
 #   GitHub: https://github.com/Gavin1937/WebImageAPI    #
 #                                                       #

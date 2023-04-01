@@ -56,4 +56,5 @@ pip install -U git+https://github.com/Gavin1937/WebImageAPI.git
 
 # [Documentaion](./doc/index.md)
 
+# [Quick Start](./demo/quick_start.py)
 
