@@ -69,8 +69,8 @@ class YandereAgent(BaseAgent):
         item_info.details = self.__http.GetJson(url)
         
         output = []
-        for post in item_info.details:
-            output.append(YandereItemInfo.FromChildDetails(post))
+        for post in item_info.details['posts']:
+            output.append(YandereItemInfo.FromChildDetails({'posts':[post]}))
         
         return output
     
@@ -134,7 +134,7 @@ class YandereAgent(BaseAgent):
         if item_info.details is None:
             item_info = self.FetchItemInfoDetail(item_info)
         
-        url = item_info.details[0]['file_url']
+        url = item_info.details['posts'][0]['file_url']
         filename = url.split('/')[-1]
         self.__http.DownloadUrl(url, output_path/filename, overwrite=replace)
     
