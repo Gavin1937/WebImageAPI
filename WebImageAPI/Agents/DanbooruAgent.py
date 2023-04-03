@@ -5,8 +5,7 @@ from ..Types import DanbooruItemInfo, UserInfo, DOMAIN
 from ..Utils import (
     TypeChecker, TypeMatcher,
     Clamp, MergeDeDuplicate,
-    getSrcJson, getSrcStr, downloadFile,
-    PROJECT_USERAGENT, UrlParser
+    UrlParser, HTTPClient
 )
 from typing import Union
 from pathlib import Path
@@ -16,17 +15,20 @@ from bs4 import BeautifulSoup
 @Singleton
 class DanbooruAgent(BaseAgent):
     
-    def __init__(self):
+    def __init__(self, proxies:str=None):
         # in order to use danbooru's api,
         # we need to set a custom user-agent for this project
         # instead of pretending to be a browser,
         # which will make the project get banned by cloudflare
         # details: https://github.com/mikf/gallery-dl/issues/3665
         # danbooru api: https://danbooru.donmai.us/wiki_pages/help%3Aapi
-        self.__headers = { 'User-Agent': PROJECT_USERAGENT }
+        self.__http = HTTPClient(default_proxies=proxies)
         super().__init__()
     
     # interfaces
+    def SetProxies(self, proxies:str=None):
+        self.__http = HTTPClient(default_proxies=proxies)
+    
     @TypeChecker(DanbooruItemInfo, (1,))
     def FetchItemInfoDetail(self, item_info:DanbooruItemInfo) -> DanbooruItemInfo:
         '''
@@ -38,7 +40,7 @@ class DanbooruAgent(BaseAgent):
         '''
         
         if item_info.IsParent() or item_info.IsChild():
-            item_info.details = getSrcJson(self.__NormalURLToApi(item_info.url), self.__headers)
+            item_info.details = self.__http.GetJson(self.__NormalURLToApi(item_info.url))
         else:
             raise ValueError('Input DanbooruItemInfo is empty or invalid.')
         
@@ -60,7 +62,7 @@ class DanbooruAgent(BaseAgent):
         
         page = Clamp(page, 1)
         url = self.__NormalURLToApi(item_info.url, {'page':[page]})
-        item_info.details = getSrcJson(url, self.__headers)
+        item_info.details = self.__http.GetJson(url)
         
         output = []
         for post in item_info.details:
@@ -90,7 +92,7 @@ class DanbooruAgent(BaseAgent):
         elif item_info.IsChild():
             artist_tag = item_info.details['tag_string_artist'].split(' ')[0]
         url = f'https://danbooru.donmai.us/artists.json?only=id,name,group_name,other_names,is_banned,is_deleted,created_at,updated_at,urls&search[name]={artist_tag}'
-        user = getSrcJson(url, self.__headers)[0]
+        user = self.__http.GetJson(url)[0]
         
         domain = DOMAIN.DANBOORU
         name_list = [user['name'], *user['other_names']]
@@ -124,11 +126,10 @@ class DanbooruAgent(BaseAgent):
             raise ValueError('Output path should be a directory path.')
         
         # get item source url from html to retrieve filename with tags
-        html = getSrcStr(item_info.url, self.__headers)
-        soup = BeautifulSoup(html, 'lxml')
+        soup = self.__http.GetHtml(item_info.url)
         url = soup.select_one('#post-info-size a').get('href')
         filename = url.split('/')[-1]
-        downloadFile(url, output_path/filename, overwrite=replace)
+        self.__http.DownloadUrl(url, output_path/filename, overwrite=replace)
     
     
     # private helper function

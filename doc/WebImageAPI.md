@@ -24,6 +24,7 @@ Table Of Content
       * [DownloadItem(WebImageAPI, item\_info:WebItemInfo, output\_path:Union\[str,Path\], replace:bool=False):](#downloaditemwebimageapi-item_infowebiteminfo-output_pathunionstrpath-replaceboolfalse)
     * [**WebItemInfo Generation**](#webiteminfo-generation)
       * [UrlToWebItemInfo(WebImageAPI, url:str) -\> WebItemInfo:](#urltowebiteminfowebimageapi-urlstr---webiteminfo)
+      * [FromChildDetails(self, domain:DOMAIN, details) -\> WebItemInfo:](#fromchilddetailsself-domaindomain-details---webiteminfo)
 
 </details>
 
@@ -128,8 +129,18 @@ I highly recommend you to stick with this class and let it to handle everything 
 * An abstraction function that converts any string url into their dedicated `WebItemInfo` child class and return to you
 * You can use this function handle your urls and not worry about choose which `WebItemInfo` child class to use.
 * Parameters:
-  * url:        string, url string
+  * **url**:        string, url string
 * Returns:
   * If url is supported, url's dedicated `WebItemInfo` child object.
+  * Else, raise ValueError
+
+#### FromChildDetails(self, domain:DOMAIN, details) -> WebItemInfo:
+
+* An abstraction function that converts any child details dictionary into a child `WebItemInfo` with specified DOMAIN
+* Parameters:
+  * **domain**:        DOMAIN, domain of details
+  * **details**:       any (usually dict|list), details to set
+* Returns:
+  * If domain is valid, return `WebItemInfo` specified by domain
   * Else, raise ValueError
 

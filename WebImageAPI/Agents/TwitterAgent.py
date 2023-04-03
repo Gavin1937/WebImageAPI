@@ -5,7 +5,7 @@ from ..Types import TwitterItemInfo, UserInfo, DOMAIN
 from ..Utils import (
     TypeChecker, TypeMatcher,
     Clamp, MergeDeDuplicate,
-    downloadFile, UrlParser
+    UrlParser, HTTPClient
 )
 from tweepy import OAuth1UserHandler, API, Cursor
 from tweepy.errors import TweepyException
@@ -17,28 +17,69 @@ from pathlib import Path
 @Singleton
 class TwitterAgent(BaseAgent):
     
-    def __init__(self, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str, max_try:int=5):
+    def __init__(self, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str, proxies:str=None, max_try:int=5):
         auth = OAuth1UserHandler(
             consumer_key, consumer_secret, access_token, access_token_secret
         )
+        
+        if proxies and not proxies.startswith('https'):
+            proxies = None
         
         exception = None
         sleeptime = 10
         for count in range(max_try):
             try:
-                self.__api:API = API(auth)
+                self.__api:API = API(auth, proxy=proxies)
                 break
             except TweepyException as err:
                 exception = err
-                sleep(sleeptime)
+                print(f'TweepyException: {err}')
+                wakeup_in = sleeptime * count
+                print(f'[{count+1}/{max_try}] Sleep for {wakeup_in} sec before retry')
+                sleep(sleeptime * count)
         else:
             raise exception
+        
+        self.__proxies = proxies
+        self.__http = HTTPClient(default_proxies=self.__proxies)
+        self.__consumer_key = consumer_key
+        self.__consumer_secret = consumer_secret
+        self.__access_token = access_token
+        self.__access_token_secret = access_token_secret
+        self.__max_try = max_try
     
     
     # interfaces
     def GetAPI(self) -> API:
         'Get tweepy.API object'
         return self.__api
+    
+    def SetProxies(self, proxies:str=None):
+        if proxies is not None:
+            auth = OAuth1UserHandler(
+                self.__consumer_key, self.__consumer_secret, self.__access_token, self.__access_token_secret
+            )
+            
+            if not proxies.startswith('https'):
+                proxies = None
+            self.__proxies = proxies
+            
+            exception = None
+            sleeptime = 10
+            for count in range(self.__max_try):
+                try:
+                    self.__api:API = API(auth, proxy=self.__proxies)
+                    break
+                except TweepyException as err:
+                    exception = err
+                    print(f'TweepyException: {err}')
+                    wakeup_in = sleeptime * count
+                    print(f'[{count+1}/{self.__max_try}] Sleep for {wakeup_in} sec before retry')
+                    sleep(sleeptime * count)
+            else:
+                raise exception
+        self.__http = HTTPClient(default_proxies=self.__proxies)
+    
     
     @TypeChecker(TwitterItemInfo, (1,))
     def FetchItemInfoDetail(self, item_info:TwitterItemInfo) -> TwitterItemInfo:
@@ -160,8 +201,10 @@ class TwitterAgent(BaseAgent):
         for _,media in medias.items():
             parsed = UrlParser(media['media_url_https'])
             imgid,ext = parsed.pathlist[-1].split('.')
-            filename = parsed.pathlist[-1]
+            if ext == 'jfif':
+                ext = 'jpg'
+            filename = f'{imgid}.{ext}'
             url = f'https://pbs.twimg.com/media/{imgid}?format={ext}&name=orig'
-            downloadFile(url, output_path/filename, overwrite=replace)
+            self.__http.DownloadUrl(url, output_path/filename, overwrite=replace)
     
 

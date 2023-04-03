@@ -5,8 +5,7 @@ from ..Types import YandereItemInfo, UserInfo, DOMAIN, PARENT_CHILD
 from ..Utils import (
     TypeChecker, TypeMatcher,
     Clamp, MergeDeDuplicate,
-    getSrcJson, downloadFile,
-    PROJECT_USERAGENT, UrlParser
+    UrlParser, HTTPClient
 )
 from typing import Union
 from pathlib import Path
@@ -15,7 +14,7 @@ from pathlib import Path
 @Singleton
 class YandereAgent(BaseAgent):
     
-    def __init__(self):
+    def __init__(self, proxies:str=None):
         # similar to DanbooruAgent,
         # in order to use yande.re's api,
         # we need to set a custom user-agent for this project
@@ -23,10 +22,13 @@ class YandereAgent(BaseAgent):
         # which will make the project get banned by cloudflare
         # details: https://github.com/mikf/gallery-dl/issues/3665
         # yande.re api: https://yande.re/help/api
-        self.__headers = { 'User-Agent': PROJECT_USERAGENT }
+        self.__http = HTTPClient(default_proxies=proxies)
         super().__init__()
     
     # interfaces
+    def SetProxies(self, proxies:str=None):
+        self.__http = HTTPClient(default_proxies=proxies)
+    
     @TypeChecker(YandereItemInfo, (1,))
     def FetchItemInfoDetail(self, item_info:YandereItemInfo) -> YandereItemInfo:
         '''
@@ -38,9 +40,8 @@ class YandereAgent(BaseAgent):
         '''
         
         if item_info.IsParent() or item_info.IsChild():
-            item_info.details = getSrcJson(
-                self.__NormalURLToApi(item_info.url, item_info.parent_child),
-                self.__headers
+            item_info.details = self.__http.GetJson(
+                self.__NormalURLToApi(item_info.url, item_info.parent_child)
             )
         else:
             raise ValueError('Input YandereItemInfo is empty or invalid.')
@@ -65,7 +66,7 @@ class YandereAgent(BaseAgent):
         new_query = {**item_info.parsed_url.query}
         new_query['page'] = [page]
         url = self.__NormalURLToApi(item_info.url, item_info.parent_child, new_query)
-        item_info.details = getSrcJson(url, self.__headers)
+        item_info.details = self.__http.GetJson(url)
         
         output = []
         for post in item_info.details:
@@ -97,7 +98,7 @@ class YandereAgent(BaseAgent):
                 artist_tag = tag
                 break
         url = f'https://yande.re/artist.json?name={artist_tag}'
-        user = getSrcJson(url, self.__headers)[0]
+        user = self.__http.GetJson(url)[0]
         
         domain = DOMAIN.DANBOORU
         name_list = [user['name']]
@@ -135,7 +136,7 @@ class YandereAgent(BaseAgent):
         
         url = item_info.details[0]['file_url']
         filename = url.split('/')[-1]
-        downloadFile(url, output_path/filename, overwrite=replace)
+        self.__http.DownloadUrl(url, output_path/filename, overwrite=replace)
     
     
     # private helper function

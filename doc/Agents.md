@@ -18,13 +18,20 @@ Table Of Content
 * [4. class PixivAgent](#4-class-pixivagent)
   * [Additional Methods](#additional-methods)
     * [**\_\_init\_\_(PixivAgent, refresh\_token:str, max\_try:int=5):**](#__init__pixivagent-refresh_tokenstr-max_tryint5)
-    * [**GetAPI(self) -\> AppPixivAPI:**](#getapiself---apppixivapi)
+    * [**GetAPI(PixivAgent) -\> AppPixivAPI:**](#getapipixivagent---apppixivapi)
 * [5. class TwitterAgent](#5-class-twitteragent)
   * [Additional Methods](#additional-methods-1)
     * [**\_\_init\_\_(TwitterAgent, consumer\_key:str, consumer\_secret:str, access\_token:str, access\_token\_secret:str, max\_try:int=5):**](#__init__twitteragent-consumer_keystr-consumer_secretstr-access_tokenstr-access_token_secretstr-max_tryint5)
     * [**GetAPI(TwitterAgent) -\> tweepy.API:**](#getapitwitteragent---tweepyapi)
+    * [**SetProxies(TwitterAgent, proxies:str=None):**](#setproxiestwitteragent-proxiesstrnone)
 * [6. class DanbooruAgent](#6-class-danbooruagent)
+  * [Additional Methods](#additional-methods-2)
+    * [**\_\_init\_\_(DanbooruAgent, proxies:str=None):**](#__init__danbooruagent-proxiesstrnone)
+    * [**SetProxies(DanbooruAgent, proxies:str=None):**](#setproxiesdanbooruagent-proxiesstrnone)
 * [7. class YandereAgent](#7-class-yandereagent)
+  * [Additional Methods](#additional-methods-3)
+    * [**\_\_init\_\_(YandereAgent, proxies:str=None):**](#__init__yandereagent-proxiesstrnone)
+    * [**SetProxies(YandereAgent, proxies:str=None):**](#setproxiesyandereagent-proxiesstrnone)
 * [8. class KonachanAgent](#8-class-konachanagent)
 * [9. class WeiboAgent](#9-class-weiboagent)
 * [10. class EHentaiAgent](#10-class-ehentaiagent)
@@ -124,13 +131,13 @@ This Agent only accept [PixivItemInfo](./WebItemInfo.md#2-class-pixiviteminfo)
 ### **\_\_init\_\_(PixivAgent, refresh_token:str, max_try:int=5):**
 
 * Constructor for PixivAgent class
-* You need to pass in required parameters for authentication in [PixivAgent.instance() function](#instanceself-args)
+* You need to pass in required/optional parameters for authentication in [PixivAgent.instance() function](#instanceself-args)
 * Parameters:
   * **refresh_token**:  string, pixiv refresh_token
   * **max_try**:        integer, max retry number
 * When you initialize this Agent, it will use pixivpy3.AppPixivAPI.auth() function with your `refresh_token` to retrieve a new `access_token` from pixiv, which will cause your existing `access_token` to expire.
 
-### **GetAPI(self) -> AppPixivAPI:**
+### **GetAPI(PixivAgent) -> AppPixivAPI:**
 
 * Get pixivpy3.AppPixivAPI object created in the background
 
@@ -147,12 +154,13 @@ This Agent only accept [TwitterItemInfo](./WebItemInfo.md#3-class-twitteriteminf
 ### **\_\_init\_\_(TwitterAgent, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str, max_try:int=5):**
 
 * Constructor for TwitterAgent class
-* You need to pass in required parameters for authentication in [TwitterAgent.instance() function](#instanceself-args)
+* You need to pass in required/optional parameters for authentication in [TwitterAgent.instance() function](#instanceself-args)
 * Parameters:
   * **consumer_key**:         string, twitter cunsumer api key
   * **consumer_secret**:      string, twitter consumer api secret
   * **access_token**:         string, twitter access token
   * **access_token_secret**:  string, twitter access token secret
+  * **proxies**:              string, a proxy server url string, default None, disabled
   * **max_try**:              integer, max retry number
 * This Agent uses tweepy.OAuth1UserHandler() and tweepy.API() to authenticate with twitter.
 * [2023-04-01]: Twitter will change their api policy within 30 days. Therefore, this Agent may be affect by the api policy changes.
@@ -160,6 +168,13 @@ This Agent only accept [TwitterItemInfo](./WebItemInfo.md#3-class-twitteriteminf
 ### **GetAPI(TwitterAgent) -> tweepy.API:**
 
 * Get tweepy.API object created in the background
+
+### **SetProxies(TwitterAgent, proxies:str=None):**
+
+* Set proxy for TwitterAgent
+* This function will perform a re-authentication with Twitter
+* Parameters
+  * **proxies**:              string, a proxy server url string, default None, disabled
 
 # 6. class DanbooruAgent
 
@@ -169,6 +184,21 @@ Sharing all the common members and methods from base class.
 
 This Agent only accept [DanbooruItemInfo](./WebItemInfo.md#4-class-danbooruiteminfo)
 
+## Additional Methods
+
+### **\_\_init\_\_(DanbooruAgent, proxies:str=None):**
+
+* Constructor for DanbooruAgent class
+* You can pass in optional parameters via [DanbooruAgent.instance() function](#instanceself-args)
+* Parameters:
+  * **proxies**:              string, a proxy server url string, default None, disabled
+
+### **SetProxies(DanbooruAgent, proxies:str=None):**
+
+* Set proxy for DanbooruAgent
+* Parameters
+  * **proxies**:              string, a proxy server url string, default None, disabled
+
 # 7. class YandereAgent
 
 Child class of [BaseAgent](#2-class-baseagent) for handling requests to [yande.re](https://yande.re/)
@@ -176,6 +206,21 @@ Child class of [BaseAgent](#2-class-baseagent) for handling requests to [yande.r
 Sharing all the common members and methods from base class.
 
 This Agent only accept [YandereItemInfo](./WebItemInfo.md#5-class-yandereiteminfo)
+
+## Additional Methods
+
+### **\_\_init\_\_(YandereAgent, proxies:str=None):**
+
+* Constructor for YandereAgent class
+* You can pass in optional parameters via [YandereAgent.instance() function](#instanceself-args)
+* Parameters:
+  * **proxies**:              string, a proxy server url string, default None, disabled
+
+### **SetProxies(YandereAgent, proxies:str=None):**
+
+* Set proxy for DanbooruAgent
+* Parameters
+  * **proxies**:              string, a proxy server url string, default None, disabled
 
 # 8. class KonachanAgent
 

@@ -198,6 +198,24 @@ class WebImageAPI:
         else:
             raise ValueError('Empty, Invalid, or Unsupported url domain.')
     
+    @TypeChecker(DOMAIN, (1,))
+    def FromChildDetails(self, domain:DOMAIN, details) -> WebItemInfo:
+        if domain == DOMAIN.PIXIV:
+            return PixivItemInfo.FromChildDetails(details)
+        elif domain == DOMAIN.TWITTER:
+            return TwitterItemInfo.FromChildDetails(details)
+        elif domain == DOMAIN.DANBOORU:
+            return DanbooruItemInfo.FromChildDetails(details)
+        elif domain == DOMAIN.YANDERE:
+            return YandereItemInfo.FromChildDetails(details)
+        # elif domain == DOMAIN.KONACHAN:
+        #     return KonachanItemInfo.FromChildDetails(details)
+        # elif domain == DOMAIN.WEIBO:
+        #     return WeiboItemInfo.FromChildDetails(details)
+        # elif domain == DOMAIN.EHENTAI:
+        #     return EHentaiItemInfo.FromChildDetails(details)
+        else:
+            raise ValueError('Empty, Invalid, or Unsupported domain.')
     
     
     # private helper functions

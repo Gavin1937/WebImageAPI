@@ -15,14 +15,22 @@ from time import sleep
 @Singleton
 class PixivAgent(BaseAgent):
     
+    # def __init__(self, refresh_token:str, proxies:str=None, max_try:int=5):
     def __init__(self, refresh_token:str, max_try:int=5):
-        __proxy_settings = {
-            # 'proxies': {
-            #     'https': 'http://127.0.0.1:1087',
-            # },
-            # 'verify': False,       # PAPI use https, an easy way is disable requests SSL verify
-        }
-        self.__api:AppPixivAPI = AppPixivAPI(**__proxy_settings)
+        proxy_settings = {}
+        # if proxies is not None:
+        #     proxy_type = 'https'
+        #     ssl_verify = True
+        #     if not proxies.startswith(proxy_type):
+        #         proxy_type = 'http'
+        #         ssl_verify = False
+            
+        #     proxy_settings = {
+        #         'verify': ssl_verify,       # PAPI use https, an easy way is disable requests SSL verify
+        #         'proxies': { proxy_type: proxies, },
+        #     }
+        
+        self.__api:AppPixivAPI = AppPixivAPI(**proxy_settings)
         
         exception = None
         sleeptime = 10
@@ -40,12 +48,60 @@ class PixivAgent(BaseAgent):
             # only enter this else branch if
             # above for-loop finished without breaking
             raise exception
+        
+        self.__refresh_token = refresh_token
+        self.__max_try = max_try
     
     
     # interfaces
     def GetAPI(self) -> AppPixivAPI:
         'Get pixivpy3.AppPixivAPI object'
         return self.__api
+    
+    # 2023-04-03
+    # currently, I cannot figure out how to allow proxy in pixivpy
+    # this is due to following error:
+    # Cannot set verify_mode to CERT_NONE when check_hostname is enabled.
+    # 
+    # even after I set { 'verify': False }
+    # 
+    # pixivpy uses cloudscraper underhood for all the http requests
+    # and cloudscraper is depending on requests
+    # this error probably happens in between cloudscraper or requests layer
+    # pixivpy will pass your proxy setting to cloudscraper as function kwargs
+    # maybe its caused by underlying requests.Session doesn't take 'verify' parameter came from function kwargs?
+    # or maybe underlying requests.Session.verify is set to True all the time and overwriting my setting?
+    
+    # def SetProxies(self, proxies:str=None):
+    #     if proxies is not None:
+    #         proxy_type = 'https'
+    #         ssl_verify = True
+    #         if not proxies.startswith(proxy_type):
+    #             ssl_verify = False
+    #             proxy_type = 'http'
+            
+    #         proxy_settings = {
+    #             'verify': ssl_verify,       # PAPI use https, an easy way is disable requests SSL verify
+    #             'proxies': { proxy_type: proxies, },
+    #         }
+    #         self.__api:AppPixivAPI = AppPixivAPI(**proxy_settings)
+            
+    #         exception = None
+    #         sleeptime = 10
+    #         for count in range(self.__max_try):
+    #             try:
+    #                 self.__api.auth(refresh_token=self.__refresh_token)
+    #                 break
+    #             except PixivError as err:
+    #                 exception = err
+    #                 print(f'PixivError: {err}')
+    #                 wakeup_in = sleeptime * count
+    #                 print(f'[{count+1}/{self.__max_try}] Sleep for {wakeup_in} sec before retry')
+    #                 sleep(sleeptime * count)
+    #         else:
+    #             # only enter this else branch if
+    #             # above for-loop finished without breaking
+    #             raise exception
     
     @TypeChecker(PixivItemInfo, (1,))
     def FetchItemInfoDetail(self, item_info:PixivItemInfo) -> PixivItemInfo:

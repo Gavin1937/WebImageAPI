@@ -17,7 +17,7 @@ class HTTPClient:
         self,
         default_headers:dict=None,
         default_cookies:dict=None,
-        default_proxies:dict=None,
+        default_proxies:str=None,
         delay_value:tuple=None
     ) -> None:
         '''
@@ -25,7 +25,7 @@ class HTTPClient:
         Param:
             default_headers  => dict, default header to use inside this client (default None)
             default_cookies  => dict, default cookies to use inside this client (default None)
-            default_proxies  => dict, default proxies to use inside this client (default None)
+            default_proxies  => str, default proxy url to use inside this client (default None)
             delay_value      => tuple[number, number], a two number tuple for random delay
                                 default set to None (disable)
                                 if set to any valid value, HTTPClient will place a random delay
@@ -34,7 +34,12 @@ class HTTPClient:
         '''
         self.__headers = { 'User-Agent': PROJECT_USERAGENT } if default_headers is None else default_headers
         self.__cookies = {} if default_cookies is None else default_cookies
-        self.__proxies = {} if default_proxies is None else default_proxies
+        self.__proxies = {}
+        if default_proxies is not None:
+            proxy_type = 'https'
+            if not default_proxies.startswith(proxy_type):
+                proxy_type = 'http'
+            self.__proxies = { proxy_type: default_proxies }
         self.__delay_val = delay_value
     
     
@@ -57,14 +62,19 @@ class HTTPClient:
     def GetProxies(self) -> dict:
         return self.__proxies
     
-    def SetProxies(self, proxies:dict) -> None:
-        self.__proxies = proxies
+    def SetProxies(self, proxies:str) -> None:
+        if proxies is not None:
+            proxy_type = 'https'
+            if not proxies.startswith(proxy_type):
+                proxy_type = 'http'
+            self.__proxies = { proxy_type:proxies }
     
     def GetDelayValue(self) -> tuple:
         return self.__delay_val
     
-    def SetDelayValue(self, delay_value:dict) -> None:
-        self.__delay_val = delay_value
+    def SetDelayValue(self, delay_value:tuple) -> None:
+        if len(self.__delay_val) == 2:
+            self.__delay_val = delay_value
     
     
     # request
@@ -145,3 +155,11 @@ class HTTPClient:
         loc_kwargs = {} if kwargs is None else kwargs
         self.__RandDelay()
         return requests.get(url=url, headers=loc_headers, cookies=loc_cookies, proxies=loc_proxies, **loc_kwargs)
+
+
+BROWSER_HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36',
+    'Connection': 'keep-alive',
+    'Refer': 'https://www.google.com'
+}
+
