@@ -8,7 +8,7 @@ from ..Utils import (
     UrlParser, HTTPClient
 )
 from tweepy import OAuth1UserHandler, API, Cursor
-from tweepy.errors import TweepyException
+from tweepy.errors import TweepyException, Unauthorized
 from time import sleep
 from typing import Union
 from pathlib import Path
@@ -25,21 +25,6 @@ class TwitterAgent(BaseAgent):
         if proxies and not proxies.startswith('https'):
             proxies = None
         
-        exception = None
-        sleeptime = 10
-        for count in range(max_try):
-            try:
-                self.__api:API = API(auth, proxy=proxies)
-                break
-            except TweepyException as err:
-                exception = err
-                print(f'TweepyException: {err}')
-                wakeup_in = sleeptime * count
-                print(f'[{count+1}/{max_try}] Sleep for {wakeup_in} sec before retry')
-                sleep(sleeptime * count)
-        else:
-            raise exception
-        
         self.__proxies = proxies
         self.__http = HTTPClient(default_proxies=self.__proxies)
         self.__consumer_key = consumer_key
@@ -47,6 +32,21 @@ class TwitterAgent(BaseAgent):
         self.__access_token = access_token
         self.__access_token_secret = access_token_secret
         self.__max_try = max_try
+        
+        exception = None
+        sleeptime = 10
+        for count in range(max_try):
+            try:
+                self.__api:API = API(auth, proxy=proxies)
+                break
+            except TweepyException or Unauthorized as err:
+                exception = err
+                print(f'TweepyException or Unauthorized: {err}')
+                wakeup_in = sleeptime * (count+1)
+                print(f'[{count+1}/{self.__max_try}] Sleep for {wakeup_in} sec before retry')
+                sleep(wakeup_in)
+        else:
+            raise exception
     
     
     # interfaces
@@ -70,12 +70,12 @@ class TwitterAgent(BaseAgent):
                 try:
                     self.__api:API = API(auth, proxy=self.__proxies)
                     break
-                except TweepyException as err:
+                except TweepyException or Unauthorized as err:
                     exception = err
-                    print(f'TweepyException: {err}')
-                    wakeup_in = sleeptime * count
+                    print(f'TweepyException or Unauthorized: {err}')
+                    wakeup_in = sleeptime * (count+1)
                     print(f'[{count+1}/{self.__max_try}] Sleep for {wakeup_in} sec before retry')
-                    sleep(sleeptime * count)
+                    sleep(wakeup_in)
             else:
                 raise exception
         self.__http = HTTPClient(default_proxies=self.__proxies)

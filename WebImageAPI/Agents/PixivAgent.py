@@ -31,6 +31,8 @@ class PixivAgent(BaseAgent):
         #     }
         
         self.__api:AppPixivAPI = AppPixivAPI(**proxy_settings)
+        self.__refresh_token = refresh_token
+        self.__max_try = max_try
         
         exception = None
         sleeptime = 10
@@ -41,16 +43,13 @@ class PixivAgent(BaseAgent):
             except PixivError as err:
                 exception = err
                 print(f'PixivError: {err}')
-                wakeup_in = sleeptime * count
-                print(f'[{count+1}/{max_try}] Sleep for {wakeup_in} sec before retry')
-                sleep(sleeptime * count)
+                wakeup_in = sleeptime * (count+1)
+                print(f'[{count+1}/{self.__max_try}] Sleep for {wakeup_in} sec before retry')
+                sleep(wakeup_in)
         else:
             # only enter this else branch if
             # above for-loop finished without breaking
             raise exception
-        
-        self.__refresh_token = refresh_token
-        self.__max_try = max_try
     
     
     # interfaces
@@ -95,9 +94,9 @@ class PixivAgent(BaseAgent):
     #             except PixivError as err:
     #                 exception = err
     #                 print(f'PixivError: {err}')
-    #                 wakeup_in = sleeptime * count
+    #                 wakeup_in = sleeptime * (count+1)
     #                 print(f'[{count+1}/{self.__max_try}] Sleep for {wakeup_in} sec before retry')
-    #                 sleep(sleeptime * count)
+    #                 sleep(wakeup_in)
     #         else:
     #             # only enter this else branch if
     #             # above for-loop finished without breaking
