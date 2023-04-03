@@ -1,12 +1,15 @@
 
 from .UrlParser import UrlParser
 
+from .HTTPClient import HTTPClient
+
 from .Decorators import (
     TypeChecker, TypeMatcher
 )
 
 from .Functions import (
-    Clamp, MergeDeDuplicate
+    Clamp, MergeDeDuplicate,
+    PPrintJson, GetMD5
 )
 
 from .Variables import (
