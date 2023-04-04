@@ -97,7 +97,26 @@ class YandereItemInfo(WebItemInfo):
     
     def FromChildDetails(details) -> YandereItemInfo:
         output = YandereItemInfo(
-            f'https://yande.re/post/show/{details["id"]}'
+            f'https://yande.re/post/show/{details["posts"][0]["id"]}'
+        )
+        output.details = details
+        return output
+
+
+class KonachanItemInfo(WebItemInfo):
+    def _PostInitAnalyzing(self) -> None:
+        if self.domain != DOMAIN.KONACHAN:
+            raise ValueError('Invalid url, you must supply a konachan.com url.')
+        
+        pathlist = self.parsed_url.pathlist
+        if 'post' == pathlist[0] and len(pathlist) == 1:
+            self.parent_child = PARENT_CHILD.PARENT
+        elif 'post' == pathlist[0] and 'show' == pathlist[1]:
+            self.parent_child = PARENT_CHILD.CHILD
+    
+    def FromChildDetails(details) -> KonachanItemInfo:
+        output = KonachanItemInfo(
+            f'https://konachan.com/post/show/{details["posts"][0]["id"]}'
         )
         output.details = details
         return output

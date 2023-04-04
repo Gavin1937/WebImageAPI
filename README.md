@@ -12,7 +12,7 @@ This project is a complete rewrite of my [old project WebPicAPI](https://github.
 * [twitter](https://twitter.com/)
 * [danbooru](https://danbooru.donmai.us/)
 * [yande.re](https://yande.re/)
-* [konachan](https://konachan.com/) (Not Implement Yet)
+* [konachan](https://konachan.com/)
 * [weibo](https://m.weibo.cn/) (Not Implement Yet)
 * [e-hentai](https://e-hentai.org/) (Not Implement Yet)
 

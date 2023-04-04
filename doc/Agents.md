@@ -33,6 +33,9 @@ Table Of Content
     * [**\_\_init\_\_(YandereAgent, proxies:str=None):**](#__init__yandereagent-proxiesstrnone)
     * [**SetProxies(YandereAgent, proxies:str=None):**](#setproxiesyandereagent-proxiesstrnone)
 * [8. class KonachanAgent](#8-class-konachanagent)
+  * [Additional Methods](#additional-methods-4)
+    * [**\_\_init\_\_(KonachanAgent, proxies:str=None):**](#__init__konachanagent-proxiesstrnone)
+    * [**SetProxies(KonachanAgent, proxies:str=None):**](#setproxieskonachanagent-proxiesstrnone)
 * [9. class WeiboAgent](#9-class-weiboagent)
 * [10. class EHentaiAgent](#10-class-ehentaiagent)
 
@@ -224,7 +227,26 @@ This Agent only accept [YandereItemInfo](./WebItemInfo.md#5-class-yandereiteminf
 
 # 8. class KonachanAgent
 
-Not Implement Yet
+Child class of [BaseAgent](#2-class-baseagent) for handling requests to [konachan](https://konachan.com/)
+
+Sharing all the common members and methods from base class.
+
+This Agent only accept [KonachanItemInfo](./WebItemInfo.md#6-class-konachaniteminfo)
+
+## Additional Methods
+
+### **\_\_init\_\_(KonachanAgent, proxies:str=None):**
+
+* Constructor for KonachanAgent class
+* You can pass in optional parameters via [KonachanAgent.instance() function](#instanceself-args)
+* Parameters:
+  * **proxies**:              string, a proxy server url string, default None, disabled
+
+### **SetProxies(KonachanAgent, proxies:str=None):**
+
+* Set proxy for DanbooruAgent
+* Parameters
+  * **proxies**:              string, a proxy server url string, default None, disabled
 
 # 9. class WeiboAgent
 

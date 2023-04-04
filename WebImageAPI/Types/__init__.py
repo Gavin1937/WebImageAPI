@@ -10,4 +10,5 @@ from .UserInfo import UserInfo
 from .ItemInfoChildren import (
     PixivItemInfo, TwitterItemInfo,
     DanbooruItemInfo, YandereItemInfo,
+    KonachanItemInfo,
 )

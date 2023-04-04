@@ -1,7 +1,7 @@
 
 from .BaseAgent import BaseAgent
 from .Singleton import Singleton
-from ..Types import YandereItemInfo, UserInfo, DOMAIN, PARENT_CHILD
+from ..Types import KonachanItemInfo, UserInfo, DOMAIN, PARENT_CHILD
 from ..Utils import (
     TypeChecker, TypeMatcher,
     Clamp, MergeDeDuplicate,
@@ -12,16 +12,16 @@ from pathlib import Path
 
 
 @Singleton
-class YandereAgent(BaseAgent):
+class KonachanAgent(BaseAgent):
     
     def __init__(self, proxies:str=None):
         # similar to DanbooruAgent,
-        # in order to use yande.re's api,
+        # in order to use konachan.com's api,
         # we need to set a custom user-agent for this project
         # instead of pretending to be a browser,
         # which will make the project get banned by cloudflare
         # details: https://github.com/mikf/gallery-dl/issues/3665
-        # yande.re api: https://yande.re/help/api
+        # konachan.com api: https://konachan.com/help/api
         self.__http = HTTPClient(default_proxies=proxies)
         super().__init__()
     
@@ -29,14 +29,14 @@ class YandereAgent(BaseAgent):
     def SetProxies(self, proxies:str=None):
         self.__http = HTTPClient(default_proxies=proxies)
     
-    @TypeChecker(YandereItemInfo, (1,))
-    def FetchItemInfoDetail(self, item_info:YandereItemInfo) -> YandereItemInfo:
+    @TypeChecker(KonachanItemInfo, (1,))
+    def FetchItemInfoDetail(self, item_info:KonachanItemInfo) -> KonachanItemInfo:
         '''
-        Fetch & Fill-In "detail" parameter for supplied YandereItemInfo.
+        Fetch & Fill-In "detail" parameter for supplied KonachanItemInfo.
         Param:
-            item_info  => YandereItemInfo to fetch
+            item_info  => KonachanItemInfo to fetch
         Returns:
-            updated YandereItemInfo
+            updated KonachanItemInfo
         '''
         
         if item_info.IsParent() or item_info.IsChild():
@@ -44,23 +44,23 @@ class YandereAgent(BaseAgent):
                 self.__NormalURLToApi(item_info.url, item_info.parent_child)
             )
         else:
-            raise ValueError('Input YandereItemInfo is empty or invalid.')
+            raise ValueError('Input KonachanItemInfo is empty or invalid.')
         
         return item_info
     
-    @TypeMatcher(['self', YandereItemInfo, int])
-    def FetchParentChildren(self, item_info:YandereItemInfo, page:int=1) -> list:
+    @TypeMatcher(['self', KonachanItemInfo, int])
+    def FetchParentChildren(self, item_info:KonachanItemInfo, page:int=1) -> list:
         '''
-        Fetch a Parent YandereItemInfo\'s Children
+        Fetch a Parent KonachanItemInfo\'s Children
         Param:
-            item_info  => YandereItemInfo Parent to fetch
+            item_info  => KonachanItemInfo Parent to fetch
             page       => int page number >= 1
         Returns:
-            list of YandereItemInfo fetched, also edit original "item_info"
+            list of KonachanItemInfo fetched, also edit original "item_info"
         '''
         
         if not item_info.IsParent():
-            raise ValueError('Input YandereItemInfo must be a parent.')
+            raise ValueError('Input KonachanItemInfo must be a parent.')
         
         page = Clamp(page, 1)
         new_query = {**item_info.parsed_url.query}
@@ -70,16 +70,16 @@ class YandereAgent(BaseAgent):
         
         output = []
         for post in item_info.details['posts']:
-            output.append(YandereItemInfo.FromChildDetails({'posts':[post]}))
+            output.append(KonachanItemInfo.FromChildDetails({'posts':[post]}))
         
         return output
     
-    @TypeChecker(YandereItemInfo, (1,))
-    def FetchUserInfo(self, item_info:YandereItemInfo, old_user_info:UserInfo=None) -> UserInfo:
+    @TypeChecker(KonachanItemInfo, (1,))
+    def FetchUserInfo(self, item_info:KonachanItemInfo, old_user_info:UserInfo=None) -> UserInfo:
         '''
-        Fetch a YandereItemInfo\'s UserInfo
+        Fetch a KonachanItemInfo\'s UserInfo
         Param:
-            item_info        => YandereItemInfo Parent to fetch
+            item_info        => KonachanItemInfo Parent to fetch
             old_user_info    => UserInfo that already fill up by other agents,
                                 this function will collect additional UserInfo from current domain,
                                 and append to old_user_info and return it at the end.
@@ -97,13 +97,13 @@ class YandereAgent(BaseAgent):
             if type == 'artist':
                 artist_tag = tag
                 break
-        url = f'https://yande.re/artist.json?name={artist_tag}'
+        url = f'https://konachan.com/artist.json?name={artist_tag}'
         user = self.__http.GetJson(url)
         if len(user) <= 0:
-            return UserInfo([artist_tag], {DOMAIN.YANDERE:[]}, {DOMAIN.YANDERE:user})
+            return UserInfo([artist_tag], {DOMAIN.KONACHAN:[]}, {DOMAIN.KONACHAN:user})
         user = user[0]
         
-        domain = DOMAIN.YANDERE
+        domain = DOMAIN.KONACHAN
         name_list = [user['name']]
         url_dict = {domain:user['urls']}
         if old_user_info is not None:
@@ -117,18 +117,18 @@ class YandereAgent(BaseAgent):
             return old_user_info
         return UserInfo(name_list, url_dict, {domain:user})
     
-    @TypeChecker(YandereItemInfo, (1,))
-    def DownloadItem(self, item_info:YandereItemInfo, output_path:Union[str,Path], replace:bool=False):
+    @TypeChecker(KonachanItemInfo, (1,))
+    def DownloadItem(self, item_info:KonachanItemInfo, output_path:Union[str,Path], replace:bool=False):
         '''
-        Download a supplied YandereItemInfo
+        Download a supplied KonachanItemInfo
         Param:
-            item_info    => YandereItemInfo Child to download
+            item_info    => KonachanItemInfo Child to download
             output_path  => str|Path of a directory for downloaded file
             replace      => bool flag, whether replace if download file already exists
         '''
         
         if not item_info.IsChild():
-            raise ValueError('Cannot download non-child YandereItemInfo.')
+            raise ValueError('Cannot download non-child KonachanItemInfo.')
         
         output_path = Path(output_path)
         if not output_path.is_dir():

@@ -17,6 +17,7 @@ Table Of Content
       * [GetTwitterAgent(WebImageAPI) -\> TwitterAgent:](#gettwitteragentwebimageapi---twitteragent)
       * [GetDanbooruAgent(WebImageAPI) -\> DanbooruAgent:](#getdanbooruagentwebimageapi---danbooruagent)
       * [GetYandereAgent(WebImageAPI) -\> YandereAgent:](#getyandereagentwebimageapi---yandereagent)
+      * [GetKonachanAgent(WebImageAPI) -\> KonachanAgent:](#getkonachanagentwebimageapi---konachanagent)
     * [**Agent Common Features**](#agent-common-features)
       * [FetchItemInfoDetail(WebImageAPI, item\_info:WebItemInfo) -\> WebItemInfo:](#fetchiteminfodetailwebimageapi-item_infowebiteminfo---webiteminfo)
       * [FetchParentChildren(WebImageAPI, item\_info:WebItemInfo, page:int=1) -\> list:](#fetchparentchildrenwebimageapi-item_infowebiteminfo-pageint1---list)
@@ -79,6 +80,10 @@ I highly recommend you to stick with this class and let it to handle everything 
 #### GetYandereAgent(WebImageAPI) -> YandereAgent:
 
 * Get existing, initialized `YandereAgent`
+
+#### GetKonachanAgent(WebImageAPI) -> KonachanAgent:
+
+* Get existing, initialized `KonachanAgent`
 
 ### **Agent Common Features**
 

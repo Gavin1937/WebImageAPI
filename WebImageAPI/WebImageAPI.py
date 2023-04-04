@@ -14,7 +14,7 @@ class WebImageAPI:
         self.__twitter_agent:TwitterAgent      = None
         self.__danbooru_agent:DanbooruAgent    = None
         self.__yandere_agent:YandereAgent      = None
-        # self.__konachan_agent:KonachanAgent  = None
+        self.__konachan_agent:KonachanAgent  = None
         # self.__weibo_agent:WeiboAgent        = None
         # self.__ehentai_agent:EHentaiAgent    = None
     
@@ -50,10 +50,10 @@ class WebImageAPI:
             self.__InitAgent(DOMAIN.YANDERE)
         return self.__yandere_agent
     
-    # def GetKonachanAgent(self) -> KonachanAgent:
-    #     if self.__konachan_agent is None:
-    #         self.__InitAgent(DOMAIN.KONACHAN)
-    #     return self.__konachan_agent
+    def GetKonachanAgent(self) -> KonachanAgent:
+        if self.__konachan_agent is None:
+            self.__InitAgent(DOMAIN.KONACHAN)
+        return self.__konachan_agent
     
     # def GetWeiboAgent(self) -> WeiboAgent:
     #     if self.__weibo_agent is None:
@@ -84,8 +84,8 @@ class WebImageAPI:
             return self.GetDanbooruAgent().FetchItemInfoDetail(item_info)
         elif isinstance(item_info, YandereItemInfo):
             return self.GetYandereAgent().FetchItemInfoDetail(item_info)
-        # elif isinstance(item_info, KonachanItemInfo):
-        #     return self.GetKonachanAgent().FetchItemInfoDetail(item_info)
+        elif isinstance(item_info, KonachanItemInfo):
+            return self.GetKonachanAgent().FetchItemInfoDetail(item_info)
         # elif isinstance(item_info, WeiboItemInfo):
         #     return self.GetWeiboAgent().FetchItemInfoDetail(item_info)
         # elif isinstance(item_info, EHentaiItemInfo):
@@ -111,8 +111,8 @@ class WebImageAPI:
             return self.GetDanbooruAgent().FetchParentChildren(item_info, page)
         elif isinstance(item_info, YandereItemInfo):
             return self.GetYandereAgent().FetchParentChildren(item_info, page)
-        # elif isinstance(item_info, KonachanItemInfo):
-        #     return self.GetKonachanAgent().FetchParentChildren(item_info, page)
+        elif isinstance(item_info, KonachanItemInfo):
+            return self.GetKonachanAgent().FetchParentChildren(item_info, page)
         # elif isinstance(item_info, WeiboItemInfo):
         #     return self.GetWeiboAgent().FetchParentChildren(item_info, page)
         # elif isinstance(item_info, EHentaiItemInfo):
@@ -141,8 +141,8 @@ class WebImageAPI:
             return self.GetDanbooruAgent().FetchUserInfo(item_info, old_user_info)
         elif isinstance(item_info, YandereItemInfo):
             return self.GetYandereAgent().FetchUserInfo(item_info, old_user_info)
-        # elif isinstance(item_info, KonachanItemInfo):
-        #     return self.GetKonachanAgent().FetchUserInfo(item_info, old_user_info)
+        elif isinstance(item_info, KonachanItemInfo):
+            return self.GetKonachanAgent().FetchUserInfo(item_info, old_user_info)
         # elif isinstance(item_info, WeiboItemInfo):
         #     return self.GetWeiboAgent().FetchUserInfo(item_info, old_user_info)
         # elif isinstance(item_info, EHentaiItemInfo):
@@ -167,8 +167,8 @@ class WebImageAPI:
             return self.GetDanbooruAgent().DownloadItem(item_info, output_path, replace)
         elif isinstance(item_info, YandereItemInfo):
             return self.GetYandereAgent().DownloadItem(item_info, output_path, replace)
-        # elif isinstance(item_info, KonachanItemInfo):
-        #     return self.GetKonachanAgent().DownloadItem(item_info, output_path, replace)
+        elif isinstance(item_info, KonachanItemInfo):
+            return self.GetKonachanAgent().DownloadItem(item_info, output_path, replace)
         # elif isinstance(item_info, WeiboItemInfo):
         #     return self.GetWeiboAgent().DownloadItem(item_info, output_path, replace)
         # elif isinstance(item_info, EHentaiItemInfo):
@@ -189,8 +189,8 @@ class WebImageAPI:
             return DanbooruItemInfo(url)
         elif domain == DOMAIN.YANDERE:
             return YandereItemInfo(url)
-        # elif domain == DOMAIN.KONACHAN:
-        #     return KonachanItemInfo(url)
+        elif domain == DOMAIN.KONACHAN:
+            return KonachanItemInfo(url)
         # elif domain == DOMAIN.WEIBO:
         #     return WeiboItemInfo(url)
         # elif domain == DOMAIN.EHENTAI:
@@ -208,8 +208,8 @@ class WebImageAPI:
             return DanbooruItemInfo.FromChildDetails(details)
         elif domain == DOMAIN.YANDERE:
             return YandereItemInfo.FromChildDetails(details)
-        # elif domain == DOMAIN.KONACHAN:
-        #     return KonachanItemInfo.FromChildDetails(details)
+        elif domain == DOMAIN.KONACHAN:
+            return KonachanItemInfo.FromChildDetails(details)
         # elif domain == DOMAIN.WEIBO:
         #     return WeiboItemInfo.FromChildDetails(details)
         # elif domain == DOMAIN.EHENTAI:
@@ -228,8 +228,8 @@ class WebImageAPI:
             self.__danbooru_agent = DanbooruAgent.instance(**init_args)
         elif agent_domain == DOMAIN.YANDERE:
             self.__yandere_agent = YandereAgent.instance(**init_args)
-        # elif agent_domain == DOMAIN.KONACHAN:
-        #     self.__konachan_agent = KonachanAgent.instance(**init_args)
+        elif agent_domain == DOMAIN.KONACHAN:
+            self.__konachan_agent = KonachanAgent.instance(**init_args)
         # elif agent_domain == DOMAIN.WEIBO:
         #     self.__weibo_agent = WeiboAgent.instance(**init_args)
         # elif agent_domain == DOMAIN.EHENTAI:
