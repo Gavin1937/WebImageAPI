@@ -213,8 +213,12 @@ class PixivAgent(BaseAgent):
             item_info = self.FetchItemInfoDetail(item_info)
         
         illust_meta = []
-        illust_meta += item_info.details['illust']['meta_single_page']
-        illust_meta += item_info.details['illust']['meta_pages']
+        if 'illust' in item_info.details:
+            illust_meta += item_info.details['illust']['meta_single_page']
+            illust_meta += item_info.details['illust']['meta_pages']
+        else:
+            illust_meta += item_info.details['meta_single_page']
+            illust_meta += item_info.details['meta_pages']
         for meta in illust_meta:
             self.__api.download(
                 url=meta['image_urls']['original'],
