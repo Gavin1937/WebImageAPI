@@ -50,6 +50,12 @@ urls = [
 'https://danbooru.donmai.us/posts/6159304',
 'https://yande.re/post?tags=nagishiro_mito&page=2',
 'https://yande.re/post/show/1059321',
+'https://konachan.com/post?tags=nagishiro_mito',
+'https://konachan.com/post/show/355165',
+'https://m.weibo.cn/u/1954940747',
+'https://m.weibo.cn/detail/4883581258435481',
+'https://e-hentai.org/g/2510385/e39a66a86e/',
+'https://e-hentai.org/s/9b00cf1ccc/2510385-1',
 ]
 
 # use additional features from specific Agents
