@@ -40,14 +40,8 @@ jobs:
         draft: false
         prerelease: false
     
-    - name: Upload Release Asset
-      id: upload-release-asset 
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: './dist/WebImageAPI-${{ secrets.GITHUB_TOKEN }}-py3-none-any.whl'
-        asset_name: 'WebImageAPI-${{ secrets.GITHUB_TOKEN }}-py3-none-any.whl'
-        asset_content_type: application/gzip
-
+        files: 'WebImageAPI-${{ env.RELEASE_VERSION }}-py3-none-any.whl'
