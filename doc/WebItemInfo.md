@@ -23,11 +23,11 @@ Table Of Content
 * [2. class PixivItemInfo](#2-class-pixiviteminfo)
   * [Additional Members](#additional-members)
     * [**PixivItemInfo.pid**](#pixiviteminfopid)
-    * [\*\*\_\_init\_\_(PixivItemInfo, url:str=None, **kwargs) -\> None:**](#__init__pixiviteminfo-urlstrnone-kwargs---none)
+    * [**\_\_init\_\_(PixivItemInfo, url:str=None, \*\*kwargs) -\> None:**](#__init__pixiviteminfo-urlstrnone-kwargs---none)
 * [3. class TwitterItemInfo](#3-class-twitteriteminfo)
   * [Additional Members](#additional-members-1)
     * [**TwitterItemInfo.screen\_name**](#twitteriteminfoscreen_name)
-    * [\*\*\_\_init\_\_(TwitterItemInfo, url:str=None, **kwargs) -\> None:**](#__init__twitteriteminfo-urlstrnone-kwargs---none)
+    * [**\_\_init\_\_(TwitterItemInfo, url:str=None, \*\*kwargs) -\> None:**](#__init__twitteriteminfo-urlstrnone-kwargs---none)
     * [**TwitterItemInfo.status\_id**](#twitteriteminfostatus_id)
 * [4. class DanbooruItemInfo](#4-class-danbooruiteminfo)
 * [5. class YandereItemInfo](#5-class-yandereiteminfo)
@@ -35,7 +35,7 @@ Table Of Content
 * [7. class WeiboItemInfo](#7-class-weiboiteminfo)
   * [Additional Members](#additional-members-2)
     * [**WeiboItemInfo.weibo\_id**](#weiboiteminfoweibo_id)
-    * [\*\*\_\_init\_\_(WeiboItemInfo, url:str=None, **kwargs) -\> None:**](#__init__weiboiteminfo-urlstrnone-kwargs---none)
+    * [**\_\_init\_\_(WeiboItemInfo, url:str=None, \*\*kwargs) -\> None:**](#__init__weiboiteminfo-urlstrnone-kwargs---none)
 * [8. class EHentaiItemInfo](#8-class-ehentaiiteminfo)
   * [Additional Members](#additional-members-3)
     * [**EHentaiItemInfo.gallery\_id**](#ehentaiiteminfogallery_id)
@@ -135,7 +135,7 @@ Sharing all the common members and methods from base class.
 
 integer member stores the id for a pixiv user or artworks.
 
-### **\_\_init\_\_(PixivItemInfo, url:str=None, **kwargs) -> None:**
+### **\_\_init\_\_(PixivItemInfo, url:str=None, \*\*kwargs) -> None:**
 
 * constructor of PixivItemInfo
 * Parameters:
@@ -156,7 +156,7 @@ Sharing all the common members and methods from base class.
 
 string user tweeter screen name
 
-### **\_\_init\_\_(TwitterItemInfo, url:str=None, **kwargs) -> None:**
+### **\_\_init\_\_(TwitterItemInfo, url:str=None, \*\*kwargs) -> None:**
 
 * constructor of TwitterItemInfo
 * Parameters:
@@ -203,7 +203,7 @@ Sharing all the common members and methods from base class.
 
 string weibo user id or status id
 
-### **\_\_init\_\_(WeiboItemInfo, url:str=None, **kwargs) -> None:**
+### **\_\_init\_\_(WeiboItemInfo, url:str=None, \*\*kwargs) -> None:**
 
 * constructor of WeiboItemInfo
 * Parameters:
