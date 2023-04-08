@@ -23,15 +23,23 @@ Table Of Content
 * [2. class PixivItemInfo](#2-class-pixiviteminfo)
   * [Additional Members](#additional-members)
     * [**PixivItemInfo.pid**](#pixiviteminfopid)
+    * [\*\*\_\_init\_\_(PixivItemInfo, url:str=None, **kwargs) -\> None:**](#__init__pixiviteminfo-urlstrnone-kwargs---none)
 * [3. class TwitterItemInfo](#3-class-twitteriteminfo)
   * [Additional Members](#additional-members-1)
     * [**TwitterItemInfo.screen\_name**](#twitteriteminfoscreen_name)
+    * [\*\*\_\_init\_\_(TwitterItemInfo, url:str=None, **kwargs) -\> None:**](#__init__twitteriteminfo-urlstrnone-kwargs---none)
     * [**TwitterItemInfo.status\_id**](#twitteriteminfostatus_id)
 * [4. class DanbooruItemInfo](#4-class-danbooruiteminfo)
 * [5. class YandereItemInfo](#5-class-yandereiteminfo)
 * [6. class KonachanItemInfo](#6-class-konachaniteminfo)
 * [7. class WeiboItemInfo](#7-class-weiboiteminfo)
+  * [Additional Members](#additional-members-2)
+    * [**WeiboItemInfo.weibo\_id**](#weiboiteminfoweibo_id)
+    * [\*\*\_\_init\_\_(WeiboItemInfo, url:str=None, **kwargs) -\> None:**](#__init__weiboiteminfo-urlstrnone-kwargs---none)
 * [8. class EHentaiItemInfo](#8-class-ehentaiiteminfo)
+  * [Additional Members](#additional-members-3)
+    * [**EHentaiItemInfo.gallery\_id**](#ehentaiiteminfogallery_id)
+    * [**EHentaiItemInfo.other**](#ehentaiiteminfoother)
 
 </details>
 
@@ -127,6 +135,14 @@ Sharing all the common members and methods from base class.
 
 integer member stores the id for a pixiv user or artworks.
 
+### **\_\_init\_\_(PixivItemInfo, url:str=None, **kwargs) -> None:**
+
+* constructor of PixivItemInfo
+* Parameters:
+  * **url:** string url, can be None
+  * If **url** is None, you must parent_child & input pixiv id as kwargs
+    * **parent_child:** PARENT_CHILD state
+    * **pid:** string|int pixiv id
 
 # 3. class TwitterItemInfo
 
@@ -139,6 +155,16 @@ Sharing all the common members and methods from base class.
 ### **TwitterItemInfo.screen_name**
 
 string user tweeter screen name
+
+### **\_\_init\_\_(TwitterItemInfo, url:str=None, **kwargs) -> None:**
+
+* constructor of TwitterItemInfo
+* Parameters:
+  * **url:** string url, can be None
+  * If **url** is None, you must input parent_child & screen_name & status_id
+    * **parent_child:** PARENT_CHILD state
+    * **screen_name:** string twitter screen name, this is mandatory
+    * **status_id:** string twitter status id, this is mandatory for child
 
 ### **TwitterItemInfo.status_id**
 
@@ -171,9 +197,51 @@ Child class of [WebItemInfo](#1-class-webiteminfo) to store items in [weibo](htt
 
 Sharing all the common members and methods from base class.
 
+## Additional Members
+
+### **WeiboItemInfo.weibo_id**
+
+string weibo user id or status id
+
+### **\_\_init\_\_(WeiboItemInfo, url:str=None, **kwargs) -> None:**
+
+* constructor of WeiboItemInfo
+* Parameters:
+  * **url:** string url, can be None
+  * If **url** is None, you must input parent_child & weibo_id
+    * **parent_child:** PARENT_CHILD state
+    * **weibo_id:** string weibo user id or status id
+
 # 8. class EHentaiItemInfo
 
 Child class of [WebItemInfo](#1-class-webiteminfo) to store items in [e-hentai](https://e-hentai.org/)
 
 Sharing all the common members and methods from base class.
+
+## Additional Members
+
+### **EHentaiItemInfo.gallery_id**
+
+string E-Hentai gallery_id
+
+### **EHentaiItemInfo.other**
+
+dict E-Hentai parent or child information
+
+If this is a parent
+
+```py
+{
+  'gallery_token': 'hex gallery token'
+}
+```
+
+If this is a child
+
+```py
+{
+  'page_token': 'hex page token',
+  'pagenumber': 'int page number'
+}
+```
 

@@ -5,9 +5,17 @@ from .Types import DOMAIN, PARENT_CHILD
 
 
 class PixivItemInfo(WebItemInfo):
-    def __init__(self, url) -> None:
+    def __init__(self, url:str=None, **kwargs) -> None:
         self.pid:int = None
-        super().__init__(url)
+        _url = url
+        if url is None and 'pid' in kwargs and 'parent_child' in kwargs:
+            self.pid = kwargs['pid']
+            if kwargs['parent_child'] == PARENT_CHILD.PARENT:
+                _url = f'https://www.pixiv.net/users/{kwargs["pid"]}'
+            elif kwargs['parent_child'] == PARENT_CHILD.CHILD:
+                _url = f'https://www.pixiv.net/artworks/{kwargs["pid"]}'
+        print(_url)
+        super().__init__(_url)
     
     def _PostInitAnalyzing(self) -> None:
         if self.domain != DOMAIN.PIXIV:
@@ -39,9 +47,17 @@ class PixivItemInfo(WebItemInfo):
 
 
 class TwitterItemInfo(WebItemInfo):
-    def __init__(self, url) -> None:
+    def __init__(self, url:str=None, **kwargs) -> None:
         self.screen_name:str = None
         self.status_id:str = None
+        if 'screen_name' in kwargs and 'parent_child' in kwargs:
+            if kwargs['parent_child'] == PARENT_CHILD.PARENT:
+                self.screen_name = kwargs['screen_name']
+                url = f'https://twitter.com/{self.screen_name}'
+            elif kwargs['parent_child'] == PARENT_CHILD.CHILD:
+                self.screen_name = kwargs['screen_name']
+                self.status_id = kwargs['status_id']
+                url = f'https://twitter.com/{self.screen_name}/status/{self.status_id}'
         super().__init__(url)
     
     def _PostInitAnalyzing(self) -> None:
@@ -123,8 +139,14 @@ class KonachanItemInfo(WebItemInfo):
 
 
 class WeiboItemInfo(WebItemInfo):
-    def __init__(self, url) -> None:
+    def __init__(self, url:str=None, **kwargs) -> None:
         self.weibo_id:str = None
+        if 'weibo_id' in kwargs and 'parent_child' in kwargs:
+            self.weibo_id = kwargs['weibo_id']
+            if kwargs['parent_child'] == PARENT_CHILD.PARENT:
+                url = f'https://m.weibo.cn/u/{self.weibo_id}'
+            elif kwargs['parent_child'] == PARENT_CHILD.CHILD:
+                url = f'https://m.weibo.cn/detail/{self.weibo_id}'
         super().__init__(url)
     
     def _PostInitAnalyzing(self) -> None:
