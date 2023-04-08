@@ -1,6 +1,8 @@
 
 # Web Image API: A Python3 package to fetch info and download images from popular websites.
 
+[![.github/workflows/pack-release-package.yml](https://github.com/Gavin1937/WebImageAPI/actions/workflows/pack-release-package.yml/badge.svg)](https://github.com/Gavin1937/WebImageAPI/actions/workflows/pack-release-package.yml)
+
 This python package is designed to fetch basic information and download images from popular image hosting websites & social medias.
 
 This project is a complete rewrite of my [old project WebPicAPI](https://github.com/Gavin1937/WebPicAPI)
