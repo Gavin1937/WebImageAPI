@@ -37,6 +37,9 @@ Table Of Content
     * [**\_\_init\_\_(KonachanAgent, proxies:str=None):**](#__init__konachanagent-proxiesstrnone)
     * [**SetProxies(KonachanAgent, proxies:str=None):**](#setproxieskonachanagent-proxiesstrnone)
 * [9. class WeiboAgent](#9-class-weiboagent)
+  * [Additional Methods](#additional-methods-5)
+    * [**\_\_init\_\_(WeiboAgent, proxies:str=None):**](#__init__weiboagent-proxiesstrnone)
+    * [**SetProxies(WeiboAgent, proxies:str=None):**](#setproxiesweiboagent-proxiesstrnone)
 * [10. class EHentaiAgent](#10-class-ehentaiagent)
 
 </details>
@@ -250,7 +253,26 @@ This Agent only accept [KonachanItemInfo](./WebItemInfo.md#6-class-konachanitemi
 
 # 9. class WeiboAgent
 
-Not Implement Yet
+Child class of [BaseAgent](#2-class-baseagent) for handling requests to [weibo](https://m.weibo.cn/)
+
+Sharing all the common members and methods from base class.
+
+This Agent only accept [WeiboItemInfo](./WebItemInfo.md#7-class-weiboiteminfo)
+
+## Additional Methods
+
+### **\_\_init\_\_(WeiboAgent, proxies:str=None):**
+
+* Constructor for WeiboAgent class
+* You can pass in optional parameters via [WeiboAgent.instance() function](#instanceself-args)
+* Parameters:
+  * **proxies**:              string, a proxy server url string, default None, disabled
+
+### **SetProxies(WeiboAgent, proxies:str=None):**
+
+* Set proxy for DanbooruAgent
+* Parameters
+  * **proxies**:              string, a proxy server url string, default None, disabled
 
 # 10. class EHentaiAgent
 
