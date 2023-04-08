@@ -18,9 +18,10 @@ jobs:
       with:
         python-version: '3.8'
     
-    - name: Get Commit Tag
+    - name: Setup ENV
       run: |
         echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        echo "VERSION_STR=${RELEASE_VERSION#v}" >> $GITHUB_ENV
     
     - name: Install Dependencies & Build
       run: |
@@ -32,7 +33,7 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: 'dist/WebImageAPI-${{ env.RELEASE_VERSION }}-py3-none-any.whl'
-        asset_name: 'WebImageAPI-${{ env.RELEASE_VERSION }}-py3-none-any.whl'
-        tag: ${{ env.RELEASE_VERSION }}
+        file: 'dist/WebImageAPI-${{ env.VERSION_STR }}-py3-none-any.whl'
+        asset_name: 'WebImageAPI-${{ env.VERSION_STR }}-py3-none-any.whl'
+        tag: '${{ env.RELEASE_VERSION }}'
         overwrite: true
