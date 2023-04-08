@@ -190,6 +190,7 @@ class PixivAgent(BaseAgent):
             old_user_info.url_dict[domain] = MergeDeDuplicate(old_user_info.url_dict[domain])
             old_user_info.details[domain] = user
             return old_user_info
+        name_list = MergeDeDuplicate(name_list)
         return UserInfo(name_list, url_dict, {domain:user})
     
     @TypeChecker(PixivItemInfo, (1,))

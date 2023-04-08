@@ -120,3 +120,32 @@ class KonachanItemInfo(WebItemInfo):
         )
         output.details = details
         return output
+
+
+class WeiboItemInfo(WebItemInfo):
+    def __init__(self, url) -> None:
+        self.weibo_id:str = None
+        super().__init__(url)
+    
+    def _PostInitAnalyzing(self) -> None:
+        if self.domain != DOMAIN.WEIBO:
+            raise ValueError('Invalid url, you must supply a m.weibo.cn url.')
+        
+        pathlist = self.parsed_url.pathlist
+        if 'u' == pathlist[0]:
+            self.parent_child = PARENT_CHILD.PARENT
+        elif 'detail' == pathlist[0]:
+            self.parent_child = PARENT_CHILD.CHILD
+        self.weibo_id = pathlist[1]
+    
+    def FromChildDetails(details) -> WeiboItemInfo:
+        if 'id' in details:
+            output = WeiboItemInfo(
+                f'https://m.weibo.cn/detail/{details["id"]}'
+            )
+        elif 'mblog' in details and 'id' in details['mblog']:
+            output = WeiboItemInfo(
+                f'https://m.weibo.cn/detail/{details["mblog"]["id"]}'
+            )
+        output.details = details
+        return output

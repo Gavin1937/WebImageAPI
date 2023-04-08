@@ -80,16 +80,16 @@ class HTTPClient:
     # request
     
     def GetBytes(self, url:str, **kwargs) -> bytes:
-        return self.__Get(url, kwargs).content
+        return self.__Get(url, **kwargs).content
     
     def GetStr(self, url:str, encoding:str='utf-8', **kwargs) -> str:
-        return self.__Get(url, kwargs).content.decode(encoding)
+        return self.__Get(url, **kwargs).content.decode(encoding)
     
     def GetHtml(self, url:str, encoding:str='utf-8', **kwargs) -> BeautifulSoup:
-        return BeautifulSoup(self.__Get(url, kwargs).content.decode(encoding), 'lxml')
+        return BeautifulSoup(self.__Get(url, **kwargs).content.decode(encoding), 'lxml')
     
     def GetJson(self, url:str, **kwargs) -> dict:
-        return self.__Get(url, kwargs).json()
+        return self.__Get(url, **kwargs).json()
     
     def DownloadUrl(
         self, url:str,
@@ -129,6 +129,9 @@ class HTTPClient:
             else: # invalid path
                 raise ValueError(f'Invalid path: {path}')
         
+        if download_path.exists() and not overwrite:
+            raise ValueError(f'File {download_path.name} already exist in the input path.')
+        
         resp = self.__Get(url)
         
         with open(download_path, 'wb') as file:
@@ -158,8 +161,7 @@ class HTTPClient:
 
 
 BROWSER_HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
     'Connection': 'keep-alive',
-    'Refer': 'https://www.google.com'
 }
 
