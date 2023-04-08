@@ -2,6 +2,7 @@
 from .BaseAgent import BaseAgent
 from .Singleton import Singleton
 from ..Types import TwitterItemInfo, UserInfo, DOMAIN
+from ..Types.Exceptions import WrongParentChildException
 from ..Utils import (
     TypeChecker, TypeMatcher,
     Clamp, MergeDeDuplicate,
@@ -113,7 +114,7 @@ class TwitterAgent(BaseAgent):
         '''
         
         if not item_info.IsParent():
-            raise ValueError('Input TwitterItemInfo must be a parent.')
+            raise WrongParentChildException(item_info.parent_child, 'Input TwitterItemInfo must be a parent.')
         
         count = Clamp(count, 1)
         
@@ -182,7 +183,7 @@ class TwitterAgent(BaseAgent):
         '''
         
         if not item_info.IsChild():
-            raise ValueError('Cannot download non-child TwitterItemInfo.')
+            raise WrongParentChildException(item_info.parent_child, 'Cannot download non-child TwitterItemInfo.')
         
         output_path = Path(output_path)
         if not output_path.is_dir():

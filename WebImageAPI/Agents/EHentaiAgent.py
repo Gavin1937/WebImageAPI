@@ -1,7 +1,13 @@
 
 from .BaseAgent import BaseAgent
 from .Singleton import Singleton
-from ..Types import EHentaiItemInfo, UserInfo, DOMAIN, EHentaiInPeekHourException
+from ..Types import EHentaiItemInfo, UserInfo, DOMAIN
+from ..Types.Exceptions import (
+    WrongParentChildException,
+    EHentaiInPeekHourException,
+    EHentaiExcessViewingLimit,
+    FileMD5NotMatchingException
+)
 from ..Utils import (
     TypeChecker, TypeMatcher,
     Clamp, MergeDeDuplicate,
@@ -97,13 +103,13 @@ class EHentaiAgent(BaseAgent):
         '''
         
         if not item_info.IsParent():
-            raise ValueError('Input EHentaiItemInfo must be a parent.')
+            raise WrongParentChildException(item_info.parent_child, 'Input EHentaiItemInfo must be a parent.')
         
-        page = Clamp(page, 1)
+        page = Clamp(page, 1) - 1
         url = UrlParser.BuildUrl(
             item_info.parsed_url.domain,
             item_info.parsed_url.path,
-            {'page':[page]},
+            {'p':[page]},
         )
         soup = self.__http.GetHtml(url)
         
@@ -184,7 +190,7 @@ class EHentaiAgent(BaseAgent):
             raise EHentaiInPeekHourException()
         
         if not item_info.IsChild():
-            raise ValueError('Cannot download non-child EHentaiItemInfo.')
+            raise WrongParentChildException(item_info.parent_child, 'Cannot download non-child EHentaiItemInfo.')
         
         output_path = Path(output_path)
         if not output_path.is_dir():
@@ -195,4 +201,16 @@ class EHentaiAgent(BaseAgent):
         filename = filename.getText().split(' :: ')[0]
         url = soup.select_one('img#img').get('src')
         
-        self.__http.DownloadUrl(url, output_path/filename, overwrite=replace)
+        # when you excess EH viewing limit
+        # EH will send back an image with warning text on it rather than the real image
+        # check for its md5
+        excess_limit_md5 = '88fe16ae482faddb4cc23df15722348c'
+        try:
+            self.__http.DownloadUrl(url, output_path/filename, overwrite=replace, md5=excess_limit_md5)
+        except FileMD5NotMatchingException:
+            # downloaded file md5 not matches excess_limit_md5, good image
+            pass
+        else:
+            # download file md5 matches excess_limit_md5, excess EH viewing limit
+            (output_path/filename).unlink() # rm downloaded img
+            raise EHentaiExcessViewingLimit(item_info.url)

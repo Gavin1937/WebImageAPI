@@ -2,6 +2,7 @@
 from .BaseAgent import BaseAgent
 from .Singleton import Singleton
 from ..Types import WeiboItemInfo, UserInfo, DOMAIN
+from ..Types.Exceptions import WrongParentChildException
 from ..Utils import (
     TypeChecker, TypeMatcher,
     Clamp, MergeDeDuplicate,
@@ -73,7 +74,7 @@ class WeiboAgent(BaseAgent):
         '''
         
         if not item_info.IsParent():
-            raise ValueError('Input WeiboItemInfo must be a parent.')
+            raise WrongParentChildException(item_info.parent_child, 'Input WeiboItemInfo must be a parent.')
         
         page = Clamp(page, 1)
         url = f'https://m.weibo.cn/api/container/getIndex?type=uid&value={item_info.weibo_id}&containerid=107603{item_info.weibo_id}&page={page}'
@@ -138,7 +139,7 @@ class WeiboAgent(BaseAgent):
         '''
         
         if not item_info.IsChild():
-            raise ValueError('Cannot download non-child WeiboItemInfo.')
+            raise WrongParentChildException(item_info.parent_child, 'Cannot download non-child WeiboItemInfo.')
         
         output_path = Path(output_path)
         if not output_path.is_dir():

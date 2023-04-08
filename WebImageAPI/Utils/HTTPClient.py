@@ -2,6 +2,7 @@
 from .Variables import PROJECT_USERAGENT
 from .Functions import GetMD5
 from .UrlParser import UrlParser
+from ..Types.Exceptions import FileMD5NotMatchingException
 import requests
 from time import sleep
 from random import uniform
@@ -97,7 +98,8 @@ class HTTPClient:
         self, url:str,
         path:Union[str,Path],
         overwrite:bool=False,
-        md5:str=None
+        md5:str=None,
+        autodelete:bool=False
     ) -> None:
         '''
         Download specified url
@@ -109,6 +111,8 @@ class HTTPClient:
                             if set to None (default), this function will ignore any md5 checking
                             if set to a string (32 digit hex), this function will compare downloaded file's md5 with it
                             if md5 not matching, raise Exception
+            autodelete   => bool, whether to automatically delete file when file md5 not matches given one
+                            only work when supplies md5, default False
         '''
         
         parsed = UrlParser(url)
@@ -145,7 +149,14 @@ class HTTPClient:
             with open(download_path, 'rb') as file:
                 file_md5 = GetMD5(file.read()).lower()
             if file_md5 != md5:
-                raise Exception('Downloaded file MD5 not matching.')
+                if autodelete:
+                    download_path.unlink()
+                raise FileMD5NotMatchingException(
+                    md5, file_md5,
+                    str(download_path.resolve()),
+                    'Downloaded file MD5 not matching.'
+                )
+    
     
     # POST
     

@@ -1,7 +1,8 @@
 
 from .BaseAgent import BaseAgent
 from .Singleton import Singleton
-from ..Types import PixivItemInfo, UserInfo, DOMAIN
+from ..Types import PixivItemInfo, UserInfo
+from ..Types.Exceptions import WrongParentChildException
 from ..Utils import (
     TypeChecker, TypeMatcher,
     Clamp, MergeDeDuplicate
@@ -123,7 +124,7 @@ class PixivAgent(BaseAgent):
                     }
                 }]
         else:
-            raise ValueError('Input PixivItemInfo is empty or invalid.')
+            raise WrongParentChildException(item_info.parent_child, 'Input PixivItemInfo is empty or invalid.')
         return item_info
     
     @TypeMatcher(['self', PixivItemInfo, int])
@@ -138,7 +139,7 @@ class PixivAgent(BaseAgent):
         '''
         
         if not item_info.IsParent():
-            raise ValueError('Input PixivItemInfo must be a parent.')
+            raise WrongParentChildException(item_info.parent_child, 'Input PixivItemInfo must be a parent.')
         
         page = Clamp(page, 1)
         offset = (page-1) * 30
@@ -204,7 +205,7 @@ class PixivAgent(BaseAgent):
         '''
         
         if not item_info.IsChild():
-            raise ValueError('Cannot download non-child PixivItemInfo.')
+            raise WrongParentChildException(item_info.parent_child, 'Cannot download non-child PixivItemInfo.')
         
         output_path = Path(output_path)
         if not output_path.is_dir():

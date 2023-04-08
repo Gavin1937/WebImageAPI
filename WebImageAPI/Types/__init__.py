@@ -7,9 +7,7 @@ from .WebItemInfo import WebItemInfo
 
 from .UserInfo import UserInfo
 
-from .Exceptions import (
-    EHentaiInPeekHourException
-)
+from . import Exceptions
 
 from .ItemInfoChildren import (
     PixivItemInfo, TwitterItemInfo,

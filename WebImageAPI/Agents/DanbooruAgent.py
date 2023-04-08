@@ -2,6 +2,7 @@
 from .BaseAgent import BaseAgent
 from .Singleton import Singleton
 from ..Types import DanbooruItemInfo, UserInfo, DOMAIN
+from ..Types.Exceptions import WrongParentChildException
 from ..Utils import (
     TypeChecker, TypeMatcher,
     Clamp, MergeDeDuplicate,
@@ -58,7 +59,7 @@ class DanbooruAgent(BaseAgent):
         '''
         
         if not item_info.IsParent():
-            raise ValueError('Input DanbooruItemInfo must be a parent.')
+            raise WrongParentChildException(item_info.parent_child, 'Input DanbooruItemInfo must be a parent.')
         
         page = Clamp(page, 1)
         url = self.__NormalURLToApi(item_info.url, {'page':[page]})
@@ -120,7 +121,7 @@ class DanbooruAgent(BaseAgent):
         '''
         
         if not item_info.IsChild():
-            raise ValueError('Cannot download non-child DanbooruItemInfo.')
+            raise WrongParentChildException(item_info.parent_child, 'Cannot download non-child DanbooruItemInfo.')
         
         output_path = Path(output_path)
         if not output_path.is_dir():

@@ -47,7 +47,8 @@ Table Of Content
 * [3. WebItemInfo](#3-webiteminfo)
 * [4. Agent](#4-agent)
 * [5. class WebImageAPI](#5-class-webimageapi)
-* [6. Quick Start](#6-quick-start)
+* [6. Exceptions:](#6-exceptions)
+* [7. Quick Start](#7-quick-start)
 
 </details>
 
@@ -317,7 +318,13 @@ I highly recommend you to stick with this class and let it to handle everything 
 
 [Details](./WebImageAPI.md)
 
-# 6. Quick Start
+# 6. Exceptions:
+
+Custom Exceptions uses in WebImageAPI
+
+[Details](./Exceptions.md)
+
+# 7. Quick Start
 
 Checkout [quick_start.py](../demo/quick_start.py)
 

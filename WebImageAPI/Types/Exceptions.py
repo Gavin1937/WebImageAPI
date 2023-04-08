@@ -1,5 +1,36 @@
 
+from .Types import PARENT_CHILD
 from datetime import datetime, timezone
+
+
+__all__ = [
+    'WrongParentChildException',
+    'FileMD5NotMatchingException',
+    'EHentaiInPeekHourException',
+    'EHentaiExcessViewingLimit',
+]
+
+class WrongParentChildException(Exception):
+    def __init__(self, parent_child:PARENT_CHILD, message:str=None) -> None:
+        self.parent_child:PARENT_CHILD = parent_child
+        if message is not None:
+            self.message:str = message
+        else:
+            self.message = f'Input WebItemInfo\'s parent_child state is wrong. ({self.parent_child.ToStr()})'
+        super().__init__(self.message)
+
+class FileMD5NotMatchingException(Exception):
+    def __init__(self, md5_wanted:str, md5_has:str, filepath:str, message:str=None) -> None:
+        self.md5_wanted:str = md5_wanted
+        self.md5_has:str = md5_has
+        self.filepath:str = filepath
+        if message is not None:
+            self.message:str = f'File MD5 Hash Not Matching.'
+        else:
+            self.message:str = message
+        super().__init__(self.message)
+
+# H-Hentai
 
 class EHentaiInPeekHourException(Exception):
     def __init__(self) -> None:
@@ -14,4 +45,9 @@ class EHentaiInPeekHourException(Exception):
         )
         super().__init__(self.message)
 
+class EHentaiExcessViewingLimit(Exception):
+    def __init__(self, url:str) -> None:
+        self.url:str = url
+        self.message:str = f'You excess E-Hentai Viewing Limit'
+        super().__init__(self.message)
 
