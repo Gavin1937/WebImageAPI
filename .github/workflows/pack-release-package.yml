@@ -29,7 +29,10 @@ jobs:
         python -m build
     
     - name: Release
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
+      uses: svenstaro/upload-release-action@v2
       with:
-        files: 'WebImageAPI-${{ env.RELEASE_VERSION }}-py3-none-any.whl'
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: 'dist/WebImageAPI-${{ env.RELEASE_VERSION }}-py3-none-any.whl'
+        asset_name: 'WebImageAPI-${{ env.RELEASE_VERSION }}-py3-none-any.whl'
+        tag: ${{ env.RELEASE_VERSION }}
+        overwrite: true
