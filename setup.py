@@ -14,7 +14,7 @@ with open('./WebImageAPI/__version__.py', 'r', encoding='utf-8') as file:
 
 # load requirements.txt
 requirements = []
-with open('./requirements.txt', 'r', encoding='utf-8') as file:
+with open('requirements.txt', 'r', encoding='utf-8') as file:
     requirements = [line.strip() for line in file.readlines() if len(line.strip()) > 0]
 
 
