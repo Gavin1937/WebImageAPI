@@ -16,7 +16,7 @@ class WebImageAPI:
         self.__yandere_agent:YandereAgent      = None
         self.__konachan_agent:KonachanAgent  = None
         self.__weibo_agent:WeiboAgent        = None
-        # self.__ehentai_agent:EHentaiAgent    = None
+        self.__ehentai_agent:EHentaiAgent    = None
     
     
     # interfaces
@@ -60,10 +60,10 @@ class WebImageAPI:
             self.__InitAgent(DOMAIN.WEIBO)
         return self.__weibo_agent
     
-    # def GetEHentaiAgent(self) -> EHentaiAgent:
-    #     if self.__ehentai_agent is None:
-    #         self.__InitAgent(DOMAIN.EHENTAI)
-    #     return self.__ehentai_agent
+    def GetEHentaiAgent(self) -> EHentaiAgent:
+        if self.__ehentai_agent is None:
+            self.__InitAgent(DOMAIN.EHENTAI)
+        return self.__ehentai_agent
     
     
     # agent common features
@@ -88,8 +88,8 @@ class WebImageAPI:
             return self.GetKonachanAgent().FetchItemInfoDetail(item_info)
         elif isinstance(item_info, WeiboItemInfo):
             return self.GetWeiboAgent().FetchItemInfoDetail(item_info)
-        # elif isinstance(item_info, EHentaiItemInfo):
-        #     return self.GetEHentaiAgent().FetchItemInfoDetail(item_info)
+        elif isinstance(item_info, EHentaiItemInfo):
+            return self.GetEHentaiAgent().FetchItemInfoDetail(item_info)
         else:
             raise ValueError('Empty or Invalid WebItemInfo.')
     
@@ -115,8 +115,8 @@ class WebImageAPI:
             return self.GetKonachanAgent().FetchParentChildren(item_info, page)
         elif isinstance(item_info, WeiboItemInfo):
             return self.GetWeiboAgent().FetchParentChildren(item_info, page)
-        # elif isinstance(item_info, EHentaiItemInfo):
-        #     return self.GetEHentaiAgent().FetchParentChildren(item_info, page)
+        elif isinstance(item_info, EHentaiItemInfo):
+            return self.GetEHentaiAgent().FetchParentChildren(item_info, page)
         else:
             raise ValueError('Empty or Invalid WebItemInfo.')
     
@@ -145,8 +145,8 @@ class WebImageAPI:
             return self.GetKonachanAgent().FetchUserInfo(item_info, old_user_info)
         elif isinstance(item_info, WeiboItemInfo):
             return self.GetWeiboAgent().FetchUserInfo(item_info, old_user_info)
-        # elif isinstance(item_info, EHentaiItemInfo):
-        #     return self.GetEHentaiAgent().FetchUserInfo(item_info, old_user_info)
+        elif isinstance(item_info, EHentaiItemInfo):
+            return self.GetEHentaiAgent().FetchUserInfo(item_info, old_user_info)
         else:
             raise ValueError('Empty or Invalid WebItemInfo.')
     
@@ -171,8 +171,8 @@ class WebImageAPI:
             return self.GetKonachanAgent().DownloadItem(item_info, output_path, replace)
         elif isinstance(item_info, WeiboItemInfo):
             return self.GetWeiboAgent().DownloadItem(item_info, output_path, replace)
-        # elif isinstance(item_info, EHentaiItemInfo):
-        #     return self.GetEHentaiAgent().DownloadItem(item_info, output_path, replace)
+        elif isinstance(item_info, EHentaiItemInfo):
+            return self.GetEHentaiAgent().DownloadItem(item_info, output_path, replace)
         else:
             raise ValueError('Empty or Invalid WebItemInfo.')
     
@@ -193,8 +193,8 @@ class WebImageAPI:
             return KonachanItemInfo(url)
         elif domain == DOMAIN.WEIBO:
             return WeiboItemInfo(url)
-        # elif domain == DOMAIN.EHENTAI:
-        #     return EHentaiItemInfo(url)
+        elif domain == DOMAIN.EHENTAI:
+            return EHentaiItemInfo(url)
         else:
             raise ValueError('Empty, Invalid, or Unsupported url domain.')
     
@@ -212,8 +212,8 @@ class WebImageAPI:
             return KonachanItemInfo.FromChildDetails(details)
         elif domain == DOMAIN.WEIBO:
             return WeiboItemInfo.FromChildDetails(details)
-        # elif domain == DOMAIN.EHENTAI:
-        #     return EHentaiItemInfo.FromChildDetails(details)
+        elif domain == DOMAIN.EHENTAI:
+            return EHentaiItemInfo.FromChildDetails(details)
         else:
             raise ValueError('Empty, Invalid, or Unsupported domain.')
     
@@ -232,6 +232,6 @@ class WebImageAPI:
             self.__konachan_agent = KonachanAgent.instance(**init_args)
         elif agent_domain == DOMAIN.WEIBO:
             self.__weibo_agent = WeiboAgent.instance(**init_args)
-        # elif agent_domain == DOMAIN.EHENTAI:
-        #     self.__ehentai_agent = EHentaiAgent.instance(**init_args)
+        elif agent_domain == DOMAIN.EHENTAI:
+            self.__ehentai_agent = EHentaiAgent.instance(**init_args)
     

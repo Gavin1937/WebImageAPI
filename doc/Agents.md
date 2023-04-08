@@ -41,6 +41,13 @@ Table Of Content
     * [**\_\_init\_\_(WeiboAgent, proxies:str=None):**](#__init__weiboagent-proxiesstrnone)
     * [**SetProxies(WeiboAgent, proxies:str=None):**](#setproxiesweiboagent-proxiesstrnone)
 * [10. class EHentaiAgent](#10-class-ehentaiagent)
+  * [E-Hentai Peek Hour](#e-hentai-peek-hour)
+  * [Additional Methods](#additional-methods-6)
+    * [**\_\_init\_\_(EHentaiAgent, proxies:str=None):**](#__init__ehentaiagent-proxiesstrnone)
+    * [**SetProxies(EHentaiAgent, proxies:str=None):**](#setproxiesehentaiagent-proxiesstrnone)
+    * [**GetIgnorePeekHour(EHentaiAgent) -\> bool:**](#getignorepeekhourehentaiagent---bool)
+    * [**SetIgnorePeekHour(EHentaiAgent, whether\_ignore:bool):**](#setignorepeekhourehentaiagent-whether_ignorebool)
+    * [**InPeekHour(self) -\> bool:**](#inpeekhourself---bool)
 
 </details>
 
@@ -276,5 +283,72 @@ This Agent only accept [WeiboItemInfo](./WebItemInfo.md#7-class-weiboiteminfo)
 
 # 10. class EHentaiAgent
 
-Not Implement Yet
+Child class of [BaseAgent](#2-class-baseagent) for handling requests to [e-hentai](https://e-hentai.org/)
 
+Sharing all the common members and methods from base class.
+
+This Agent only accept [EHentaiItemInfo](./WebItemInfo.md#8-class-ehentaiiteminfo)
+
+## E-Hentai Peek Hour
+
+EH maintainers use a set of rules to control the website's load
+
+* [Checkout this changelog](https://forums.e-hentai.org/index.php?showtopic=244935)
+* Learn more from [E-Hentai Downloader's documentation](https://github.com/ccloli/E-Hentai-Downloader/wiki/E%E2%88%92Hentai-Image-Viewing-Limits)
+
+**Peek Hour Table (In UTC Time)**
+
+| Date    | From Hour | To Hour |
+|---------|-----------|---------|
+| Mon (0) | 14        | 20      |
+| Tue (1) | 14        | 20      |
+| Wed (2) | 14        | 20      |
+| Thu (3) | 14        | 20      |
+| Fri (4) | 14        | 20      |
+| Sat (5) | 14        | 20      |
+| Sun (6) | 5         | 20      |
+
+**Peek Hour Rules**
+
+* if gallery is published within 90 days
+  * Peak Hour rules won't apply to it
+* otherwise
+  * if current time is within Peak Hour Range
+    * then "Download source image" EH feature will consume GP
+* If the image viewing limit is exhausted, "Download source image" EH feature will consume GP
+
+**About This API**
+
+* Calling EHentaiAgent.DownloadItem during peek hour will raise EHentaiInPeekHourException
+* you can disable this exception by setting EHentaiAgent.__ignore_peek_hour to False
+* use EHentaiAgent.InPeekHour() to check whether you are in peek hour
+* use EHentaiAgent.GetIgnorePeekHour() or EHentaiAgent.SetIgnorePeekHour() to get/set EHentaiAgent.__ignore_peek_hour flag
+
+## Additional Methods
+
+### **\_\_init\_\_(EHentaiAgent, proxies:str=None):**
+
+* Constructor for EHentaiAgent class
+* You can pass in optional parameters via [EHentaiAgent.instance() function](#instanceself-args)
+* Parameters:
+  * **proxies**:              string, a proxy server url string, default None, disabled
+
+### **SetProxies(EHentaiAgent, proxies:str=None):**
+
+* Set proxy for DanbooruAgent
+* Parameters
+  * **proxies**:              string, a proxy server url string, default None, disabled
+
+### **GetIgnorePeekHour(EHentaiAgent) -> bool:**
+
+* Get ignore peek hour flag
+
+### **SetIgnorePeekHour(EHentaiAgent, whether_ignore:bool):**
+
+* Set ignore peek hour flag
+* Parameters
+  * **whether_ignore**:              bool, whether to ignore peek hour exception
+
+### **InPeekHour(self) -> bool:**
+
+* Whether E-Hentai is in Peek Hour now

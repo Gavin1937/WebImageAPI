@@ -149,3 +149,42 @@ class WeiboItemInfo(WebItemInfo):
             )
         output.details = details
         return output
+
+
+class EHentaiItemInfo(WebItemInfo):
+    def __init__(self, url) -> None:
+        self.gallery_id:str = None
+        self.other:dict = None
+        super().__init__(url)
+    
+    def _PostInitAnalyzing(self) -> None:
+        if self.domain != DOMAIN.EHENTAI:
+            raise ValueError('Invalid url, you must supply a m.weibo.cn url.')
+        
+        pathlist = self.parsed_url.pathlist
+        if 'g' == pathlist[0]:
+            self.parent_child = PARENT_CHILD.PARENT
+            self.gallery_id = pathlist[1]
+            self.other = {'gallery_token':pathlist[2]}
+        elif 's' == pathlist[0]:
+            self.parent_child = PARENT_CHILD.CHILD
+            tmp = pathlist[2].split('-')
+            self.gallery_id = tmp[0]
+            self.other = {'page_token':pathlist[1], 'pagenumber':tmp[1]}
+    
+    def FromChildDetails(details) -> EHentaiItemInfo:
+        if 'gmetadata' in details:
+            gallery_id = details['gmetadata']['gid']
+            gallery_token = details['gmetadata']['token']
+            output = EHentaiItemInfo(
+                f'https://e-hentai.org/g/{gallery_id}/{gallery_token}/'
+            )
+        elif 'tokenlist' in details and 'page_token' in details:
+            gallery_id = details['tokenlist'][0]['gid']
+            output = EHentaiItemInfo(
+                f'https://e-hentai.org/s/{details["page_token"]}/{gallery_id}-1'
+            )
+        else:
+            return None
+        output.details = details
+        return output

@@ -173,5 +173,7 @@ Sharing all the common members and methods from base class.
 
 # 8. class EHentaiItemInfo
 
-Not Implement Yet
+Child class of [WebItemInfo](#1-class-webiteminfo) to store items in [e-hentai](https://e-hentai.org/)
+
+Sharing all the common members and methods from base class.
 

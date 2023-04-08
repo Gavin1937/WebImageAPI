@@ -79,6 +79,8 @@ class HTTPClient:
     
     # request
     
+    # GET
+    
     def GetBytes(self, url:str, **kwargs) -> bytes:
         return self.__Get(url, **kwargs).content
     
@@ -145,6 +147,17 @@ class HTTPClient:
             if file_md5 != md5:
                 raise Exception('Downloaded file MD5 not matching.')
     
+    # POST
+    
+    def PostBytes(self, url:str, **kwargs) -> bytes:
+        return self.__Post(url, **kwargs).content
+    
+    def PostStr(self, url:str, encoding:str='utf-8', **kwargs) -> str:
+        return self.__Post(url, **kwargs).content.decode(encoding)
+    
+    def PostJson(self, url:str, **kwargs) -> dict:
+        return self.__Post(url, **kwargs).json()
+    
     
     # private helper functions
     def __RandDelay(self):
@@ -158,6 +171,14 @@ class HTTPClient:
         loc_kwargs = {} if kwargs is None else kwargs
         self.__RandDelay()
         return requests.get(url=url, headers=loc_headers, cookies=loc_cookies, proxies=loc_proxies, **loc_kwargs)
+    
+    def __Post(self, url, headers=None, cookies=None, proxies=None, **kwargs) -> requests.Response:
+        loc_headers = self.__headers if headers is None else headers
+        loc_cookies = self.__cookies if cookies is None else cookies
+        loc_proxies = self.__proxies if proxies is None else proxies
+        loc_kwargs = {} if kwargs is None else kwargs
+        self.__RandDelay()
+        return requests.post(url=url, headers=loc_headers, cookies=loc_cookies, proxies=loc_proxies, **loc_kwargs)
 
 
 BROWSER_HEADERS = {

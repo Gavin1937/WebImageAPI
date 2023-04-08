@@ -1,12 +1,11 @@
 
 from .BaseAgent import BaseAgent
 from .Singleton import Singleton
-from ..Types import WeiboItemInfo, UserInfo, DOMAIN, PARENT_CHILD
+from ..Types import WeiboItemInfo, UserInfo, DOMAIN
 from ..Utils import (
     TypeChecker, TypeMatcher,
     Clamp, MergeDeDuplicate,
-    UrlParser, HTTPClient,
-    BROWSER_HEADERS
+    HTTPClient, BROWSER_HEADERS
 )
 from typing import Union
 from pathlib import Path
@@ -16,6 +15,17 @@ from pathlib import Path
 class WeiboAgent(BaseAgent):
     
     def __init__(self, proxies:str=None):
+        # m.weibo.cn api research
+        # 
+        # older api with examples
+        # https://gist.github.com/momo0v0/805e4a005225e3808626656c7ff284e5
+        # newer api
+        # https://cloud.tencent.com/developer/news/188614
+        # 
+        # weibo api url:
+        # https://m.weibo.cn/api/...
+        
+        # header 'Referer' is required with normal browser user-agent to access the weibo api
         self.__headers = {
             'Referer': 'https://m.weibo.cn/',
             **BROWSER_HEADERS
