@@ -28,6 +28,29 @@ class WebImageAPI:
     def SetTwitterTokens(self, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str):
         self.__InitAgent(DOMAIN.TWITTER, consumer_key=consumer_key, consumer_secret=consumer_secret, access_token=access_token, access_token_secret=access_token_secret)
     
+    def GetEHentaiIgnorePeekHour(self) -> bool:
+        if self.__ehentai_agent is None:
+            self.__InitAgent(DOMAIN.EHENTAI)
+        return self.__ehentai_agent.GetIgnorePeekHour()
+    
+    def SetEHentaiIgnorePeekHour(self, whether_ignore:bool) -> None:
+        if self.__ehentai_agent is None:
+            self.__InitAgent(DOMAIN.EHENTAI, ignore_peek_hour=whether_ignore)
+        else:
+            self.__ehentai_agent.SetIgnorePeekHour(whether_ignore)
+    
+    def GetEHentaiNextPeekHour(self) -> tuple:
+        '''
+        Get next peek hour information from EHentaiAgent
+        Returns:
+            tuple( whether in peek hour : bool, peek hour : datetime )
+            If currently in peek hour, tuple( True, datetime obj of the end of current peek hour )
+            If currently not in peek hour, tuple( False, datetime obj of the start of next peek hour )
+        '''
+        if self.__ehentai_agent is None:
+            self.__InitAgent(DOMAIN.EHENTAI)
+        return self.__ehentai_agent.GetNextPeekHour()
+    
     
     # agent getters
     def GetPixivAgent(self) -> PixivAgent:

@@ -9,10 +9,12 @@ Table Of Content
   * [Members](#members)
 * [2. class FileMD5NotMatchingException](#2-class-filemd5notmatchingexception)
   * [Members](#members-1)
-* [3. class EHentaiInPeekHourException](#3-class-ehentaiinpeekhourexception)
+* [3. class NotSupportURLException](#3-class-notsupporturlexception)
   * [Members](#members-2)
-* [4. class EHentaiExcessViewingLimit](#4-class-ehentaiexcessviewinglimit)
+* [4. class EHentaiInPeekHourException](#4-class-ehentaiinpeekhourexception)
   * [Members](#members-3)
+* [5. class EHentaiExcessViewingLimit](#5-class-ehentaiexcessviewinglimit)
+  * [Members](#members-4)
 
 </details>
 
@@ -39,7 +41,15 @@ Table Of Content
 * **md5_has**: string real md5 get from downloaded file
 * **filepath**: string filepath of downloaded file
 
-# 3. class EHentaiInPeekHourException
+# 3. class NotSupportURLException
+
+* Supplied url not supported
+
+## Members
+
+* **message**: string error message
+
+# 4. class EHentaiInPeekHourException
 
 * E-Hentai is in peek hour now
 * you can disable this exception by enabling ignore_peek_hour in [EHentaiAgent](./Agents.md#10-class-ehentaiagent)
@@ -51,7 +61,7 @@ Table Of Content
 * **time_local**: string of current time in iso format in your local timezone
 * **time_utc**: string of current time in iso format in UTC timezone
 
-# 4. class EHentaiExcessViewingLimit
+# 5. class EHentaiExcessViewingLimit
 
 * You excess E-Hentai viewing limit
 

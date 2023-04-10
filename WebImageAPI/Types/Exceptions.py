@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 __all__ = [
     'WrongParentChildException',
     'FileMD5NotMatchingException',
+    'NotSupportURLException',
     'EHentaiInPeekHourException',
     'EHentaiExcessViewingLimit',
 ]
@@ -29,6 +30,14 @@ class FileMD5NotMatchingException(Exception):
         else:
             self.message:str = message
         super().__init__(self.message)
+
+class NotSupportURLException(Exception):
+    def __init__(self, message:str=None) -> None:
+        self.message:str = 'Supplied url not supported.'
+        if message is not None:
+            self.message = message
+        super().__init__(self.message)
+
 
 # H-Hentai
 

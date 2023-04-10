@@ -16,7 +16,7 @@ from ..Utils import (
 )
 from typing import Union
 from pathlib import Path
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 
 @Singleton
@@ -57,6 +57,45 @@ class EHentaiAgent(BaseAgent):
         start,end = self.__peek_hour_table[utc_now.weekday()]
         hour = utc_now.hour+1
         return ( hour >= start and hour < end )
+    
+    def GetNextPeekHour(self) -> tuple:
+        '''
+        Get next peek hour information
+        Returns:
+            tuple( whether in peek hour : bool, peek hour : datetime )
+            If currently in peek hour, tuple( True, datetime obj of the end of current peek hour )
+            If currently not in peek hour, tuple( False, datetime obj of the start of next peek hour )
+        '''
+        
+        utc_now = datetime.now(timezone.utc)
+        utc_weekday = utc_now.weekday()
+        start,end = self.__peek_hour_table[utc_weekday]
+        next_start,_ = self.__peek_hour_table[(utc_weekday+1)%7]
+        in_peek_hour = self.InPeekHour()
+        next_time_point = None
+        if in_peek_hour:
+            next_time_point = datetime(
+                year=utc_now.year, month=utc_now.month,
+                day=utc_now.day, hour=end,
+                tzinfo=timezone.utc,
+            )
+        else: # not in_peek_hour
+            # before today's peek hour
+            if (utc_now.hour+1) < start:
+                next_time_point = datetime(
+                    year=utc_now.year, month=utc_now.month,
+                    day=utc_now.day, hour=start,
+                    tzinfo=timezone.utc,
+                )
+            # after today's peek hour
+            elif (utc_now.hour+1) >= end:
+                next_time_point = datetime(
+                    year=utc_now.year, month=utc_now.month,
+                    day=utc_now.day, hour=next_start,
+                    tzinfo=timezone.utc,
+                ) + timedelta(days=1)
+        
+        return (in_peek_hour, datetime.fromtimestamp(next_time_point.timestamp()))
     
     @TypeChecker(EHentaiItemInfo, (1,))
     def FetchItemInfoDetail(self, item_info:EHentaiItemInfo) -> EHentaiItemInfo:

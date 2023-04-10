@@ -2,6 +2,7 @@
 from __future__ import annotations
 from .WebItemInfo import WebItemInfo
 from .Types import DOMAIN, PARENT_CHILD
+from .Exceptions import NotSupportURLException
 
 
 class PixivItemInfo(WebItemInfo):
@@ -19,7 +20,7 @@ class PixivItemInfo(WebItemInfo):
     
     def _PostInitAnalyzing(self) -> None:
         if self.domain != DOMAIN.PIXIV:
-            raise ValueError('Invalid url, you must supply a pixiv url.')
+            raise NotSupportURLException('Invalid url, you must supply a pixiv url.')
         
         pathlist = self.parsed_url.pathlist
         if 'users' in pathlist:
@@ -62,7 +63,7 @@ class TwitterItemInfo(WebItemInfo):
     
     def _PostInitAnalyzing(self) -> None:
         if self.domain != DOMAIN.TWITTER:
-            raise ValueError('Invalid url, you must supply a twitter url.')
+            raise NotSupportURLException('Invalid url, you must supply a twitter url.')
         
         pathlist = self.parsed_url.pathlist
         if 'status' in pathlist:
@@ -84,7 +85,7 @@ class TwitterItemInfo(WebItemInfo):
 class DanbooruItemInfo(WebItemInfo):
     def _PostInitAnalyzing(self) -> None:
         if self.domain != DOMAIN.DANBOORU:
-            raise ValueError('Invalid url, you must supply a danbooru url.')
+            raise NotSupportURLException('Invalid url, you must supply a danbooru url.')
         
         pathlist = self.parsed_url.pathlist
         if 'posts' == pathlist[-1]:
@@ -103,7 +104,7 @@ class DanbooruItemInfo(WebItemInfo):
 class YandereItemInfo(WebItemInfo):
     def _PostInitAnalyzing(self) -> None:
         if self.domain != DOMAIN.YANDERE:
-            raise ValueError('Invalid url, you must supply a yande.re url.')
+            raise NotSupportURLException('Invalid url, you must supply a yande.re url.')
         
         pathlist = self.parsed_url.pathlist
         if 'post' == pathlist[0] and len(pathlist) == 1:
@@ -122,7 +123,7 @@ class YandereItemInfo(WebItemInfo):
 class KonachanItemInfo(WebItemInfo):
     def _PostInitAnalyzing(self) -> None:
         if self.domain != DOMAIN.KONACHAN:
-            raise ValueError('Invalid url, you must supply a konachan.com url.')
+            raise NotSupportURLException('Invalid url, you must supply a konachan.com url.')
         
         pathlist = self.parsed_url.pathlist
         if 'post' == pathlist[0] and len(pathlist) == 1:
@@ -151,7 +152,7 @@ class WeiboItemInfo(WebItemInfo):
     
     def _PostInitAnalyzing(self) -> None:
         if self.domain != DOMAIN.WEIBO:
-            raise ValueError('Invalid url, you must supply a m.weibo.cn url.')
+            raise NotSupportURLException('Invalid url, you must supply a m.weibo.cn url.')
         
         pathlist = self.parsed_url.pathlist
         if 'u' == pathlist[0]:
@@ -181,7 +182,7 @@ class EHentaiItemInfo(WebItemInfo):
     
     def _PostInitAnalyzing(self) -> None:
         if self.domain != DOMAIN.EHENTAI:
-            raise ValueError('Invalid url, you must supply a m.weibo.cn url.')
+            raise NotSupportURLException('Invalid url, you must supply a m.weibo.cn url.')
         
         pathlist = self.parsed_url.pathlist
         if 'g' == pathlist[0]:

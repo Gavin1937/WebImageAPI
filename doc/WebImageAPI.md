@@ -10,22 +10,25 @@ Table Of Content
   * [Methods](#methods)
       * [\_\_init\_\_(WebImageAPI):](#__init__webimageapi)
     * [**Agent Setup**](#agent-setup)
-      * [SetPixivTokens(WebImageAPI, refresh\_token:str):](#setpixivtokenswebimageapi-refresh_tokenstr)
-      * [SetTwitterTokens(WebImageAPI, consumer\_key:str, consumer\_secret:str, access\_token:str, access\_token\_secret:str):](#settwittertokenswebimageapi-consumer_keystr-consumer_secretstr-access_tokenstr-access_token_secretstr)
+      * [**SetPixivTokens(WebImageAPI, refresh\_token:str):**](#setpixivtokenswebimageapi-refresh_tokenstr)
+      * [**SetTwitterTokens(WebImageAPI, consumer\_key:str, consumer\_secret:str, access\_token:str, access\_token\_secret:str):**](#settwittertokenswebimageapi-consumer_keystr-consumer_secretstr-access_tokenstr-access_token_secretstr)
+      * [**GetEHentaiIgnorePeekHour(self) -\> bool:**](#getehentaiignorepeekhourself---bool)
+      * [**SetEHentaiIgnorePeekHour(self, whether\_ignore:bool) -\> None:**](#setehentaiignorepeekhourself-whether_ignorebool---none)
+      * [**GetEHentaiNextPeekHour(self) -\> tuple:**](#getehentainextpeekhourself---tuple)
     * [**Agent Getters**](#agent-getters)
-      * [GetPixivAgent(WebImageAPI) -\> PixivAgent:](#getpixivagentwebimageapi---pixivagent)
-      * [GetTwitterAgent(WebImageAPI) -\> TwitterAgent:](#gettwitteragentwebimageapi---twitteragent)
-      * [GetDanbooruAgent(WebImageAPI) -\> DanbooruAgent:](#getdanbooruagentwebimageapi---danbooruagent)
-      * [GetYandereAgent(WebImageAPI) -\> YandereAgent:](#getyandereagentwebimageapi---yandereagent)
-      * [GetKonachanAgent(WebImageAPI) -\> KonachanAgent:](#getkonachanagentwebimageapi---konachanagent)
+      * [**GetPixivAgent(WebImageAPI) -\> PixivAgent:**](#getpixivagentwebimageapi---pixivagent)
+      * [**GetTwitterAgent(WebImageAPI) -\> TwitterAgent:**](#gettwitteragentwebimageapi---twitteragent)
+      * [**GetDanbooruAgent(WebImageAPI) -\> DanbooruAgent:**](#getdanbooruagentwebimageapi---danbooruagent)
+      * [**GetYandereAgent(WebImageAPI) -\> YandereAgent:**](#getyandereagentwebimageapi---yandereagent)
+      * [**GetKonachanAgent(WebImageAPI) -\> KonachanAgent:**](#getkonachanagentwebimageapi---konachanagent)
     * [**Agent Common Features**](#agent-common-features)
-      * [FetchItemInfoDetail(WebImageAPI, item\_info:WebItemInfo) -\> WebItemInfo:](#fetchiteminfodetailwebimageapi-item_infowebiteminfo---webiteminfo)
-      * [FetchParentChildren(WebImageAPI, item\_info:WebItemInfo, page:int=1) -\> list:](#fetchparentchildrenwebimageapi-item_infowebiteminfo-pageint1---list)
-      * [FetchUserInfo(WebImageAPI, item\_info:WebItemInfo, old\_user\_info:UserInfo=None) -\> UserInfo:](#fetchuserinfowebimageapi-item_infowebiteminfo-old_user_infouserinfonone---userinfo)
-      * [DownloadItem(WebImageAPI, item\_info:WebItemInfo, output\_path:Union\[str,Path\], replace:bool=False):](#downloaditemwebimageapi-item_infowebiteminfo-output_pathunionstrpath-replaceboolfalse)
+      * [**FetchItemInfoDetail(WebImageAPI, item\_info:WebItemInfo) -\> WebItemInfo:**](#fetchiteminfodetailwebimageapi-item_infowebiteminfo---webiteminfo)
+      * [**FetchParentChildren(WebImageAPI, item\_info:WebItemInfo, page:int=1) -\> list:**](#fetchparentchildrenwebimageapi-item_infowebiteminfo-pageint1---list)
+      * [**FetchUserInfo(WebImageAPI, item\_info:WebItemInfo, old\_user\_info:UserInfo=None) -\> UserInfo:**](#fetchuserinfowebimageapi-item_infowebiteminfo-old_user_infouserinfonone---userinfo)
+      * [**DownloadItem(WebImageAPI, item\_info:WebItemInfo, output\_path:Union\[str,Path\], replace:bool=False):**](#downloaditemwebimageapi-item_infowebiteminfo-output_pathunionstrpath-replaceboolfalse)
     * [**WebItemInfo Generation**](#webiteminfo-generation)
-      * [UrlToWebItemInfo(WebImageAPI, url:str) -\> WebItemInfo:](#urltowebiteminfowebimageapi-urlstr---webiteminfo)
-      * [FromChildDetails(self, domain:DOMAIN, details) -\> WebItemInfo:](#fromchilddetailsself-domaindomain-details---webiteminfo)
+      * [**UrlToWebItemInfo(WebImageAPI, url:str) -\> WebItemInfo:**](#urltowebiteminfowebimageapi-urlstr---webiteminfo)
+      * [**FromChildDetails(self, domain:DOMAIN, details) -\> WebItemInfo:**](#fromchilddetailsself-domaindomain-details---webiteminfo)
 
 </details>
 
@@ -47,14 +50,14 @@ I highly recommend you to stick with this class and let it to handle everything 
 
 ### **Agent Setup**
 
-#### SetPixivTokens(WebImageAPI, refresh_token:str):
+#### **SetPixivTokens(WebImageAPI, refresh_token:str):**
 
 * Setup PixivAgent with supplied parameters
 * Parameters:
   * **refresh_token**:  string, pixiv refresh_token
 * You need to call this function before using any of the `PixivAgent` features
 
-#### SetTwitterTokens(WebImageAPI, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str):
+#### **SetTwitterTokens(WebImageAPI, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str):**
 
 * Setup TwitterAgent with supplied parameters
 * Parameters:
@@ -63,31 +66,49 @@ I highly recommend you to stick with this class and let it to handle everything 
   * **access_token**:         string, twitter access token
   * **access_token_secret**:  string, twitter access token secret
 
+#### **GetEHentaiIgnorePeekHour(self) -> bool:**
+
+* Get ignore_peek_hour flag in EHentaiAgent
+
+#### **SetEHentaiIgnorePeekHour(self, whether_ignore:bool) -> None:**
+
+* Set ignore_peek_hour flag in EHentaiAgent
+* Parameters:
+  * **whether_ignore:** boolean flag
+
+#### **GetEHentaiNextPeekHour(self) -> tuple:**
+
+* Get next peek hour information from EHentaiAgent
+* Returns:
+  * tuple( whether in peek hour : bool, peek hour : datetime )
+  * If currently in peek hour, tuple( True, datetime obj of the end of current peek hour )
+  * If currently not in peek hour, tuple( False, datetime obj of the start of next peek hour )
+
 ### **Agent Getters**
 
-#### GetPixivAgent(WebImageAPI) -> PixivAgent:
+#### **GetPixivAgent(WebImageAPI) -> PixivAgent:**
 
 * Get existing, initialized `PixivAgent`
 
-#### GetTwitterAgent(WebImageAPI) -> TwitterAgent:
+#### **GetTwitterAgent(WebImageAPI) -> TwitterAgent:**
 
 * Get existing, initialized `TwitterAgent`
 
-#### GetDanbooruAgent(WebImageAPI) -> DanbooruAgent:
+#### **GetDanbooruAgent(WebImageAPI) -> DanbooruAgent:**
 
 * Get existing, initialized `DanbooruAgent`
 
-#### GetYandereAgent(WebImageAPI) -> YandereAgent:
+#### **GetYandereAgent(WebImageAPI) -> YandereAgent:**
 
 * Get existing, initialized `YandereAgent`
 
-#### GetKonachanAgent(WebImageAPI) -> KonachanAgent:
+#### **GetKonachanAgent(WebImageAPI) -> KonachanAgent:**
 
 * Get existing, initialized `KonachanAgent`
 
 ### **Agent Common Features**
 
-#### FetchItemInfoDetail(WebImageAPI, item_info:WebItemInfo) -> WebItemInfo:
+#### **FetchItemInfoDetail(WebImageAPI, item_info:WebItemInfo) -> WebItemInfo:**
 
 * An abstraction function for all Agents, you can pass in any child `WebItemInfo` into this function and let it to handle agents for you.
 * Fetch & Fill-In `detail` member for supplied WebItemInfo.
@@ -96,7 +117,7 @@ I highly recommend you to stick with this class and let it to handle everything 
 * Returns:
   * updated WebItemInfo
 
-#### FetchParentChildren(WebImageAPI, item_info:WebItemInfo, page:int=1) -> list:
+#### **FetchParentChildren(WebImageAPI, item_info:WebItemInfo, page:int=1) -> list:**
 
 * An abstraction function for all Agents, you can pass in any child `WebItemInfo` into this function and let it to handle agents for you.
 * Fetch a Parent WebItemInfo's Children
@@ -106,7 +127,7 @@ I highly recommend you to stick with this class and let it to handle everything 
 * Returns:
   * list of WebItemInfo fetched, also edit original `item_info`
 
-#### FetchUserInfo(WebImageAPI, item_info:WebItemInfo, old_user_info:UserInfo=None) -> UserInfo:
+#### **FetchUserInfo(WebImageAPI, item_info:WebItemInfo, old_user_info:UserInfo=None) -> UserInfo:**
 
 * An abstraction function for all Agents, you can pass in any child `WebItemInfo` into this function and let it to handle agents for you.
 * Fetch a WebItemInfo's UserInfo
@@ -118,7 +139,7 @@ I highly recommend you to stick with this class and let it to handle everything 
 * Returns:
   * [UserInfo object](../index.md#class-userinfo)
 
-#### DownloadItem(WebImageAPI, item_info:WebItemInfo, output_path:Union[str,Path], replace:bool=False):
+#### **DownloadItem(WebImageAPI, item_info:WebItemInfo, output_path:Union[str,Path], replace:bool=False):**
 
 * An abstraction function for all Agents, you can pass in any child `WebItemInfo` into this function and let it to handle agents for you.
 * Download supplied WebItemInfo
@@ -129,7 +150,7 @@ I highly recommend you to stick with this class and let it to handle everything 
 
 ### **WebItemInfo Generation**
 
-#### UrlToWebItemInfo(WebImageAPI, url:str) -> WebItemInfo:
+#### **UrlToWebItemInfo(WebImageAPI, url:str) -> WebItemInfo:**
 
 * An abstraction function that converts any string url into their dedicated `WebItemInfo` child class and return to you
 * You can use this function handle your urls and not worry about choose which `WebItemInfo` child class to use.
@@ -139,7 +160,7 @@ I highly recommend you to stick with this class and let it to handle everything 
   * If url is supported, url's dedicated `WebItemInfo` child object.
   * Else, raise ValueError
 
-#### FromChildDetails(self, domain:DOMAIN, details) -> WebItemInfo:
+#### **FromChildDetails(self, domain:DOMAIN, details) -> WebItemInfo:**
 
 * An abstraction function that converts any child details dictionary into a child `WebItemInfo` with specified DOMAIN
 * Parameters:

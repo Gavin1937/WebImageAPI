@@ -33,15 +33,16 @@ class HTTPClient:
                                 before every request from delay_value[0] to delay_value[1].
                                 this delay will block the main thread
         '''
-        self.__headers = { 'User-Agent': PROJECT_USERAGENT } if default_headers is None else default_headers
-        self.__cookies = {} if default_cookies is None else default_cookies
-        self.__proxies = {}
+        self.__headers:dict = { 'User-Agent': PROJECT_USERAGENT } if default_headers is None else default_headers
+        self.__cookies:dict = {} if default_cookies is None else default_cookies
+        self.__proxies:dict = {}
         if default_proxies is not None:
             proxy_type = 'https'
             if not default_proxies.startswith(proxy_type):
                 proxy_type = 'http'
             self.__proxies = { proxy_type: default_proxies }
-        self.__delay_val = delay_value
+        self.status_code:int = -1
+        self.__delay_val:tuple = delay_value
     
     
     # interfaces
@@ -181,7 +182,9 @@ class HTTPClient:
         loc_proxies = self.__proxies if proxies is None else proxies
         loc_kwargs = {} if kwargs is None else kwargs
         self.__RandDelay()
-        return requests.get(url=url, headers=loc_headers, cookies=loc_cookies, proxies=loc_proxies, **loc_kwargs)
+        resp = requests.get(url=url, headers=loc_headers, cookies=loc_cookies, proxies=loc_proxies, **loc_kwargs)
+        self.status_code = resp.status_code
+        return resp
     
     def __Post(self, url, headers=None, cookies=None, proxies=None, **kwargs) -> requests.Response:
         loc_headers = self.__headers if headers is None else headers
@@ -189,7 +192,9 @@ class HTTPClient:
         loc_proxies = self.__proxies if proxies is None else proxies
         loc_kwargs = {} if kwargs is None else kwargs
         self.__RandDelay()
-        return requests.post(url=url, headers=loc_headers, cookies=loc_cookies, proxies=loc_proxies, **loc_kwargs)
+        resp = requests.post(url=url, headers=loc_headers, cookies=loc_cookies, proxies=loc_proxies, **loc_kwargs)
+        self.status_code = resp.status_code
+        return resp
 
 
 BROWSER_HEADERS = {

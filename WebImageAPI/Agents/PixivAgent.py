@@ -1,7 +1,7 @@
 
 from .BaseAgent import BaseAgent
 from .Singleton import Singleton
-from ..Types import PixivItemInfo, UserInfo
+from ..Types import PixivItemInfo, UserInfo, DOMAIN
 from ..Types.Exceptions import WrongParentChildException
 from ..Utils import (
     TypeChecker, TypeMatcher,

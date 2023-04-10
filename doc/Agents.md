@@ -48,6 +48,7 @@ Table Of Content
     * [**GetIgnorePeekHour(EHentaiAgent) -\> bool:**](#getignorepeekhourehentaiagent---bool)
     * [**SetIgnorePeekHour(EHentaiAgent, whether\_ignore:bool):**](#setignorepeekhourehentaiagent-whether_ignorebool)
     * [**InPeekHour(self) -\> bool:**](#inpeekhourself---bool)
+    * [**GetNextPeekHour(self) -\> tuple:**](#getnextpeekhourself---tuple)
 
 </details>
 
@@ -352,3 +353,12 @@ EH maintainers use a set of rules to control the website's load
 ### **InPeekHour(self) -> bool:**
 
 * Whether E-Hentai is in Peek Hour now
+
+### **GetNextPeekHour(self) -> tuple:**
+
+* Get next peek hour information
+* Returns:
+  * tuple( whether in peek hour : bool, peek hour : datetime )
+  * If currently in peek hour, tuple( True, datetime obj of the end of current peek hour )
+  * If currently not in peek hour, tuple( False, datetime obj of the start of next peek hour )
+
