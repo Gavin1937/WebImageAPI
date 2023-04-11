@@ -11,7 +11,8 @@ from .Decorators import (
 
 from .Functions import (
     Clamp, MergeDeDuplicate,
-    PPrintJson, GetMD5
+    PPrintJson, GetMD5,
+    mkCompFunc, mkCompFuncR
 )
 
 from .Variables import (

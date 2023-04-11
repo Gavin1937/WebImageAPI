@@ -3,6 +3,7 @@ from hashlib import md5
 from typing import Union
 from pathlib import Path
 from io import BytesIO
+import operator as op
 import json
 
 
@@ -34,3 +35,67 @@ def GetMD5(file:Union[str,Path,bytes,BytesIO]):
         output = md5(file.read()).hexdigest()
     
     return output
+
+def mkCompFunc(operator:str, param1=None):
+    '''
+    Create a comparison function with operator
+    Param:
+        operator     => str operator, can be: <, >, <=, >=, =, ==, !=
+        param1       => left parameter for the function, can be None
+                        if have param1, output function will take 1 parameter comparing with param1
+                        else, output function will take 2 parameters
+    Return:
+        A comparison function with 1 or 2 parameter
+    '''
+    opfunc = None
+    if operator == '<':
+        opfunc = op.lt
+    elif operator == '<=':
+        opfunc = op.le
+    elif operator == '>':
+        opfunc = op.gt
+    elif operator == '>=':
+        opfunc = op.ge
+    elif operator == '=' or operator == '==':
+        opfunc = op.eq
+    elif operator == '!=':
+        opfunc = op.ne
+    else:
+        raise ValueError('Invalid operator. It must be <, >, <=, >=, =, ==, !=')
+    
+    if param1 is None:
+        return (lambda p1,p2: opfunc(p1, p2))
+    else:
+        return (lambda p1: opfunc(param1, p1))
+
+def mkCompFuncR(operator:str, param1=None):
+    '''
+    Same as mkCompFunc, but param1 is a right parameter
+    Param:
+        operator     => str operator, can be: <, >, <=, >=, =, ==, !=
+        param1       => right parameter for the function, can be None
+                        if have param1, output function will take 1 parameter comparing with param1
+                        else, output function will take 2 parameters
+    Return:
+        A comparison function with 1 or 2 parameter
+    '''
+    opfunc = None
+    if operator == '<':
+        opfunc = op.lt
+    elif operator == '<=':
+        opfunc = op.le
+    elif operator == '>':
+        opfunc = op.gt
+    elif operator == '>=':
+        opfunc = op.ge
+    elif operator == '=' or operator == '==':
+        opfunc = op.eq
+    elif operator == '!=':
+        opfunc = op.ne
+    else:
+        raise ValueError('Invalid operator. It must be <, >, <=, >=, =, ==, !=')
+    
+    if param1 is None:
+        return (lambda p1,p2: opfunc(p1, p2))
+    else:
+        return (lambda p1: opfunc(p1, param1))

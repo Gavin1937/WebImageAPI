@@ -5,7 +5,8 @@ from ..Types import PixivItemInfo, UserInfo, DOMAIN
 from ..Types.Exceptions import WrongParentChildException
 from ..Utils import (
     TypeChecker, TypeMatcher,
-    Clamp, MergeDeDuplicate
+    Clamp, MergeDeDuplicate,
+    mkCompFuncR
 )
 from typing import Union
 from pathlib import Path
@@ -228,4 +229,66 @@ class PixivAgent(BaseAgent):
                 replace=replace
             )
     
+    
+    # other functions
+    
+    def DownloadRawUrl(self, raw_url:str, output_path:Union[str,Path], replace:bool=False):
+        '''
+        Download a supplied pixiv raw url
+        Raw url have domain: i.pximg.net
+        Param:
+            raw_url      => str raw url to download
+            output_path  => str|Path of a directory for downloaded file
+            replace      => bool flag, whether replace if download file already exists
+        '''
+        
+        output_path = Path(output_path)
+        if not output_path.is_dir():
+            raise ValueError('Output path should be a directory path.')
+        
+        self.__api.download(
+            url=raw_url,
+            path=str(output_path.resolve()),
+            replace=replace
+        )
+    
+    @TypeMatcher(['self', PixivItemInfo, str, int, int])
+    def FetchParentChildrenById(self, item_info:PixivItemInfo, operator:str, id:int, max_page:int=10) -> list:
+        '''
+        Fetch a Parent PixivItemInfo\'s Children by comparing with children id
+        Param:
+            item_info    => PixivItemInfo Parent to fetch
+            operator     => str one comparison operators.
+                            Valid operators: <, >, <=, >=, =, ==, !=
+            id           => int id number >= 1
+            max_page     => maximum page to search, default 10
+        Returns:
+            list of PixivItemInfo fetched, also edit original "item_info"
+        '''
+        
+        if not item_info.IsParent():
+            raise WrongParentChildException(item_info.parent_child, 'Input PixivItemInfo must be a parent.')
+        
+        comp_func = mkCompFuncR(operator, id)
+        
+        output = []
+        offset = 0
+        
+        for _ in range(1, max_page+1):
+            item_info.details = self.__api.user_illusts(item_info.pid, offset=offset)
+            for illust in item_info.details['illusts']:
+                offset += 1
+                comp = comp_func(illust['id'])
+                if comp:
+                    if len(illust['meta_single_page']) > 0:
+                        illust['meta_single_page'] = [{
+                            'image_urls':{
+                                'original':illust['meta_single_page']['original_image_url']
+                            }
+                        }]
+                    output.append(PixivItemInfo.FromChildDetails(illust))
+        
+        return output
+
+
 

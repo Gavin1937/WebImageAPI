@@ -19,6 +19,8 @@ Table Of Content
   * [Additional Methods](#additional-methods)
     * [**\_\_init\_\_(PixivAgent, refresh\_token:str, max\_try:int=5):**](#__init__pixivagent-refresh_tokenstr-max_tryint5)
     * [**GetAPI(PixivAgent) -\> AppPixivAPI:**](#getapipixivagent---apppixivapi)
+    * [**DownloadRawUrl(PixivAgent, raw\_url:str, output\_path:Union\[str,Path\], replace:bool=False):**](#downloadrawurlpixivagent-raw_urlstr-output_pathunionstrpath-replaceboolfalse)
+    * [**FetchParentChildrenById(PixivAgent, item\_info:PixivItemInfo, operator:str, id:int, max\_page:int=10) -\> list:**](#fetchparentchildrenbyidpixivagent-item_infopixiviteminfo-operatorstr-idint-max_pageint10---list)
 * [5. class TwitterAgent](#5-class-twitteragent)
   * [Additional Methods](#additional-methods-1)
     * [**\_\_init\_\_(TwitterAgent, consumer\_key:str, consumer\_secret:str, access\_token:str, access\_token\_secret:str, max\_try:int=5):**](#__init__twitteragent-consumer_keystr-consumer_secretstr-access_tokenstr-access_token_secretstr-max_tryint5)
@@ -154,6 +156,26 @@ This Agent only accept [PixivItemInfo](./WebItemInfo.md#2-class-pixiviteminfo)
 ### **GetAPI(PixivAgent) -> AppPixivAPI:**
 
 * Get pixivpy3.AppPixivAPI object created in the background
+
+### **DownloadRawUrl(PixivAgent, raw_url:str, output_path:Union[str,Path], replace:bool=False):**
+
+* Download a supplied pixiv raw url
+* Raw url have domain: i.pximg.net
+* Param:
+  * raw_url      => str raw url to download
+  * output_path  => str|Path of a directory for downloaded file
+  * replace      => bool flag, whether replace if download file already exists
+
+### **FetchParentChildrenById(PixivAgent, item_info:PixivItemInfo, operator:str, id:int, max_page:int=10) -> list:**
+
+* Fetch a Parent PixivItemInfo\'s Children by comparing with children id
+* Param:
+  * item_info    => PixivItemInfo Parent to fetch
+  * operator     => str one comparison operators. Valid operators: <, >, <=, >=, =, ==, !=
+  * id           => int id number >= 1
+  * max_page     => maximum page to search, default 10
+* Returns:
+  * list of PixivItemInfo fetched, also edit original "item_info"
 
 # 5. class TwitterAgent
 
