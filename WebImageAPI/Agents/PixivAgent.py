@@ -286,6 +286,39 @@ class PixivAgent(BaseAgent):
         
         self.__api.user_follow_delete(user_id=item_info.pid)
     
+    @TypeChecker(PixivItemInfo, (1,))
+    def IsAIArtwork(self, item_info:PixivItemInfo) -> bool:
+        '''
+        Is input child PixivItemInfo points to an AI-Generated artwork
+        Param:
+            item_info    => PixivItemInfo Child to check
+        Returns:
+            True if is AI-Generated artwork
+            False if not
+        '''
+        
+        if not item_info.IsChild():
+            raise WrongParentChildException(item_info.parent_child, 'Input PixivItemInfo must be a child.')
+        
+        if item_info.details is None:
+            item_info = self.FetchItemInfoDetail(item_info)
+        
+        ai_tag_list = [
+            'AI', 'AI-generated', 'AI生成',
+            'AI 생성', 'сгенерированный ИИ',
+            'AIart', 'AIイラスト',
+            'NovelAI', 'NovelAIDiffusion',
+            'stablediffusion', 'WaifuDiffusion',
+        ]
+        for tag in item_info.details['illust']['tags']:
+            if (
+                tag['name'] in ai_tag_list or
+                tag['translated_name'] in ai_tag_list
+            ):
+                return True
+        
+        return False
+    
     @TypeMatcher(['self', PixivItemInfo, str, int, int])
     def FetchParentChildrenById(self, item_info:PixivItemInfo, operator:str, id:int, max_page:int=10) -> list:
         '''

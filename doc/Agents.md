@@ -22,6 +22,7 @@ Table Of Content
     * [**IsFollowedUser(PixivAgent, item\_info:PixivItemInfo) -\> bool:**](#isfolloweduserpixivagent-item_infopixiviteminfo---bool)
     * [**FollowUser(PixivAgent, item\_info:PixivItemInfo) -\> bool:**](#followuserpixivagent-item_infopixiviteminfo---bool)
     * [**UnfollowUser(PixivAgent, item\_info:PixivItemInfo) -\> bool:**](#unfollowuserpixivagent-item_infopixiviteminfo---bool)
+    * [**IsAIArtwork(PixivAgent, item\_info:PixivItemInfo) -\> bool:**](#isaiartworkpixivagent-item_infopixiviteminfo---bool)
     * [**FetchParentChildrenById(PixivAgent, item\_info:PixivItemInfo, operator:str, id:int, max\_page:int=10) -\> list:**](#fetchparentchildrenbyidpixivagent-item_infopixiviteminfo-operatorstr-idint-max_pageint10---list)
     * [**DownloadRawUrl(PixivAgent, raw\_url:str, output\_path:Union\[str,Path\], replace:bool=False):**](#downloadrawurlpixivagent-raw_urlstr-output_pathunionstrpath-replaceboolfalse)
 * [5. class TwitterAgent](#5-class-twitteragent)
@@ -189,6 +190,15 @@ This Agent only accept [PixivItemInfo](./WebItemInfo.md#2-class-pixiviteminfo)
 * Returns:
   * True if success
   * False if failed
+
+### **IsAIArtwork(PixivAgent, item_info:PixivItemInfo) -> bool:**
+
+* Is input child PixivItemInfo points to an AI-Generated artwork
+* Param:
+  * item_info    => PixivItemInfo Child to check
+* Returns:
+  * True if is AI-Generated artwork
+  * False if not
 
 ### **FetchParentChildrenById(PixivAgent, item_info:PixivItemInfo, operator:str, id:int, max_page:int=10) -> list:**
 
