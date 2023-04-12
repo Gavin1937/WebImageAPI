@@ -270,7 +270,7 @@ class PixivAgent(BaseAgent):
                 item_info.details['user']['is_followed']
             )
         elif item_info.IsChild():
-            is_followed = item_info['illust']['user']['is_followed']
+            is_followed = item_info.details['illust']['user']['is_followed']
         
         return is_followed
     
