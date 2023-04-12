@@ -8,7 +8,7 @@ from ..Utils import (
     Clamp, MergeDeDuplicate,
     UrlParser, HTTPClient
 )
-from tweepy import OAuth1UserHandler, API, Cursor
+from tweepy import OAuth1UserHandler, API, Client, Cursor
 from tweepy.errors import TweepyException, Unauthorized
 from time import sleep
 from typing import Union
@@ -38,7 +38,7 @@ class TwitterAgent(BaseAgent):
         sleeptime = 10
         for count in range(max_try):
             try:
-                self.__api:API = API(auth, proxy=proxies)
+                self.__api:API = API(auth, proxy=self.__proxies)
                 break
             except TweepyException or Unauthorized as err:
                 exception = err
@@ -208,5 +208,79 @@ class TwitterAgent(BaseAgent):
             filename = f'{imgid}.{ext}'
             url = f'https://pbs.twimg.com/media/{imgid}?format={ext}&name=orig'
             self.__http.DownloadUrl(url, output_path/filename, overwrite=replace)
+    
+    
+    # other twitter features
+    
+    @TypeChecker(TwitterItemInfo, (1,))
+    def IsFollowedUser(self, item_info:TwitterItemInfo) -> bool:
+        '''
+        Is input parent TwitterItemInfo points to an user that is followed by current account.
+        Param:
+            item_info    => TwitterItemInfo Parent to check
+        Returns:
+            True if is followed
+            False if not
+        '''
+        
+        if not item_info.IsParent():
+            raise WrongParentChildException(item_info.parent_child, 'Input TwitterItemInfo must be a parent.')
+        
+        if item_info.details is None:
+            item_info = self.FetchItemInfoDetail(item_info)
+        
+        return ( item_info.details['following'] )
+    
+    @TypeChecker(TwitterItemInfo, (1,))
+    def FollowUser(self, item_info:TwitterItemInfo) -> bool:
+        '''
+        Follow an user that item_info points to.
+        The proxy setting does not apply to this function.
+        Param:
+            item_info    => TwitterItemInfo Parent to check
+        Returns:
+            True if success
+            False if failed
+        '''
+        
+        if not item_info.IsParent():
+            raise WrongParentChildException(item_info.parent_child, 'Input TwitterItemInfo must be a parent.')
+        
+        if self.__client is None:
+            self.__client:Client = Client(
+                consumer_key=self.__consumer_key, consumer_secret=self.__consumer_secret,
+                access_token=self.__access_token, access_token_secret=self.__access_token_secret
+            )
+        
+        if item_info.details is None:
+            item_info = self.FetchItemInfoDetail(item_info)
+        
+        self.__client.follow_user(item_info.details['id'])
+    
+    @TypeChecker(TwitterItemInfo, (1,))
+    def UnfollowUser(self, item_info:TwitterItemInfo) -> bool:
+        '''
+        Unfollow an user that item_info points to.
+        The proxy setting does not apply to this function.
+        Param:
+            item_info    => TwitterItemInfo Parent to check
+        Returns:
+            True if success
+            False if failed
+        '''
+        
+        if not item_info.IsParent():
+            raise WrongParentChildException(item_info.parent_child, 'Input TwitterItemInfo must be a parent.')
+        
+        if self.__client is None:
+            self.__client:Client = Client(
+                consumer_key=self.__consumer_key, consumer_secret=self.__consumer_secret,
+                access_token=self.__access_token, access_token_secret=self.__access_token_secret
+            )
+        
+        if item_info.details is None:
+            item_info = self.FetchItemInfoDetail(item_info)
+        
+        self.__client.unfollow_user(item_info.details['id'])
     
 

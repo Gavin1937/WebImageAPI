@@ -230,27 +230,61 @@ class PixivAgent(BaseAgent):
             )
     
     
-    # other functions
+    # other pixiv features
     
-    def DownloadRawUrl(self, raw_url:str, output_path:Union[str,Path], replace:bool=False):
+    @TypeChecker(PixivItemInfo, (1,))
+    def IsFollowedUser(self, item_info:PixivItemInfo) -> bool:
         '''
-        Download a supplied pixiv raw url
-        Raw url have domain: i.pximg.net
+        Is input parent PixivItemInfo points to an user that is followed by current account.
         Param:
-            raw_url      => str raw url to download
-            output_path  => str|Path of a directory for downloaded file
-            replace      => bool flag, whether replace if download file already exists
+            item_info    => PixivItemInfo Parent to check
+        Returns:
+            True if is followed
+            False if not
         '''
         
-        output_path = Path(output_path)
-        if not output_path.is_dir():
-            raise ValueError('Output path should be a directory path.')
+        if not item_info.IsParent():
+            raise WrongParentChildException(item_info.parent_child, 'Input PixivItemInfo must be a parent.')
         
-        self.__api.download(
-            url=raw_url,
-            path=str(output_path.resolve()),
-            replace=replace
+        if item_info.details is None:
+            item_info = self.FetchItemInfoDetail(item_info)
+        
+        return (
+            not item_info.details['user']['is_access_blocking_user'] and
+            item_info.details['user']['is_followed']
         )
+    
+    @TypeChecker(PixivItemInfo, (1,))
+    def FollowUser(self, item_info:PixivItemInfo) -> bool:
+        '''
+        Follow an user that item_info points to.
+        Param:
+            item_info    => PixivItemInfo Parent to check
+        Returns:
+            True if success
+            False if failed
+        '''
+        
+        if not item_info.IsParent():
+            raise WrongParentChildException(item_info.parent_child, 'Input PixivItemInfo must be a parent.')
+        
+        self.__api.user_follow_add(user_id=item_info.pid)
+    
+    @TypeChecker(PixivItemInfo, (1,))
+    def UnfollowUser(self, item_info:PixivItemInfo) -> bool:
+        '''
+        Unfollow an user that item_info points to.
+        Param:
+            item_info    => PixivItemInfo Parent to check
+        Returns:
+            True if success
+            False if failed
+        '''
+        
+        if not item_info.IsParent():
+            raise WrongParentChildException(item_info.parent_child, 'Input PixivItemInfo must be a parent.')
+        
+        self.__api.user_follow_delete(user_id=item_info.pid)
     
     @TypeMatcher(['self', PixivItemInfo, str, int, int])
     def FetchParentChildrenById(self, item_info:PixivItemInfo, operator:str, id:int, max_page:int=10) -> list:
@@ -289,6 +323,25 @@ class PixivAgent(BaseAgent):
                     output.append(PixivItemInfo.FromChildDetails(illust))
         
         return output
-
-
+    
+    def DownloadRawUrl(self, raw_url:str, output_path:Union[str,Path], replace:bool=False):
+        '''
+        Download a supplied pixiv raw url
+        Raw url have domain: i.pximg.net
+        Param:
+            raw_url      => str raw url to download
+            output_path  => str|Path of a directory for downloaded file
+            replace      => bool flag, whether replace if download file already exists
+        '''
+        
+        output_path = Path(output_path)
+        if not output_path.is_dir():
+            raise ValueError('Output path should be a directory path.')
+        
+        self.__api.download(
+            url=raw_url,
+            path=str(output_path.resolve()),
+            replace=replace
+        )
+    
 

@@ -19,13 +19,19 @@ Table Of Content
   * [Additional Methods](#additional-methods)
     * [**\_\_init\_\_(PixivAgent, refresh\_token:str, max\_try:int=5):**](#__init__pixivagent-refresh_tokenstr-max_tryint5)
     * [**GetAPI(PixivAgent) -\> AppPixivAPI:**](#getapipixivagent---apppixivapi)
-    * [**DownloadRawUrl(PixivAgent, raw\_url:str, output\_path:Union\[str,Path\], replace:bool=False):**](#downloadrawurlpixivagent-raw_urlstr-output_pathunionstrpath-replaceboolfalse)
+    * [**IsFollowedUser(PixivAgent, item\_info:PixivItemInfo) -\> bool:**](#isfolloweduserpixivagent-item_infopixiviteminfo---bool)
+    * [**FollowUser(PixivAgent, item\_info:PixivItemInfo) -\> bool:**](#followuserpixivagent-item_infopixiviteminfo---bool)
+    * [**UnfollowUser(PixivAgent, item\_info:PixivItemInfo) -\> bool:**](#unfollowuserpixivagent-item_infopixiviteminfo---bool)
     * [**FetchParentChildrenById(PixivAgent, item\_info:PixivItemInfo, operator:str, id:int, max\_page:int=10) -\> list:**](#fetchparentchildrenbyidpixivagent-item_infopixiviteminfo-operatorstr-idint-max_pageint10---list)
+    * [**DownloadRawUrl(PixivAgent, raw\_url:str, output\_path:Union\[str,Path\], replace:bool=False):**](#downloadrawurlpixivagent-raw_urlstr-output_pathunionstrpath-replaceboolfalse)
 * [5. class TwitterAgent](#5-class-twitteragent)
   * [Additional Methods](#additional-methods-1)
     * [**\_\_init\_\_(TwitterAgent, consumer\_key:str, consumer\_secret:str, access\_token:str, access\_token\_secret:str, max\_try:int=5):**](#__init__twitteragent-consumer_keystr-consumer_secretstr-access_tokenstr-access_token_secretstr-max_tryint5)
     * [**GetAPI(TwitterAgent) -\> tweepy.API:**](#getapitwitteragent---tweepyapi)
     * [**SetProxies(TwitterAgent, proxies:str=None):**](#setproxiestwitteragent-proxiesstrnone)
+    * [**IsFollowedUser(TwitterAgent, item\_info:TwitterItemInfo) -\> bool:**](#isfollowedusertwitteragent-item_infotwitteriteminfo---bool)
+    * [**FollowUser(TwitterAgent, item\_info:TwitterItemInfo) -\> bool:**](#followusertwitteragent-item_infotwitteriteminfo---bool)
+    * [**UnfollowUser(TwitterAgent, item\_info:TwitterItemInfo) -\> bool:**](#unfollowusertwitteragent-item_infotwitteriteminfo---bool)
 * [6. class DanbooruAgent](#6-class-danbooruagent)
   * [Additional Methods](#additional-methods-2)
     * [**\_\_init\_\_(DanbooruAgent, proxies:str=None):**](#__init__danbooruagent-proxiesstrnone)
@@ -157,14 +163,32 @@ This Agent only accept [PixivItemInfo](./WebItemInfo.md#2-class-pixiviteminfo)
 
 * Get pixivpy3.AppPixivAPI object created in the background
 
-### **DownloadRawUrl(PixivAgent, raw_url:str, output_path:Union[str,Path], replace:bool=False):**
+### **IsFollowedUser(PixivAgent, item_info:PixivItemInfo) -> bool:**
 
-* Download a supplied pixiv raw url
-* Raw url have domain: i.pximg.net
+* Is input parent PixivItemInfo points to an user that is followed by current account.
 * Param:
-  * raw_url      => str raw url to download
-  * output_path  => str|Path of a directory for downloaded file
-  * replace      => bool flag, whether replace if download file already exists
+  * item_info    => PixivItemInfo Parent to check
+* Returns:
+  * True if is followed
+  * False if not
+
+### **FollowUser(PixivAgent, item_info:PixivItemInfo) -> bool:**
+
+* Follow an user that item_info points to.
+* Param:
+  * item_info    => PixivItemInfo Parent to check
+* Returns:
+  * True if success
+  * False if failed
+
+### **UnfollowUser(PixivAgent, item_info:PixivItemInfo) -> bool:**
+
+* Unfollow an user that item_info points to.
+* Param:
+  * item_info    => PixivItemInfo Parent to check
+* Returns:
+  * True if success
+  * False if failed
 
 ### **FetchParentChildrenById(PixivAgent, item_info:PixivItemInfo, operator:str, id:int, max_page:int=10) -> list:**
 
@@ -176,6 +200,15 @@ This Agent only accept [PixivItemInfo](./WebItemInfo.md#2-class-pixiviteminfo)
   * max_page     => maximum page to search, default 10
 * Returns:
   * list of PixivItemInfo fetched, also edit original "item_info"
+
+### **DownloadRawUrl(PixivAgent, raw_url:str, output_path:Union[str,Path], replace:bool=False):**
+
+* Download a supplied pixiv raw url
+* Raw url have domain: i.pximg.net
+* Param:
+  * raw_url      => str raw url to download
+  * output_path  => str|Path of a directory for downloaded file
+  * replace      => bool flag, whether replace if download file already exists
 
 # 5. class TwitterAgent
 
@@ -211,6 +244,35 @@ This Agent only accept [TwitterItemInfo](./WebItemInfo.md#3-class-twitteriteminf
 * This function will perform a re-authentication with Twitter
 * Parameters
   * **proxies**:              string, a proxy server url string, default None, disabled
+
+### **IsFollowedUser(TwitterAgent, item_info:TwitterItemInfo) -> bool:**
+
+* Is input parent TwitterItemInfo points to an user that is followed by current account.
+* Param:
+  * item_info    => TwitterItemInfo Parent to check
+* Returns:
+  * True if is followed
+  * False if not
+
+### **FollowUser(TwitterAgent, item_info:TwitterItemInfo) -> bool:**
+
+* Follow an user that item_info points to.
+* The proxy setting does not apply to this function.
+* Param:
+  * item_info    => TwitterItemInfo Parent to check
+* Returns:
+  * True if success
+  * False if failed
+
+### **UnfollowUser(TwitterAgent, item_info:TwitterItemInfo) -> bool:**
+
+* Unfollow an user that item_info points to.
+* The proxy setting does not apply to this function.
+* Param:
+  * item_info    => TwitterItemInfo Parent to check
+* Returns:
+  * True if success
+  * False if failed
 
 # 6. class DanbooruAgent
 
