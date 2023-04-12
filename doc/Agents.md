@@ -19,6 +19,7 @@ Table Of Content
   * [Additional Methods](#additional-methods)
     * [**\_\_init\_\_(PixivAgent, refresh\_token:str, max\_try:int=5):**](#__init__pixivagent-refresh_tokenstr-max_tryint5)
     * [**GetAPI(PixivAgent) -\> AppPixivAPI:**](#getapipixivagent---apppixivapi)
+    * [**GetParentItemInfo(PixivAgent, item\_info:PixivItemInfo) -\> PixivItemInfo:**](#getparentiteminfopixivagent-item_infopixiviteminfo---pixiviteminfo)
     * [**IsFollowedUser(PixivAgent, item\_info:PixivItemInfo) -\> bool:**](#isfolloweduserpixivagent-item_infopixiviteminfo---bool)
     * [**FollowUser(PixivAgent, item\_info:PixivItemInfo) -\> bool:**](#followuserpixivagent-item_infopixiviteminfo---bool)
     * [**UnfollowUser(PixivAgent, item\_info:PixivItemInfo) -\> bool:**](#unfollowuserpixivagent-item_infopixiviteminfo---bool)
@@ -30,6 +31,7 @@ Table Of Content
     * [**\_\_init\_\_(TwitterAgent, consumer\_key:str, consumer\_secret:str, access\_token:str, access\_token\_secret:str, max\_try:int=5):**](#__init__twitteragent-consumer_keystr-consumer_secretstr-access_tokenstr-access_token_secretstr-max_tryint5)
     * [**GetAPI(TwitterAgent) -\> tweepy.API:**](#getapitwitteragent---tweepyapi)
     * [**SetProxies(TwitterAgent, proxies:str=None):**](#setproxiestwitteragent-proxiesstrnone)
+    * [**GetParentItemInfo(TwitterAgent, item\_info:TwitterItemInfo) -\> TwitterItemInfo:**](#getparentiteminfotwitteragent-item_infotwitteriteminfo---twitteriteminfo)
     * [**IsFollowedUser(TwitterAgent, item\_info:TwitterItemInfo) -\> bool:**](#isfollowedusertwitteragent-item_infotwitteriteminfo---bool)
     * [**FollowUser(TwitterAgent, item\_info:TwitterItemInfo) -\> bool:**](#followusertwitteragent-item_infotwitteriteminfo---bool)
     * [**UnfollowUser(TwitterAgent, item\_info:TwitterItemInfo) -\> bool:**](#unfollowusertwitteragent-item_infotwitteriteminfo---bool)
@@ -164,11 +166,19 @@ This Agent only accept [PixivItemInfo](./WebItemInfo.md#2-class-pixiviteminfo)
 
 * Get pixivpy3.AppPixivAPI object created in the background
 
+### **GetParentItemInfo(PixivAgent, item_info:PixivItemInfo) -> PixivItemInfo:**
+
+* Get the parent PixivItemInfo for a child PixivItemInfo.
+* Param:
+  * item_info    => PixivItemInfo Child
+* Returns:
+  * A parent PixivItemInfo
+
 ### **IsFollowedUser(PixivAgent, item_info:PixivItemInfo) -> bool:**
 
-* Is input parent PixivItemInfo points to an user that is followed by current account.
+* Is input PixivItemInfo points to an user that is followed by current account.
 * Param:
-  * item_info    => PixivItemInfo Parent to check
+  * item_info    => PixivItemInfo to check
 * Returns:
   * True if is followed
   * False if not
@@ -255,11 +265,19 @@ This Agent only accept [TwitterItemInfo](./WebItemInfo.md#3-class-twitteriteminf
 * Parameters
   * **proxies**:              string, a proxy server url string, default None, disabled
 
+### **GetParentItemInfo(TwitterAgent, item_info:TwitterItemInfo) -> TwitterItemInfo:**
+
+* Get the parent TwitterItemInfo for a child TwitterItemInfo.
+* Param:
+  * item_info    => TwitterItemInfo Child
+* Returns:
+  * A parent TwitterItemInfo
+
 ### **IsFollowedUser(TwitterAgent, item_info:TwitterItemInfo) -> bool:**
 
-* Is input parent TwitterItemInfo points to an user that is followed by current account.
+* Is input TwitterItemInfo points to an user that is followed by current account.
 * Param:
-  * item_info    => TwitterItemInfo Parent to check
+  * item_info    => TwitterItemInfo to check
 * Returns:
   * True if is followed
   * False if not

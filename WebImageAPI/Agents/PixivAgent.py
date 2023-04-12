@@ -233,26 +233,46 @@ class PixivAgent(BaseAgent):
     # other pixiv features
     
     @TypeChecker(PixivItemInfo, (1,))
+    def GetParentItemInfo(self, item_info:PixivItemInfo) -> PixivItemInfo:
+        '''
+        Get the parent PixivItemInfo for a child PixivItemInfo.
+        Param:
+            item_info    => PixivItemInfo Child
+        Returns:
+            A parent PixivItemInfo
+        '''
+        
+        if item_info.IsParent():
+            return item_info
+        elif item_info.IsChild():
+            user_info = self.FetchUserInfo(item_info)
+            parent_url = user_info.url_dict[DOMAIN.PIXIV][0]
+            return PixivItemInfo(parent_url)
+    
+    @TypeChecker(PixivItemInfo, (1,))
     def IsFollowedUser(self, item_info:PixivItemInfo) -> bool:
         '''
-        Is input parent PixivItemInfo points to an user that is followed by current account.
+        Is input PixivItemInfo points to an user that is followed by current account.
         Param:
-            item_info    => PixivItemInfo Parent to check
+            item_info    => PixivItemInfo to check
         Returns:
             True if is followed
             False if not
         '''
         
-        if not item_info.IsParent():
-            raise WrongParentChildException(item_info.parent_child, 'Input PixivItemInfo must be a parent.')
-        
         if item_info.details is None:
             item_info = self.FetchItemInfoDetail(item_info)
         
-        return (
-            not item_info.details['user']['is_access_blocking_user'] and
-            item_info.details['user']['is_followed']
-        )
+        is_followed = False
+        if item_info.IsParent():
+            is_followed = (
+                not item_info.details['user']['is_access_blocking_user'] and
+                item_info.details['user']['is_followed']
+            )
+        elif item_info.IsChild():
+            is_followed = item_info['illust']['user']['is_followed']
+        
+        return is_followed
     
     @TypeChecker(PixivItemInfo, (1,))
     def FollowUser(self, item_info:PixivItemInfo) -> bool:

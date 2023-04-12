@@ -213,23 +213,43 @@ class TwitterAgent(BaseAgent):
     # other twitter features
     
     @TypeChecker(TwitterItemInfo, (1,))
+    def GetParentItemInfo(self, item_info:TwitterItemInfo) -> TwitterItemInfo:
+        '''
+        Get the parent TwitterItemInfo for a child TwitterItemInfo.
+        Param:
+            item_info    => TwitterItemInfo Child
+        Returns:
+            A parent TwitterItemInfo
+        '''
+        
+        if item_info.IsParent():
+            return item_info
+        elif item_info.IsChild():
+            user_info = self.FetchUserInfo(item_info)
+            parent_url = user_info.url_dict[DOMAIN.TWITTER][0]
+            return TwitterItemInfo(parent_url)
+    
+    @TypeChecker(TwitterItemInfo, (1,))
     def IsFollowedUser(self, item_info:TwitterItemInfo) -> bool:
         '''
-        Is input parent TwitterItemInfo points to an user that is followed by current account.
+        Is input TwitterItemInfo points to an user that is followed by current account.
         Param:
-            item_info    => TwitterItemInfo Parent to check
+            item_info    => TwitterItemInfo to check
         Returns:
             True if is followed
             False if not
         '''
         
-        if not item_info.IsParent():
-            raise WrongParentChildException(item_info.parent_child, 'Input TwitterItemInfo must be a parent.')
-        
         if item_info.details is None:
             item_info = self.FetchItemInfoDetail(item_info)
         
-        return ( item_info.details['following'] )
+        is_followed = False
+        if not item_info.IsParent():
+            is_followed = item_info.details['following']
+        if not item_info.IsChild():
+            is_followed = item_info.details['user']['following']
+        
+        return is_followed
     
     @TypeChecker(TwitterItemInfo, (1,))
     def FollowUser(self, item_info:TwitterItemInfo) -> bool:
