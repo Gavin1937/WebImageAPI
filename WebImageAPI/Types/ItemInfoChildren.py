@@ -15,7 +15,6 @@ class PixivItemInfo(WebItemInfo):
                 _url = f'https://www.pixiv.net/users/{kwargs["pid"]}'
             elif kwargs['parent_child'] == PARENT_CHILD.CHILD:
                 _url = f'https://www.pixiv.net/artworks/{kwargs["pid"]}'
-        print(_url)
         super().__init__(_url)
     
     def _PostInitAnalyzing(self) -> None:
