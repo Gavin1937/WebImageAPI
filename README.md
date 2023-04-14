@@ -48,6 +48,14 @@ or, install from github
 pip install -U git+https://github.com/Gavin1937/WebImageAPI.git
 ```
 
+or, download .whl file from [the latest release](https://github.com/Gavin1937/WebImageAPI/releases/latest)
+
+and install it
+
+```sh
+pip install -U WebImageAPI-*-py3-none-any.whl
+```
+
 # Authentication
 
 | Name    | Tutorials                                                                                                         |

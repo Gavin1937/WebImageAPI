@@ -156,7 +156,7 @@ class WeiboItemInfo(WebItemInfo):
         pathlist = self.parsed_url.pathlist
         if 'u' == pathlist[0]:
             self.parent_child = PARENT_CHILD.PARENT
-        elif 'detail' == pathlist[0]:
+        elif 'detail' == pathlist[0] or 'status' == pathlist[0]:
             self.parent_child = PARENT_CHILD.CHILD
         self.weibo_id = pathlist[1]
     
