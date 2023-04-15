@@ -18,7 +18,7 @@ from pathlib import Path
 @Singleton
 class TwitterAgent(BaseAgent):
     
-    def __init__(self, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str, proxies:str=None, max_try:int=5):
+    def __init__(self, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str, bearer_token:str, proxies:str=None, max_try:int=5):
         auth = OAuth1UserHandler(
             consumer_key, consumer_secret, access_token, access_token_secret
         )
@@ -32,6 +32,7 @@ class TwitterAgent(BaseAgent):
         self.__consumer_secret = consumer_secret
         self.__access_token = access_token
         self.__access_token_secret = access_token_secret
+        self.__bearer_token = bearer_token
         self.__max_try = max_try
         
         exception = None
@@ -269,7 +270,8 @@ class TwitterAgent(BaseAgent):
         if self.__client is None:
             self.__client:Client = Client(
                 consumer_key=self.__consumer_key, consumer_secret=self.__consumer_secret,
-                access_token=self.__access_token, access_token_secret=self.__access_token_secret
+                access_token=self.__access_token, access_token_secret=self.__access_token_secret,
+                bearer_token=self.__bearer_token,
             )
         
         if item_info.details is None:
@@ -295,7 +297,8 @@ class TwitterAgent(BaseAgent):
         if self.__client is None:
             self.__client:Client = Client(
                 consumer_key=self.__consumer_key, consumer_secret=self.__consumer_secret,
-                access_token=self.__access_token, access_token_secret=self.__access_token_secret
+                access_token=self.__access_token, access_token_secret=self.__access_token_secret,
+                bearer_token=self.__bearer_token,
             )
         
         if item_info.details is None:

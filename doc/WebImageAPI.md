@@ -11,7 +11,7 @@ Table Of Content
       * [\_\_init\_\_(WebImageAPI):](#__init__webimageapi)
     * [**Agent Setup**](#agent-setup)
       * [**SetPixivTokens(WebImageAPI, refresh\_token:str):**](#setpixivtokenswebimageapi-refresh_tokenstr)
-      * [**SetTwitterTokens(WebImageAPI, consumer\_key:str, consumer\_secret:str, access\_token:str, access\_token\_secret:str):**](#settwittertokenswebimageapi-consumer_keystr-consumer_secretstr-access_tokenstr-access_token_secretstr)
+      * [**SetTwitterTokens(WebImageAPI, consumer\_key:str, consumer\_secret:str, access\_token:str, access\_token\_secret:str, bearer\_token:str):**](#settwittertokenswebimageapi-consumer_keystr-consumer_secretstr-access_tokenstr-access_token_secretstr-bearer_tokenstr)
       * [**GetEHentaiIgnorePeekHour(self) -\> bool:**](#getehentaiignorepeekhourself---bool)
       * [**SetEHentaiIgnorePeekHour(self, whether\_ignore:bool) -\> None:**](#setehentaiignorepeekhourself-whether_ignorebool---none)
       * [**GetEHentaiNextPeekHour(self) -\> tuple:**](#getehentainextpeekhourself---tuple)
@@ -57,7 +57,7 @@ I highly recommend you to stick with this class and let it to handle everything 
   * **refresh_token**:  string, pixiv refresh_token
 * You need to call this function before using any of the `PixivAgent` features
 
-#### **SetTwitterTokens(WebImageAPI, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str):**
+#### **SetTwitterTokens(WebImageAPI, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str, bearer_token:str):**
 
 * Setup TwitterAgent with supplied parameters
 * Parameters:
@@ -65,6 +65,7 @@ I highly recommend you to stick with this class and let it to handle everything 
   * **consumer_secret**:      string, twitter consumer api secret
   * **access_token**:         string, twitter access token
   * **access_token_secret**:  string, twitter access token secret
+  * **bearer_token**:         string, twitter bearer token
 
 #### **GetEHentaiIgnorePeekHour(self) -> bool:**
 

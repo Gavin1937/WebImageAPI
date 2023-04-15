@@ -25,8 +25,8 @@ class WebImageAPI:
     def SetPixivTokens(self, refresh_token:str):
         self.__InitAgent(DOMAIN.PIXIV, refresh_token=refresh_token)
     
-    def SetTwitterTokens(self, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str):
-        self.__InitAgent(DOMAIN.TWITTER, consumer_key=consumer_key, consumer_secret=consumer_secret, access_token=access_token, access_token_secret=access_token_secret)
+    def SetTwitterTokens(self, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str, bearer_token:str):
+        self.__InitAgent(DOMAIN.TWITTER, consumer_key=consumer_key, consumer_secret=consumer_secret, access_token=access_token, access_token_secret=access_token_secret, bearer_token=bearer_token)
     
     def GetEHentaiIgnorePeekHour(self) -> bool:
         if self.__ehentai_agent is None:

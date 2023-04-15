@@ -28,7 +28,7 @@ Table Of Content
     * [**DownloadRawUrl(PixivAgent, raw\_url:str, output\_path:Union\[str,Path\], replace:bool=False):**](#downloadrawurlpixivagent-raw_urlstr-output_pathunionstrpath-replaceboolfalse)
 * [5. class TwitterAgent](#5-class-twitteragent)
   * [Additional Methods](#additional-methods-1)
-    * [**\_\_init\_\_(TwitterAgent, consumer\_key:str, consumer\_secret:str, access\_token:str, access\_token\_secret:str, max\_try:int=5):**](#__init__twitteragent-consumer_keystr-consumer_secretstr-access_tokenstr-access_token_secretstr-max_tryint5)
+    * [**\_\_init\_\_(TwitterAgent, consumer\_key:str, consumer\_secret:str, access\_token:str, access\_token\_secret:str, bearer\_token:str, max\_try:int=5):**](#__init__twitteragent-consumer_keystr-consumer_secretstr-access_tokenstr-access_token_secretstr-bearer_tokenstr-max_tryint5)
     * [**GetAPI(TwitterAgent) -\> tweepy.API:**](#getapitwitteragent---tweepyapi)
     * [**SetProxies(TwitterAgent, proxies:str=None):**](#setproxiestwitteragent-proxiesstrnone)
     * [**GetParentItemInfo(TwitterAgent, item\_info:TwitterItemInfo) -\> TwitterItemInfo:**](#getparentiteminfotwitteragent-item_infotwitteriteminfo---twitteriteminfo)
@@ -240,7 +240,7 @@ This Agent only accept [TwitterItemInfo](./WebItemInfo.md#3-class-twitteriteminf
 
 ## Additional Methods
 
-### **\_\_init\_\_(TwitterAgent, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str, max_try:int=5):**
+### **\_\_init\_\_(TwitterAgent, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str, bearer_token:str, max_try:int=5):**
 
 * Constructor for TwitterAgent class
 * You need to pass in required/optional parameters for authentication in [TwitterAgent.instance() function](#instanceself-args)
@@ -249,6 +249,7 @@ This Agent only accept [TwitterItemInfo](./WebItemInfo.md#3-class-twitteriteminf
   * **consumer_secret**:      string, twitter consumer api secret
   * **access_token**:         string, twitter access token
   * **access_token_secret**:  string, twitter access token secret
+  * **bearer_token**:         string, twitter bearer token
   * **proxies**:              string, a proxy server url string, default None, disabled
   * **max_try**:              integer, max retry number
 * This Agent uses tweepy.OAuth1UserHandler() and tweepy.API() to authenticate with twitter.
