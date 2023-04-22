@@ -12,6 +12,7 @@ Table Of Content
     * [**Agent Setup**](#agent-setup)
       * [**SetPixivTokens(WebImageAPI, refresh\_token:str):**](#setpixivtokenswebimageapi-refresh_tokenstr)
       * [**SetTwitterTokens(WebImageAPI, consumer\_key:str, consumer\_secret:str, access\_token:str, access\_token\_secret:str, bearer\_token:str):**](#settwittertokenswebimageapi-consumer_keystr-consumer_secretstr-access_tokenstr-access_token_secretstr-bearer_tokenstr)
+      * [**SetEHentaiAuthInfo(WebImageAPI, ipb\_member\_id:str, ipb\_pass\_hash:str):**](#setehentaiauthinfowebimageapi-ipb_member_idstr-ipb_pass_hashstr)
       * [**GetEHentaiIgnorePeekHour(self) -\> bool:**](#getehentaiignorepeekhourself---bool)
       * [**SetEHentaiIgnorePeekHour(self, whether\_ignore:bool) -\> None:**](#setehentaiignorepeekhourself-whether_ignorebool---none)
       * [**GetEHentaiNextPeekHour(self) -\> tuple:**](#getehentainextpeekhourself---tuple)
@@ -66,6 +67,23 @@ I highly recommend you to stick with this class and let it to handle everything 
   * **access_token**:         string, twitter access token
   * **access_token_secret**:  string, twitter access token secret
   * **bearer_token**:         string, twitter bearer token
+
+#### **SetEHentaiAuthInfo(WebImageAPI, ipb\_member\_id:str, ipb\_pass\_hash:str):**
+
+* Set EHentai Authentication information
+* ipb_member_id and ipb_pass_has are your EHentai account authentication token that EHentai assigned to you.
+* Once you login to EHentai, the server will assign your login authentication information to your browser.
+* You must login in order to download the original image source.
+* WebImageAPI uses your authentication information to download the original image source like your browser.
+* You can find these authentication information by:
+  * visit https://e-hentai.org in your pc browser
+  * open your browser's developer console
+  * in the Applications tab on the console
+  * under the Cookies drop down menu
+  * select https://e-hentai.org
+* Parameters:
+  * **ipb\_member\_id**:      string, ipb_member_id in EHentai cookies
+  * **ipb\_pass\_hash**:      string, ipb_pass_has in EHentai cookies
 
 #### **GetEHentaiIgnorePeekHour(self) -> bool:**
 

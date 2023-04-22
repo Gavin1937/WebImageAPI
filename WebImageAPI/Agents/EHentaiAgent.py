@@ -22,13 +22,20 @@ from datetime import datetime, timezone, timedelta
 @Singleton
 class EHentaiAgent(BaseAgent):
     
-    def __init__(self, ignore_peek_hour:bool=False, proxies:str=None):
+    def __init__(self, ignore_peek_hour:bool=False, ipb_member_id:str=None, ipb_pass_hash:str=None, proxies:str=None):
         self.__api_url = 'https://api.e-hentai.org/api.php'
+        self.__proxies = proxies
         self.__headers = {
             'Referer': 'https://e-hentai.org/',
             **BROWSER_HEADERS
         }
-        self.__http = HTTPClient(default_headers=self.__headers, default_proxies=proxies)
+        self.__ipb_member_id:str = ipb_member_id
+        self.__ipb_pass_hash:str = ipb_pass_hash
+        tmp_cookies = {
+            'ipb_member_id':self.__ipb_member_id,
+            'ipb_pass_hash':self.__ipb_pass_hash,
+        }
+        self.__http = HTTPClient(default_headers=self.__headers, default_cookies=tmp_cookies, default_proxies=self.__proxies)
         self.__ignore_peek_hour:bool = ignore_peek_hour
         self.__peek_hour_table:list = [
             [14, 20], # Mon (0)	
@@ -44,6 +51,15 @@ class EHentaiAgent(BaseAgent):
     # interfaces
     def SetProxies(self, proxies:str=None):
         self.__http = HTTPClient(default_proxies=proxies)
+    
+    def SetEHentaiAuthInfo(self, ipb_member_id:str, ipb_pass_hash:str):
+        self.__ipb_member_id:str = ipb_member_id
+        self.__ipb_pass_hash:str = ipb_pass_hash
+        tmp_cookies = {
+            'ipb_member_id':self.__ipb_member_id,
+            'ipb_pass_hash':self.__ipb_pass_hash,
+        }
+        self.__http = HTTPClient(default_headers=self.__headers, default_cookies=tmp_cookies, default_proxies=self.__proxies)
     
     def GetIgnorePeekHour(self) -> bool:
         return self.__ignore_peek_hour
@@ -238,7 +254,16 @@ class EHentaiAgent(BaseAgent):
         soup = self.__http.GetHtml(item_info.url)
         filename = soup.select_one('div#i2').findChildren('div')[-1]
         filename = filename.getText().split(' :: ')[0]
-        url = soup.select_one('img#img').get('src')
+        # try to find the original image download url from html (if exists)
+        url = None
+        orig_elem = soup.select_one('div#i7 a')
+        lowres_elem = soup.select_one('div#i3 img#img')
+        if orig_elem is not None and 'Download original' in orig_elem.text:
+            url = orig_elem.get('href')
+        elif lowres_elem is not None:
+            url = lowres_elem.get('src')
+        if url is None:
+            raise ValueError('Cannot find download url from EHentai Child')
         
         # when you excess EH viewing limit
         # EH will send back an image with warning text on it rather than the real image

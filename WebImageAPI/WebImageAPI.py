@@ -28,6 +28,12 @@ class WebImageAPI:
     def SetTwitterTokens(self, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str, bearer_token:str):
         self.__InitAgent(DOMAIN.TWITTER, consumer_key=consumer_key, consumer_secret=consumer_secret, access_token=access_token, access_token_secret=access_token_secret, bearer_token=bearer_token)
     
+    def SetEHentaiAuthInfo(self, ipb_member_id:str, ipb_pass_hash:str):
+        if self.__ehentai_agent is None:
+            self.__InitAgent(DOMAIN.EHENTAI, ipb_member_id=ipb_member_id, ipb_pass_hash=ipb_pass_hash)
+            return
+        self.__ehentai_agent.SetEHentaiAuthInfo(ipb_member_id, ipb_pass_hash)
+    
     def GetEHentaiIgnorePeekHour(self) -> bool:
         if self.__ehentai_agent is None:
             self.__InitAgent(DOMAIN.EHENTAI)

@@ -54,8 +54,9 @@ Table Of Content
 * [10. class EHentaiAgent](#10-class-ehentaiagent)
   * [E-Hentai Peek Hour](#e-hentai-peek-hour)
   * [Additional Methods](#additional-methods-6)
-    * [**\_\_init\_\_(EHentaiAgent, proxies:str=None):**](#__init__ehentaiagent-proxiesstrnone)
+    * [**\_\_init\_\_(EHentaiAgent, ipb\_member\_id:str=None, ipb\_pass\_hash:str=None, proxies:str=None):**](#__init__ehentaiagent-ipb_member_idstrnone-ipb_pass_hashstrnone-proxiesstrnone)
     * [**SetProxies(EHentaiAgent, proxies:str=None):**](#setproxiesehentaiagent-proxiesstrnone)
+    * [**SetEHentaiAuthInfo(EHentaiAgent, ipb\_member\_id:str, ipb\_pass\_hash:str):**](#setehentaiauthinfoehentaiagent-ipb_member_idstr-ipb_pass_hashstr)
     * [**GetIgnorePeekHour(EHentaiAgent) -\> bool:**](#getignorepeekhourehentaiagent---bool)
     * [**SetIgnorePeekHour(EHentaiAgent, whether\_ignore:bool):**](#setignorepeekhourehentaiagent-whether_ignorebool)
     * [**InPeekHour(self) -\> bool:**](#inpeekhourself---bool)
@@ -440,18 +441,47 @@ EH maintainers use a set of rules to control the website's load
 
 ## Additional Methods
 
-### **\_\_init\_\_(EHentaiAgent, proxies:str=None):**
+### **\_\_init\_\_(EHentaiAgent, ipb\_member\_id:str=None, ipb\_pass\_hash:str=None, proxies:str=None):**
 
 * Constructor for EHentaiAgent class
 * You can pass in optional parameters via [EHentaiAgent.instance() function](#instanceself-args)
+* ipb_member_id and ipb_pass_has are your EHentai account authentication token that EHentai assigned to you.
+* Once you login to EHentai, the server will assign your login authentication information to your browser.
+* You must login in order to download the original image source.
+* WebImageAPI uses your authentication information to download the original image source like your browser.
+* You can find these authentication information by:
+  * visit https://e-hentai.org in your pc browser
+  * open your browser's developer console
+  * in the Applications tab on the console
+  * under the Cookies drop down menu
+  * select https://e-hentai.org
 * Parameters:
   * **proxies**:              string, a proxy server url string, default None, disabled
+  * **ipb\_member\_id**:      string, ipb_member_id in EHentai cookies
+  * **ipb\_pass\_hash**:      string, ipb_pass_has in EHentai cookies
 
 ### **SetProxies(EHentaiAgent, proxies:str=None):**
 
 * Set proxy for DanbooruAgent
 * Parameters
   * **proxies**:              string, a proxy server url string, default None, disabled
+
+### **SetEHentaiAuthInfo(EHentaiAgent, ipb\_member\_id:str, ipb\_pass\_hash:str):**
+
+* Set EHentai Authentication information
+* ipb_member_id and ipb_pass_has are your EHentai account authentication token that EHentai assigned to you.
+* Once you login to EHentai, the server will assign your login authentication information to your browser.
+* You must login in order to download the original image source.
+* WebImageAPI uses your authentication information to download the original image source like your browser.
+* You can find these authentication information by:
+  * visit https://e-hentai.org in your pc browser
+  * open your browser's developer console
+  * in the Applications tab on the console
+  * under the Cookies drop down menu
+  * select https://e-hentai.org
+* Parameters:
+  * **ipb\_member\_id**:      string, ipb_member_id in EHentai cookies
+  * **ipb\_pass\_hash**:      string, ipb_pass_has in EHentai cookies
 
 ### **GetIgnorePeekHour(EHentaiAgent) -> bool:**
 
