@@ -31,10 +31,14 @@ class EHentaiAgent(BaseAgent):
         }
         self.__ipb_member_id:str = ipb_member_id
         self.__ipb_pass_hash:str = ipb_pass_hash
-        tmp_cookies = {
-            'ipb_member_id':self.__ipb_member_id,
-            'ipb_pass_hash':self.__ipb_pass_hash,
-        }
+        self.__is_logged_in:bool = False
+        tmp_cookies = None
+        if self.__ipb_member_id is not None and self.__ipb_pass_hash is not None:
+            tmp_cookies = {
+                'ipb_member_id':self.__ipb_member_id,
+                'ipb_pass_hash':self.__ipb_pass_hash,
+            }
+            self.__is_logged_in = True
         self.__http = HTTPClient(default_headers=self.__headers, default_cookies=tmp_cookies, default_proxies=self.__proxies)
         self.__ignore_peek_hour:bool = ignore_peek_hour
         self.__peek_hour_table:list = [
@@ -55,10 +59,13 @@ class EHentaiAgent(BaseAgent):
     def SetEHentaiAuthInfo(self, ipb_member_id:str, ipb_pass_hash:str):
         self.__ipb_member_id:str = ipb_member_id
         self.__ipb_pass_hash:str = ipb_pass_hash
-        tmp_cookies = {
-            'ipb_member_id':self.__ipb_member_id,
-            'ipb_pass_hash':self.__ipb_pass_hash,
-        }
+        tmp_cookies = None
+        if self.__ipb_member_id is not None and self.__ipb_pass_hash is not None:
+            tmp_cookies = {
+                'ipb_member_id':self.__ipb_member_id,
+                'ipb_pass_hash':self.__ipb_pass_hash,
+            }
+            self.__is_logged_in = True
         self.__http = HTTPClient(default_headers=self.__headers, default_cookies=tmp_cookies, default_proxies=self.__proxies)
     
     def GetIgnorePeekHour(self) -> bool:
@@ -258,7 +265,7 @@ class EHentaiAgent(BaseAgent):
         url = None
         orig_elem = soup.select_one('div#i7 a')
         lowres_elem = soup.select_one('div#i3 img#img')
-        if orig_elem is not None and 'Download original' in orig_elem.text:
+        if self.__is_logged_in and orig_elem is not None and 'Download original' in orig_elem.text:
             url = orig_elem.get('href')
         elif lowres_elem is not None:
             url = lowres_elem.get('src')
