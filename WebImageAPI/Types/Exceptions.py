@@ -9,6 +9,7 @@ __all__ = [
     'NotSupportURLException',
     'EHentaiInPeekHourException',
     'EHentaiExcessViewingLimit',
+    'EHentaiInvalidLoginAuthentication',
 ]
 
 class WrongParentChildException(Exception):
@@ -58,5 +59,11 @@ class EHentaiExcessViewingLimit(Exception):
     def __init__(self, url:str) -> None:
         self.url:str = url
         self.message:str = f'You excess E-Hentai Viewing Limit'
+        super().__init__(self.message)
+
+class EHentaiInvalidLoginAuthentication(Exception):
+    def __init__(self, url:str) -> None:
+        self.url:str = url
+        self.message:str = f'Your E-Hentai Login Authentication is Invalid'
         super().__init__(self.message)
 

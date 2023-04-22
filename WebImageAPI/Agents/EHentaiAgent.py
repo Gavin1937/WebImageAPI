@@ -7,6 +7,7 @@ from ..Types.Exceptions import (
     EHentaiInPeekHourException,
     EHentaiExcessViewingLimit,
     FileMD5NotMatchingException,
+    EHentaiInvalidLoginAuthentication,
 )
 from ..Utils import (
     TypeChecker, TypeMatcher,
@@ -279,10 +280,16 @@ class EHentaiAgent(BaseAgent):
             '88fe16ae482faddb4cc23df15722348c',
             '21ad51280632f6f5e54081aef8817061',
         ]
+        invalid_login_txt = b'This page requires you to log on.'
         try:
             download_path = output_path/filename
             self.__http.DownloadUrl(url, download_path, overwrite=replace)
-            file_md5 = GetMD5(download_path)
+            raw = None
+            with open(download_path, 'rb') as file:
+                raw = file.read()
+            if invalid_login_txt in raw:
+                raise EHentaiInvalidLoginAuthentication(item_info.url)
+            file_md5 = GetMD5(raw)
             if file_md5 not in excess_limit_md5:
                 raise FileMD5NotMatchingException(
                     excess_limit_md5, file_md5,
@@ -292,7 +299,10 @@ class EHentaiAgent(BaseAgent):
         except FileMD5NotMatchingException:
             # downloaded file md5 not matches excess_limit_md5, good image
             pass
+        except EHentaiInvalidLoginAuthentication:
+            download_path.unlink() # rm downloaded img
+            raise
         else:
             # download file md5 matches excess_limit_md5, excess EH viewing limit
-            (output_path/filename).unlink() # rm downloaded img
+            download_path.unlink() # rm downloaded img
             raise EHentaiExcessViewingLimit(item_info.url)

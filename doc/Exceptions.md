@@ -15,6 +15,8 @@ Table Of Content
   * [Members](#members-3)
 * [5. class EHentaiExcessViewingLimit](#5-class-ehentaiexcessviewinglimit)
   * [Members](#members-4)
+* [6. class EHentaiInvalidLoginAuthentication](#6-class-ehentaiinvalidloginauthentication)
+  * [Members](#members-5)
 
 </details>
 
@@ -64,6 +66,15 @@ Table Of Content
 # 5. class EHentaiExcessViewingLimit
 
 * You excess E-Hentai viewing limit
+
+## Members
+
+* **message**: string error message
+* **url**: string WebItemInfo's url when this exception raised
+
+# 6. class EHentaiInvalidLoginAuthentication
+
+* Your E-Hentai Login Authentication is Invalid
 
 ## Members
 
