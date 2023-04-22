@@ -6,12 +6,12 @@ from ..Types.Exceptions import (
     WrongParentChildException,
     EHentaiInPeekHourException,
     EHentaiExcessViewingLimit,
-    FileMD5NotMatchingException
+    FileMD5NotMatchingException,
 )
 from ..Utils import (
     TypeChecker, TypeMatcher,
     Clamp, MergeDeDuplicate,
-    UrlParser,
+    GetMD5, UrlParser,
     HTTPClient, BROWSER_HEADERS
 )
 from typing import Union
@@ -275,9 +275,20 @@ class EHentaiAgent(BaseAgent):
         # when you excess EH viewing limit
         # EH will send back an image with warning text on it rather than the real image
         # check for its md5
-        excess_limit_md5 = '88fe16ae482faddb4cc23df15722348c'
+        excess_limit_md5 = [
+            '88fe16ae482faddb4cc23df15722348c',
+            '21ad51280632f6f5e54081aef8817061',
+        ]
         try:
-            self.__http.DownloadUrl(url, output_path/filename, overwrite=replace, md5=excess_limit_md5)
+            download_path = output_path/filename
+            self.__http.DownloadUrl(url, download_path, overwrite=replace)
+            file_md5 = GetMD5(download_path)
+            if file_md5 not in excess_limit_md5:
+                raise FileMD5NotMatchingException(
+                    excess_limit_md5, file_md5,
+                    str(download_path.resolve()),
+                    'Downloaded file MD5 not matching.'
+                )
         except FileMD5NotMatchingException:
             # downloaded file md5 not matches excess_limit_md5, good image
             pass
