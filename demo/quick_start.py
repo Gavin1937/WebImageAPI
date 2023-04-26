@@ -1,16 +1,16 @@
 #! /bin/python3
 
-#########################################################
-#                                                       #
-#   Quick Start guild for WebImageAPI                   #
-#                                                       #
-#   Make sure you run this file from "demo" directory,  #
-#   so it can load the WebImageAPI package properly     #
-#                                                       #
-#   Author: Gavin1937                                   #
-#   GitHub: https://github.com/Gavin1937/WebImageAPI    #
-#                                                       #
-#########################################################
+########################################################
+#                                                      #
+#  Quick Start guild for WebImageAPI                   #
+#                                                      #
+#  Make sure you run this file from "demo" directory,  #
+#  so it can load the WebImageAPI package properly     #
+#                                                      #
+#  Author: Gavin1937                                   #
+#  GitHub: https://github.com/Gavin1937/WebImageAPI    #
+#                                                      #
+########################################################
 
 
 # set path to parent in order to import WebPicAPI
@@ -29,16 +29,23 @@ twitter_token = {
     'consumer_key': 'YOUR TWITTER consumer_key',
     'consumer_secret': 'YOUR TWITTER consumer_secret',
     'access_token': 'YOUR TWITTER access_token',
-    'access_token_secret': 'YOUR TWITTER access_token_secret'
+    'access_token_secret': 'YOUR TWITTER access_token_secret',
+    'bearer_token': 'YOUR TWITTER bearer_token',
+}
+
+ehentai_token = {
+    'ipb_member_id': 'YOUR EHENTAI ipb_member_id',
+    'ipb_pass_hash': 'YOUR EHENTAI ipb_pass_hash',
 }
 
 
 # initialize WebImageAPI abstract class
 agent = WebImageAPI()
 
-# setup pixiv & twitter agents
-agent.SetPixivTokens(**pixiv_token)
-agent.SetTwitterTokens(**twitter_token)
+# setup agents
+agent.SetPixivTokens(**pixiv_token) # required if you need to access pixiv
+agent.SetTwitterTokens(**twitter_token) # required if you need to access twitter
+agent.SetEHentaiAuthInfo(**ehentai_token) # optional for downloading original image from eh
 
 
 urls = [
