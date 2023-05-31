@@ -13,7 +13,7 @@
 ########################################################
 
 
-# set path to parent in order to import WebPicAPI
+# set path to parent in order to import WebImageAPI
 import sys
 sys.path.append('..')
 

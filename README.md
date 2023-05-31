@@ -29,7 +29,6 @@ This project is a complete rewrite of my [old project WebPicAPI](https://github.
 | [pixivpy3](https://pypi.org/project/PixivPy/)                    | >= 3.7.2  |
 | [tweepy](https://pypi.org/project/tweepy/)                       | >= 4.13.0 |
 | [requests](https://pypi.org/project/requests/)                   | >= 2.28.2 |
-| [requests-oauthlib](https://pypi.org/project/requests-oauthlib/) | >= 1.3.1  |
 | [beautifulsoup4](https://pypi.org/project/beautifulsoup4/)       | >= 4.12.0 |
 | [lxml](https://pypi.org/project/lxml/)                           | >= 4.9.2  |
 

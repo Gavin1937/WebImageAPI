@@ -178,7 +178,7 @@ class EHentaiAgent(BaseAgent):
         
         # bypass gallery content warning
         cwarning = soup.find_all(string='Content Warning')
-        if cwarning is not None or len(cwarning) <= 0:
+        if cwarning is not None or len(cwarning) > 0:
             tmp = UrlParser(url)
             tmp.UpdateQuery({**tmp.query, 'nw':['session']})
             url = tmp.url
