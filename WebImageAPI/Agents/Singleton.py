@@ -8,11 +8,14 @@
 #                                                                    #
 # ################################################################## #
 
+from threading import Lock
 
-# source: https://stackoverflow.com/questions/31875/is-there-a-simple-elegant-way-to-define-singletons
+
+# source 1: https://stackoverflow.com/questions/31875/is-there-a-simple-elegant-way-to-define-singletons
+# source 2: https://medium.com/analytics-vidhya/how-to-create-a-thread-safe-singleton-class-in-python-822e1170a7f6
 class Singleton:
     """
-    A non-thread-safe helper class to ease implementing singletons.
+    A thread-safe helper class to ease implementing singletons.
     This should be used as a decorator -- not a metaclass -- to the
     class that should be a singleton.
     
@@ -28,19 +31,22 @@ class Singleton:
     def __init__(self, decorated):
         # set decorated class
         self._decorated = decorated
+        self._instance = None
+        self._lock = Lock()
     
-    def instance(self, **args):
+    def instance(self, *args, **kwargs):
         """
         Returns the singleton instance.
         Upon its first call, it creates a new instance of the decorated class
         and calls its `__init__` method with supplied `args`.
         On all subsequent calls, the already created instance is returned.
         """
-        try:
-            return self._instance
-        except AttributeError:
-            self._instance = self._decorated(**args)
-            return self._instance
+        if self._instance is None:
+            with self._lock:
+                # check again in case another thread acquired the lock before current one
+                if self._instance is None:
+                    self._instance = self._decorated(*args, **kwargs)
+        return self._instance
     
     def __call__(self):
         raise TypeError('Singletons must be accessed through `instance()`.')
