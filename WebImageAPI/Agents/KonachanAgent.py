@@ -143,6 +143,27 @@ class KonachanAgent(BaseAgent):
         filename = url.split('/')[-1]
         self.__http.DownloadUrl(url, output_path/filename, overwrite=replace)
     
+    @TypeChecker(KonachanItemInfo, (1,))
+    def FindSource(self, item_info:KonachanItemInfo) -> str:
+        '''
+        Find the source of a Child KonachanItemInfo.
+        Param:
+            item_info    => KonachanItemInfo Child
+        Returns:
+            str url to the source if has one
+            otherwise, None
+        '''
+        
+        if not item_info.IsChild():
+            raise WrongParentChildException(item_info.parent_child, 'Cannot find source for non-child KonachanItemInfo.')
+        
+        if item_info.details is None:
+            item_info = self.FetchItemInfoDetail(item_info)
+        
+        if 'source' in item_info.details['posts'][0] and item_info.details['posts'][0]['source'] is not None:
+            return item_info.details['posts'][0]['source']
+        return None
+    
     
     # private helper function
     def __NormalURLToApi(self, url:str, parent_child:PARENT_CHILD, update_qs:dict={}) -> str:

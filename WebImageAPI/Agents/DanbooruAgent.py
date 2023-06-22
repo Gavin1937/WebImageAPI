@@ -133,6 +133,27 @@ class DanbooruAgent(BaseAgent):
         filename = url.split('/')[-1]
         self.__http.DownloadUrl(url, output_path/filename, overwrite=replace)
     
+    @TypeChecker(DanbooruItemInfo, (1,))
+    def FindSource(self, item_info:DanbooruItemInfo) -> str:
+        '''
+        Find the source of a Child DanbooruItemInfo.
+        Param:
+            item_info    => DanbooruItemInfo Child
+        Returns:
+            str url to the source if has one
+            otherwise, None
+        '''
+        
+        if not item_info.IsChild():
+            raise WrongParentChildException(item_info.parent_child, 'Cannot find source for non-child DanbooruItemInfo.')
+        
+        if item_info.details is None:
+            item_info = self.FetchItemInfoDetail(item_info)
+        
+        if 'source' in item_info.details and item_info.details['source'] is not None:
+            return item_info.details['source']
+        return None
+    
     
     # private helper function
     def __NormalURLToApi(self, url:str, update_qs:dict={}) -> str:

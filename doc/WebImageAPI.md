@@ -27,6 +27,7 @@ Table Of Content
       * [**FetchParentChildren(WebImageAPI, item\_info:WebItemInfo, page:int=1) -\> list:**](#fetchparentchildrenwebimageapi-item_infowebiteminfo-pageint1---list)
       * [**FetchUserInfo(WebImageAPI, item\_info:WebItemInfo, old\_user\_info:UserInfo=None) -\> UserInfo:**](#fetchuserinfowebimageapi-item_infowebiteminfo-old_user_infouserinfonone---userinfo)
       * [**DownloadItem(WebImageAPI, item\_info:WebItemInfo, output\_path:Union\[str,Path\], replace:bool=False):**](#downloaditemwebimageapi-item_infowebiteminfo-output_pathunionstrpath-replaceboolfalse)
+      * [**FindSource(self, item\_info:WebItemInfo, absolute:bool=False) -\> Union\[WebItemInfo,str\]:**](#findsourceself-item_infowebiteminfo-absoluteboolfalse---unionwebiteminfostr)
     * [**WebItemInfo Generation**](#webiteminfo-generation)
       * [**UrlToWebItemInfo(WebImageAPI, url:str) -\> WebItemInfo:**](#urltowebiteminfowebimageapi-urlstr---webiteminfo)
       * [**FromChildDetails(self, domain:DOMAIN, details) -\> WebItemInfo:**](#fromchilddetailsself-domaindomain-details---webiteminfo)
@@ -166,6 +167,20 @@ I highly recommend you to stick with this class and let it to handle everything 
   * **item_info**:     WebItemInfo Child to download
   * **output_path**:   string | pathlib.Path of a directory for downloaded file
   * **replace**:       boolean flag, whether replace if download file already exists
+
+#### **FindSource(self, item_info:WebItemInfo, absolute:bool=False) -> Union[WebItemInfo,str]:**
+
+* Find the source of a Child WebItemInfo.
+* Param:
+  * **item_info**: WebItemInfo Child
+  * **absolute**: bool flag
+    * if True, return str url when find a not support url.
+    * if False, return None in above case
+* Returns:
+  * a valid WebItemInfo if find one source
+  * if find one source but not valid, return str or item_info base on "absolute"
+  * if not find any source, return None
+
 
 ### **WebItemInfo Generation**
 

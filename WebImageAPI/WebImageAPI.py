@@ -205,6 +205,47 @@ class WebImageAPI:
         else:
             raise ValueError('Empty or Invalid WebItemInfo.')
     
+    def FindSource(self, item_info:WebItemInfo, absolute:bool=False) -> Union[WebItemInfo,str]:
+        '''
+        Find the source of a Child WebItemInfo.
+        Param:
+            item_info    => WebItemInfo Child
+            absolute     => bool flag
+                            if True, return str url when find a not support url.
+                            if False, return None in above case
+        Returns:
+            a valid WebItemInfo if find one source
+            if find one source but not valid, return str or item_info base on "absolute"
+            if not find any source, return None
+        '''
+        
+        src = None
+        if isinstance(item_info, PixivItemInfo):
+            return item_info
+        elif isinstance(item_info, TwitterItemInfo):
+            return item_info
+        elif isinstance(item_info, DanbooruItemInfo):
+            src = self.GetDanbooruAgent().FindSource(item_info)
+        elif isinstance(item_info, YandereItemInfo):
+            src = self.GetYandereAgent().FindSource(item_info)
+        elif isinstance(item_info, KonachanItemInfo):
+            src = self.GetKonachanAgent().FindSource(item_info)
+        elif isinstance(item_info, WeiboItemInfo):
+            return item_info
+        elif isinstance(item_info, EHentaiItemInfo):
+            return item_info
+        else:
+            raise ValueError('Empty or Invalid WebItemInfo.')
+        
+        try:
+            return self.UrlToWebItemInfo(src)
+        except ValueError:
+            if src is not None and len(src) > 0:
+                if absolute:
+                    return src
+                return item_info
+            return None
+    
     
     # WebItemInfo generation
     @TypeChecker(str, (1,))

@@ -14,7 +14,7 @@ Table Of Content
     * [**DownloadItem(BaseAgent, item\_info:WebItemInfo, output\_path:Union\[str,Path\], replace:bool=False):**](#downloaditembaseagent-item_infowebiteminfo-output_pathunionstrpath-replaceboolfalse)
 * [3. About Singleton](#3-about-singleton)
   * [Methods](#methods-1)
-    * [**instance(self, \*\*args):**](#instanceself-args)
+    * [**instance(self, \*args, \*\*kwargs):**](#instanceself-args-kwargs)
 * [4. class PixivAgent](#4-class-pixivagent)
   * [Additional Methods](#additional-methods)
     * [**\_\_init\_\_(PixivAgent, refresh\_token:str, max\_try:int=5):**](#__init__pixivagent-refresh_tokenstr-max_tryint5)
@@ -39,14 +39,17 @@ Table Of Content
   * [Additional Methods](#additional-methods-2)
     * [**\_\_init\_\_(DanbooruAgent, proxies:str=None):**](#__init__danbooruagent-proxiesstrnone)
     * [**SetProxies(DanbooruAgent, proxies:str=None):**](#setproxiesdanbooruagent-proxiesstrnone)
+    * [**FindSource(DanbooruAgent, item\_info:DanbooruItemInfo) -\> str:**](#findsourcedanbooruagent-item_infodanbooruiteminfo---str)
 * [7. class YandereAgent](#7-class-yandereagent)
   * [Additional Methods](#additional-methods-3)
     * [**\_\_init\_\_(YandereAgent, proxies:str=None):**](#__init__yandereagent-proxiesstrnone)
     * [**SetProxies(YandereAgent, proxies:str=None):**](#setproxiesyandereagent-proxiesstrnone)
+    * [**FindSource(YandereAgent, item\_info:YandereItemInfo) -\> str:**](#findsourceyandereagent-item_infoyandereiteminfo---str)
 * [8. class KonachanAgent](#8-class-konachanagent)
   * [Additional Methods](#additional-methods-4)
     * [**\_\_init\_\_(KonachanAgent, proxies:str=None):**](#__init__konachanagent-proxiesstrnone)
     * [**SetProxies(KonachanAgent, proxies:str=None):**](#setproxieskonachanagent-proxiesstrnone)
+    * [**FindSource(KonachanAgent, item\_info:KonachanItemInfo) -\> str:**](#findsourcekonachanagent-item_infokonachaniteminfo---str)
 * [9. class WeiboAgent](#9-class-weiboagent)
   * [Additional Methods](#additional-methods-5)
     * [**\_\_init\_\_(WeiboAgent, proxies:str=None):**](#__init__weiboagent-proxiesstrnone)
@@ -137,7 +140,7 @@ This design decision is because I don't want to initialize the same `Agent` clas
 
 ## Methods
 
-### **instance(self, \*\*args):**
+### **instance(self, \*args, \*\*kwargs):**
 
 * All singleton class in WebImageAPI should be invoke through this function.
 * It will create a new instance of the class when you call it the first time.
@@ -327,6 +330,15 @@ This Agent only accept [DanbooruItemInfo](./WebItemInfo.md#4-class-danbooruitemi
 * Parameters
   * **proxies**:              string, a proxy server url string, default None, disabled
 
+### **FindSource(DanbooruAgent, item_info:DanbooruItemInfo) -> str:**
+
+* Find the source of a Child DanbooruItemInfo.
+* Param:
+  * **item_info**: DanbooruItemInfo Child
+* Returns:
+  * str url to the source if has one
+  * otherwise, None
+
 # 7. class YandereAgent
 
 Child class of [BaseAgent](#2-class-baseagent) for handling requests to [yande.re](https://yande.re/)
@@ -346,9 +358,18 @@ This Agent only accept [YandereItemInfo](./WebItemInfo.md#5-class-yandereiteminf
 
 ### **SetProxies(YandereAgent, proxies:str=None):**
 
-* Set proxy for DanbooruAgent
+* Set proxy for YandereAgent
 * Parameters
   * **proxies**:              string, a proxy server url string, default None, disabled
+
+### **FindSource(YandereAgent, item_info:YandereItemInfo) -> str:**
+
+* Find the source of a Child YandereItemInfo.
+* Param:
+  * **item_info**: YandereItemInfo Child
+* Returns:
+  * str url to the source if has one
+  * otherwise, None
 
 # 8. class KonachanAgent
 
@@ -369,9 +390,18 @@ This Agent only accept [KonachanItemInfo](./WebItemInfo.md#6-class-konachanitemi
 
 ### **SetProxies(KonachanAgent, proxies:str=None):**
 
-* Set proxy for DanbooruAgent
+* Set proxy for KonachanAgent
 * Parameters
   * **proxies**:              string, a proxy server url string, default None, disabled
+
+### **FindSource(KonachanAgent, item_info:KonachanItemInfo) -> str:**
+
+* Find the source of a Child KonachanItemInfo.
+* Param:
+  * **item_info**: KonachanItemInfo Child
+* Returns:
+  * str url to the source if has one
+  * otherwise, None
 
 # 9. class WeiboAgent
 
