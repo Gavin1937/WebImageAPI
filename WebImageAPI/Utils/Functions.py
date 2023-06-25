@@ -20,8 +20,8 @@ def Clamp(val, bottom=None, top=None):
 def MergeDeDuplicate(iterable_1, *args) -> list:
     return list(set([*iterable_1, *[a for arg in args for a in arg]]))
 
-def PPrintJson(json_obj:dict, indent:int=2):
-    print(json.dumps(json_obj, indent=indent))
+def PPrintJson(json_obj:dict, indent:int=2, ensure_ascii:bool=False):
+    print(json.dumps(json_obj, indent=indent, ensure_ascii=ensure_ascii))
 
 def GetMD5(file:Union[str,Path,bytes,BytesIO]):
     output = None

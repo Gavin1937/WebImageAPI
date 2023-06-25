@@ -42,9 +42,9 @@ class HTTPClient:
                 proxy_type = 'http'
             self.__proxies = { proxy_type: default_proxies }
         self.__session:requests.Session = requests.session()
-        self.__session.headers = self.__headers
-        self.__session.cookies = self.__cookies
-        self.__session.proxies = self.__proxies
+        self.__session.headers.update(self.__headers)
+        self.__session.cookies.update(self.__cookies)
+        self.__session.proxies.update(self.__proxies)
         self.status_code:int = -1
         self.__delay_val:tuple = delay_value
     
@@ -58,12 +58,14 @@ class HTTPClient:
     
     def SetHeaders(self, headers:dict) -> None:
         self.__headers = headers
+        self.__session.headers.update(self.__headers)
     
     def GetCookies(self) -> dict:
         return self.__cookies
     
     def SetCookies(self, cookies:dict) -> None:
         self.__cookies = cookies
+        self.__session.cookies.update(self.__headers)
     
     def GetProxies(self) -> dict:
         return self.__proxies
@@ -74,6 +76,7 @@ class HTTPClient:
             if not proxies.startswith(proxy_type):
                 proxy_type = 'http'
             self.__proxies = { proxy_type:proxies }
+            self.__session.proxies.update(self.__headers)
     
     def GetDelayValue(self) -> tuple:
         return self.__delay_val
