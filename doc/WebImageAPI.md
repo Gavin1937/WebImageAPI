@@ -85,6 +85,7 @@ I highly recommend you to stick with this class and let it to handle everything 
     * Require all the parameters listed above.
   * WebImageAPI will prioritize `TwitterWebAgent` if possible.
   * checkout [TwitterWebAgent](./Agents.md#6-class-twitterwebagent) for detail.
+  * checkout [new_twitter_agent.py](../demo/new_twitter_agent.py) for detail usage of new TwitterAgent.
 
 #### **SetEHentaiAuthInfo(WebImageAPI, ipb\_member\_id:str, ipb\_pass\_hash:str):**
 

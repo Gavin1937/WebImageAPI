@@ -2,7 +2,7 @@
 
 ########################################################
 #                                                      #
-#  Quick Start guild for WebImageAPI                   #
+#  Guild about new TwitterAgent for WebImageAPI        #
 #                                                      #
 #  Make sure you run this file from "demo" directory,  #
 #  so it can load the WebImageAPI package properly     #
@@ -21,10 +21,6 @@ sys.path.append('..')
 from WebImageAPI import WebImageAPI
 
 
-pixiv_token = {
-    'refresh_token':'YOUR PIXIV refresh_token'
-}
-
 twitter_token = {
     'consumer_key': 'YOUR TWITTER consumer_key',
     'consumer_secret': 'YOUR TWITTER consumer_secret',
@@ -33,9 +29,15 @@ twitter_token = {
     'bearer_token': 'YOUR TWITTER bearer_token',
 }
 
-ehentai_token = {
-    'ipb_member_id': 'YOUR EHENTAI ipb_member_id',
-    'ipb_pass_hash': 'YOUR EHENTAI ipb_pass_hash',
+twitter_web_token = {
+    'header_authorization': 'YOUR TWITTER HEADER authorization',
+    'header_x_client_uuid': 'YOUR TWITTER HEADER x_client_uuid',
+    'header_x_csrf_token': 'YOUR TWITTER HEADER x_csrf_token',
+    'cookie_auth_token': 'YOUR TWITTER cookie auth_token',
+    'cookie_ct0': 'YOUR TWITTER cookie ct0',
+    'endpoint_userbyscreenname': 'YOUR TWITTER API ENDPOINT UNIQUE STR ID FOR UserByScreenName',
+    'endpoint_usermedia': 'YOUR TWITTER API ENDPOINT UNIQUE STR ID FOR UserMedia',
+    'endpoint_tweetdetail': 'YOUR TWITTER API ENDPOINT UNIQUE STR ID FOR TweetDetail',
 }
 
 
@@ -43,31 +45,15 @@ ehentai_token = {
 agent = WebImageAPI()
 
 # setup agents
-agent.SetPixivTokens(**pixiv_token) # required if you need to access pixiv
-agent.SetTwitterTokens('dev', **twitter_token) # required if you need to access twitter
-agent.SetEHentaiAuthInfo(**ehentai_token) # optional for downloading original image from eh
+agent.SetTwitterTokens('web' **twitter_web_token) # init a TwitterWebAgent
+agent.SetTwitterTokens('dev', **twitter_token) # init a TwitterAgent
+agent.SetTwitterTokens('both', **twitter_web_token, **twitter_token) # init both TwitterWebAgent & TwitterAgent
 
 
 urls = [
-'https://www.pixiv.net/users/11764388',
-'https://www.pixiv.net/artworks/76142002',
 'https://twitter.com/houk1se1',
 'https://twitter.com/SimonCreativeTW/status/1212223385960210432',
-'https://danbooru.donmai.us/posts?tags=nagishiro_mito',
-'https://danbooru.donmai.us/posts/6159304',
-'https://yande.re/post?tags=nagishiro_mito&page=2',
-'https://yande.re/post/show/1059321',
-'https://konachan.com/post?tags=nagishiro_mito',
-'https://konachan.com/post/show/355165',
-'https://m.weibo.cn/u/1954940747',
-'https://m.weibo.cn/detail/4883581258435481',
-'https://e-hentai.org/g/2510385/e39a66a86e/',
-'https://e-hentai.org/s/9b00cf1ccc/2510385-1',
 ]
-
-# use additional features from specific Agents
-print(agent.GetPixivAgent().GetAPI())
-print(agent.GetTwitterAgent().GetAPI())
 
 
 for idx, url in enumerate(urls):
