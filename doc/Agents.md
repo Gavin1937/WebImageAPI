@@ -35,28 +35,34 @@ Table Of Content
     * [**IsFollowedUser(TwitterAgent, item\_info:TwitterItemInfo) -\> bool:**](#isfollowedusertwitteragent-item_infotwitteriteminfo---bool)
     * [**FollowUser(TwitterAgent, item\_info:TwitterItemInfo) -\> bool:**](#followusertwitteragent-item_infotwitteriteminfo---bool)
     * [**UnfollowUser(TwitterAgent, item\_info:TwitterItemInfo) -\> bool:**](#unfollowusertwitteragent-item_infotwitteriteminfo---bool)
-* [6. class DanbooruAgent](#6-class-danbooruagent)
+* [6. class TwitterWebAgent](#6-class-twitterwebagent)
   * [Additional Methods](#additional-methods-2)
+    * [**\_\_init\_\_(TwitterWebAgent, ...):**](#__init__twitterwebagent-)
+    * [**SetProxies(TwitterWebAgent, proxies:str=None):**](#setproxiestwitterwebagent-proxiesstrnone)
+    * [**GetParentItemInfo(TwitterWebAgent, item\_info:TwitterItemInfo) -\> TwitterItemInfo:**](#getparentiteminfotwitterwebagent-item_infotwitteriteminfo---twitteriteminfo)
+    * [**IsFollowedUser(TwitterWebAgent, item\_info:TwitterItemInfo) -\> bool:**](#isfollowedusertwitterwebagent-item_infotwitteriteminfo---bool)
+* [7. class DanbooruAgent](#7-class-danbooruagent)
+  * [Additional Methods](#additional-methods-3)
     * [**\_\_init\_\_(DanbooruAgent, proxies:str=None):**](#__init__danbooruagent-proxiesstrnone)
     * [**SetProxies(DanbooruAgent, proxies:str=None):**](#setproxiesdanbooruagent-proxiesstrnone)
     * [**FindSource(DanbooruAgent, item\_info:DanbooruItemInfo) -\> str:**](#findsourcedanbooruagent-item_infodanbooruiteminfo---str)
-* [7. class YandereAgent](#7-class-yandereagent)
-  * [Additional Methods](#additional-methods-3)
+* [8. class YandereAgent](#8-class-yandereagent)
+  * [Additional Methods](#additional-methods-4)
     * [**\_\_init\_\_(YandereAgent, proxies:str=None):**](#__init__yandereagent-proxiesstrnone)
     * [**SetProxies(YandereAgent, proxies:str=None):**](#setproxiesyandereagent-proxiesstrnone)
     * [**FindSource(YandereAgent, item\_info:YandereItemInfo) -\> str:**](#findsourceyandereagent-item_infoyandereiteminfo---str)
-* [8. class KonachanAgent](#8-class-konachanagent)
-  * [Additional Methods](#additional-methods-4)
+* [9. class KonachanAgent](#9-class-konachanagent)
+  * [Additional Methods](#additional-methods-5)
     * [**\_\_init\_\_(KonachanAgent, proxies:str=None):**](#__init__konachanagent-proxiesstrnone)
     * [**SetProxies(KonachanAgent, proxies:str=None):**](#setproxieskonachanagent-proxiesstrnone)
     * [**FindSource(KonachanAgent, item\_info:KonachanItemInfo) -\> str:**](#findsourcekonachanagent-item_infokonachaniteminfo---str)
-* [9. class WeiboAgent](#9-class-weiboagent)
-  * [Additional Methods](#additional-methods-5)
+* [10. class WeiboAgent](#10-class-weiboagent)
+  * [Additional Methods](#additional-methods-6)
     * [**\_\_init\_\_(WeiboAgent, proxies:str=None):**](#__init__weiboagent-proxiesstrnone)
     * [**SetProxies(WeiboAgent, proxies:str=None):**](#setproxiesweiboagent-proxiesstrnone)
-* [10. class EHentaiAgent](#10-class-ehentaiagent)
+* [11. class EHentaiAgent](#11-class-ehentaiagent)
   * [E-Hentai Peek Hour](#e-hentai-peek-hour)
-  * [Additional Methods](#additional-methods-6)
+  * [Additional Methods](#additional-methods-7)
     * [**\_\_init\_\_(EHentaiAgent, ipb\_member\_id:str=None, ipb\_pass\_hash:str=None, proxies:str=None):**](#__init__ehentaiagent-ipb_member_idstrnone-ipb_pass_hashstrnone-proxiesstrnone)
     * [**SetProxies(EHentaiAgent, proxies:str=None):**](#setproxiesehentaiagent-proxiesstrnone)
     * [**SetEHentaiAuthInfo(EHentaiAgent, ipb\_member\_id:str, ipb\_pass\_hash:str):**](#setehentaiauthinfoehentaiagent-ipb_member_idstr-ipb_pass_hashstr)
@@ -242,6 +248,13 @@ Sharing all the common members and methods from base class.
 
 This Agent only accept [TwitterItemInfo](./WebItemInfo.md#3-class-twitteriteminfo)
 
+**This agent is backed by twitter developer api.**
+
+* Starting from early 2023, twitter force its free tier developer api to be write-only.
+* Thus, I need to replace TwitterAgent's backend with twitter's web client api.
+* checkout following articles for detail:
+  * [https://developer.twitter.com/en/docs/twitter-api](https://developer.twitter.com/en/docs/twitter-api)
+
 ## Additional Methods
 
 ### **\_\_init\_\_(TwitterAgent, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str, bearer_token:str, max_try:int=5):**
@@ -258,6 +271,7 @@ This Agent only accept [TwitterItemInfo](./WebItemInfo.md#3-class-twitteriteminf
   * **max_try**:              integer, max retry number
 * This Agent uses tweepy.OAuth1UserHandler() and tweepy.API() to authenticate with twitter.
 * [2023-04-01]: Twitter will change their api policy within 30 days. Therefore, this Agent may be affect by the api policy changes.
+* [2023-06-26]: Twitter developer api free tier is now write-only. That means TwitterAgent is pretty much unusable with a free tier twitter dev account. (maybe you still can use follow & unfollow feature?) Use TwitterWebAgent instead.
 
 ### **GetAPI(TwitterAgent) -> tweepy.API:**
 
@@ -307,7 +321,97 @@ This Agent only accept [TwitterItemInfo](./WebItemInfo.md#3-class-twitteriteminf
   * True if success
   * False if failed
 
-# 6. class DanbooruAgent
+# 6. class TwitterWebAgent
+
+Child class of [BaseAgent](#2-class-baseagent) for handling requests to [twitter](https://twitter.com/)
+
+Sharing all the common members and methods from base class.
+
+This Agent only accept [TwitterItemInfo](./WebItemInfo.md#3-class-twitteriteminfo)
+
+**This agent is backed by twitter web client api.**
+
+* Starting from early 2023, twitter force its free tier developer api to be write-only.
+* Thus, I need to replace TwitterAgent's backend with twitter's web client api.
+* checkout following articles for detail:
+  * [https://developer.twitter.com/en/docs/twitter-api](https://developer.twitter.com/en/docs/twitter-api)
+
+## Additional Methods
+
+### **\_\_init\_\_(TwitterWebAgent, ...):**
+
+* Constructor for TwitterWebAgent class
+* You need to pass in required/optional parameters for authentication in [TwitterWebAgent.instance() function](#instanceself-args)
+
+* To initialize this agent, you need to collect following stuff from your browser.
+
+* From request header to twitter api:
+  * **Authorization**
+  * **X-Client-Uuid**
+  * **X-Csrf-Token**
+
+* From cookies:
+  * **auth_token**
+  * **ct0**
+
+* twitter api endpoints:
+  * Twitter's web client api endpoints are in this format:
+  * `https://twitter.com/i/api/graphql/{UNIQUE_STR_ID}/{ENDPOINT_NAME}`
+  * where `{UNIQUE_STR_ID}` is an unique str id for its dedicated `{ENDPOINT_NAME}`
+  * We need to use 3 endpoints in this agent: `UserByScreenName`, `UserMedia`, `TweetDetail`
+  * So, you need to find their dedicate `{UNIQUE_STR_ID}` from your browser's dev tool.
+
+  * Usually, twitter web client will make a request to `UserByScreenName` endpoint when you visit an user's homepage. (e.g. [https://twitter.com/twitterdev](https://twitter.com/twitterdev))
+
+  * And, it will make another request to 'UserMedia' endpoint when you visit a user's media page. (e.g. [https://twitter.com/TwitterDev/media](https://twitter.com/TwitterDev/media))
+
+  * Finally, it will make a request to 'TweetDetail' endpoint when you visit a tweet. (e.g. [https://twitter.com/TwitterDev/status/1585707921433923585](https://twitter.com/TwitterDev/status/1585707921433923585))
+
+  * For example, if you found following request when visiting a twitter user's homepage:
+    * `https://twitter.com/i/api/graphql/abcdefg123456-/UserByScreenName?....`
+    * you found your unique str id for UserByScreenName: `abcdefg123456-`
+
+  * fill-in your unique str id for following parameters:
+    * **endpoint_userbyscreenname**
+    * **endpoint_usermedia**
+    * **endpoint_tweetdetail**
+
+* Parameters:
+  * **header_authorization**: str, Authorization in request header
+  * **header_x_client_uuid**: str, X-Client-Uuid in request header
+  * **header_x_csrf_token**: str, X-Csrf-Token in request header
+  * **cookie_auth_token**: str, auth_token in cookie
+  * **cookie_ct0**: str, ct0 in cookie
+  * **endpoint_userbyscreenname**: str, unique id for UserByScreenName endpoint
+  * **endpoint_usermedia**: str, unique id for UserMedia endpoint
+  * **endpoint_tweetdetail**: str, unique id for TweetDetail endpoint
+  * **proxies**: string, a proxy server url string, default None, disabled
+  * **delay_val**: float, seconds between each request, default 0.0
+
+### **SetProxies(TwitterWebAgent, proxies:str=None):**
+
+* Set proxy for TwitterWebAgent
+* Parameters
+  * **proxies**:              string, a proxy server url string, default None, disabled
+
+### **GetParentItemInfo(TwitterWebAgent, item_info:TwitterItemInfo) -> TwitterItemInfo:**
+
+* Get the parent TwitterItemInfo for a child TwitterItemInfo.
+* Param:
+  * item_info    => TwitterItemInfo Child
+* Returns:
+  * A parent TwitterItemInfo
+
+### **IsFollowedUser(TwitterWebAgent, item_info:TwitterItemInfo) -> bool:**
+
+* Is input TwitterItemInfo points to an user that is followed by current account.
+* Param:
+  * item_info    => TwitterItemInfo to check
+* Returns:
+  * True if is followed
+  * False if not
+
+# 7. class DanbooruAgent
 
 Child class of [BaseAgent](#2-class-baseagent) for handling requests to [danbooru](https://danbooru.donmai.us/)
 
@@ -339,7 +443,7 @@ This Agent only accept [DanbooruItemInfo](./WebItemInfo.md#4-class-danbooruitemi
   * str url to the source if has one
   * otherwise, None
 
-# 7. class YandereAgent
+# 8. class YandereAgent
 
 Child class of [BaseAgent](#2-class-baseagent) for handling requests to [yande.re](https://yande.re/)
 
@@ -371,7 +475,7 @@ This Agent only accept [YandereItemInfo](./WebItemInfo.md#5-class-yandereiteminf
   * str url to the source if has one
   * otherwise, None
 
-# 8. class KonachanAgent
+# 9. class KonachanAgent
 
 Child class of [BaseAgent](#2-class-baseagent) for handling requests to [konachan](https://konachan.com/)
 
@@ -403,7 +507,7 @@ This Agent only accept [KonachanItemInfo](./WebItemInfo.md#6-class-konachanitemi
   * str url to the source if has one
   * otherwise, None
 
-# 9. class WeiboAgent
+# 10. class WeiboAgent
 
 Child class of [BaseAgent](#2-class-baseagent) for handling requests to [weibo](https://m.weibo.cn/)
 
@@ -426,7 +530,7 @@ This Agent only accept [WeiboItemInfo](./WebItemInfo.md#7-class-weiboiteminfo)
 * Parameters
   * **proxies**:              string, a proxy server url string, default None, disabled
 
-# 10. class EHentaiAgent
+# 11. class EHentaiAgent
 
 Child class of [BaseAgent](#2-class-baseagent) for handling requests to [e-hentai](https://e-hentai.org/)
 

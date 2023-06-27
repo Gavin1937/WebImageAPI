@@ -10,13 +10,14 @@ class WebImageAPI:
     'Handles all Agents & WebItemInfo in one place'
     
     def __init__(self):
-        self.__pixiv_agent:PixivAgent          = None
-        self.__twitter_agent:TwitterAgent      = None
-        self.__danbooru_agent:DanbooruAgent    = None
-        self.__yandere_agent:YandereAgent      = None
-        self.__konachan_agent:KonachanAgent  = None
-        self.__weibo_agent:WeiboAgent        = None
-        self.__ehentai_agent:EHentaiAgent    = None
+        self.__pixiv_agent:PixivAgent             = None
+        self.__twitter_agent:TwitterAgent         = None
+        self.__twitter_web_agent:TwitterWebAgent  = None
+        self.__danbooru_agent:DanbooruAgent       = None
+        self.__yandere_agent:YandereAgent         = None
+        self.__konachan_agent:KonachanAgent       = None
+        self.__weibo_agent:WeiboAgent             = None
+        self.__ehentai_agent:EHentaiAgent         = None
     
     
     # interfaces
@@ -25,8 +26,123 @@ class WebImageAPI:
     def SetPixivTokens(self, refresh_token:str):
         self.__InitAgent(DOMAIN.PIXIV, refresh_token=refresh_token)
     
-    def SetTwitterTokens(self, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str, bearer_token:str):
-        self.__InitAgent(DOMAIN.TWITTER, consumer_key=consumer_key, consumer_secret=consumer_secret, access_token=access_token, access_token_secret=access_token_secret, bearer_token=bearer_token)
+    def SetTwitterTokens(
+        self, agent_type:str,
+        
+        # agent_type == 'web'
+        header_authorization:str=None, header_x_client_uuid:str=None,
+        header_x_csrf_token:str=None, cookie_auth_token:str=None,
+        cookie_ct0:str=None, endpoint_userbyscreenname:str=None,
+        endpoint_usermedia:str=None, endpoint_tweetdetail:str=None,
+        
+        # agent_type == 'dev'
+        consumer_key:str=None, consumer_secret:str=None,
+        access_token:str=None, access_token_secret:str=None,
+        bearer_token:str=None,
+    ):
+        '''
+        Setup TwitterAgent & TwitterWebAgent
+        Param:
+            agent_type   => str, indicating which type of twitter agent to use.
+                            Can be: 'web', 'dev', 'both'
+            if agent_type == 'web', initialize a TwitterWebAgent.
+            Requires Param:
+                header_authorization        => str, Authorization in request header
+                header_x_client_uuid        => str, X-Client-Uuid in request header
+                header_x_csrf_token         => str, X-Csrf-Token in request header
+                cookie_auth_token           => str, auth_token in cookie
+                cookie_ct0                  => str, ct0 in cookie
+                endpoint_userbyscreenname   => str, unique id for UserByScreenName endpoint
+                endpoint_usermedia          => str, unique id for UserMedia endpoint
+                endpoint_tweetdetail        => str, unique id for TweetDetail endpoint
+            if agent_type == 'dev', initialize a TwitterAgent.
+            Requires Param:
+                consumer_key                => str, consumer_key of your twitter app
+                consumer_secret             => str, consumer_secret of your twitter app
+                access_token                => str, access_token of your twitter app
+                access_token_secret         => str, access_token_secret of your twitter app
+                bearer_token                => str, bearer_token of your twitter app
+            if agent_type == 'both', initialize both TwitterWebAgent and TwitterAgent.
+            Require all the parameters listed above.
+        WebImageAPI will prioritize TwitterWebAgent if possible.
+        checkout TwitterWebAgent for detail.
+        '''
+        
+        if agent_type == 'web':
+            check = self.__CheckArgs(
+                [
+                'header_authorization', 'header_x_client_uuid',
+                'header_x_csrf_token', 'cookie_auth_token',
+                'cookie_ct0', 'endpoint_userbyscreenname',
+                'endpoint_usermedia', 'endpoint_tweetdetail'
+                ],
+                header_authorization=header_authorization, header_x_client_uuid=header_x_client_uuid,
+                header_x_csrf_token=header_x_csrf_token, cookie_auth_token=cookie_auth_token,
+                cookie_ct0=cookie_ct0, endpoint_userbyscreenname=endpoint_userbyscreenname,
+                endpoint_usermedia=endpoint_usermedia, endpoint_tweetdetail=endpoint_tweetdetail
+            )
+            if not check:
+                raise ValueError('Missing required parameters.')
+            self.__InitAgent(
+                DOMAIN.TWITTER, special_arg='web',
+                header_authorization=header_authorization, header_x_client_uuid=header_x_client_uuid,
+                header_x_csrf_token=header_x_csrf_token, cookie_auth_token=cookie_auth_token,
+                cookie_ct0=cookie_ct0, endpoint_userbyscreenname=endpoint_userbyscreenname,
+                endpoint_usermedia=endpoint_usermedia, endpoint_tweetdetail=endpoint_tweetdetail
+            )
+        elif agent_type == 'dev':
+            check = self.__CheckArgs(
+                [
+                'consumer_key', 'consumer_secret',
+                'access_token', 'access_token_secret',
+                'bearer_token'
+                ],
+                consumer_key=consumer_key, consumer_secret=consumer_secret,
+                access_token=access_token, access_token_secret=access_token_secret,
+                bearer_token=bearer_token
+            )
+            if not check:
+                raise ValueError('Missing required parameters.')
+            self.__InitAgent(
+                DOMAIN.TWITTER, special_arg='dev',
+                consumer_key=consumer_key, consumer_secret=consumer_secret,
+                access_token=access_token, access_token_secret=access_token_secret,
+                bearer_token=bearer_token
+            )
+        elif agent_type == 'both':
+            check = self.__CheckArgs(
+                [
+                'header_authorization', 'header_x_client_uuid',
+                'header_x_csrf_token', 'cookie_auth_token',
+                'cookie_ct0', 'endpoint_userbyscreenname',
+                'endpoint_usermedia', 'endpoint_tweetdetail',
+                'consumer_key', 'consumer_secret',
+                'access_token', 'access_token_secret',
+                'bearer_token'
+                ],
+                header_authorization=header_authorization, header_x_client_uuid=header_x_client_uuid,
+                header_x_csrf_token=header_x_csrf_token, cookie_auth_token=cookie_auth_token,
+                cookie_ct0=cookie_ct0, endpoint_userbyscreenname=endpoint_userbyscreenname,
+                endpoint_usermedia=endpoint_usermedia, endpoint_tweetdetail=endpoint_tweetdetail,
+                consumer_key=consumer_key, consumer_secret=consumer_secret,
+                access_token=access_token, access_token_secret=access_token_secret,
+                bearer_token=bearer_token
+            )
+            if not check:
+                raise ValueError('Missing required parameters.')
+            self.__InitAgent(
+                DOMAIN.TWITTER, special_arg='web',
+                header_authorization=header_authorization, header_x_client_uuid=header_x_client_uuid,
+                header_x_csrf_token=header_x_csrf_token, cookie_auth_token=cookie_auth_token,
+                cookie_ct0=cookie_ct0, endpoint_userbyscreenname=endpoint_userbyscreenname,
+                endpoint_usermedia=endpoint_usermedia, endpoint_tweetdetail=endpoint_tweetdetail
+            )
+            self.__InitAgent(
+                DOMAIN.TWITTER, special_arg='dev',
+                consumer_key=consumer_key, consumer_secret=consumer_secret,
+                access_token=access_token, access_token_secret=access_token_secret,
+                bearer_token=bearer_token
+            )
     
     def SetEHentaiAuthInfo(self, ipb_member_id:str, ipb_pass_hash:str):
         if self.__ehentai_agent is None:
@@ -69,6 +185,11 @@ class WebImageAPI:
             raise ValueError('Please initialize TwitterAgent through WebImageAPI.SetTwitterTokens() first.')
         return self.__twitter_agent
     
+    def GetTwitterWebAgent(self) -> TwitterAgent:
+        if self.__twitter_web_agent is None:
+            raise ValueError('Please initialize TwitterWebAgent through WebImageAPI.SetTwitterTokens() first.')
+        return self.__twitter_web_agent
+    
     def GetDanbooruAgent(self) -> DanbooruAgent:
         if self.__danbooru_agent is None:
             self.__InitAgent(DOMAIN.DANBOORU)
@@ -108,7 +229,13 @@ class WebImageAPI:
         if isinstance(item_info, PixivItemInfo):
             return self.GetPixivAgent().FetchItemInfoDetail(item_info)
         elif isinstance(item_info, TwitterItemInfo):
-            return self.GetTwitterAgent().FetchItemInfoDetail(item_info)
+            try:
+                return self.GetTwitterWebAgent().FetchItemInfoDetail(item_info)
+            except:
+                try:
+                    return self.GetTwitterAgent().FetchItemInfoDetail(item_info)
+                except Exception as err:
+                    raise err
         elif isinstance(item_info, DanbooruItemInfo):
             return self.GetDanbooruAgent().FetchItemInfoDetail(item_info)
         elif isinstance(item_info, YandereItemInfo):
@@ -135,7 +262,13 @@ class WebImageAPI:
         if isinstance(item_info, PixivItemInfo):
             return self.GetPixivAgent().FetchParentChildren(item_info, page)
         elif isinstance(item_info, TwitterItemInfo):
-            return self.GetTwitterAgent().FetchParentChildren(item_info, page)
+            try:
+                return self.GetTwitterWebAgent().FetchParentChildren(item_info, page)
+            except:
+                try:
+                    return self.GetTwitterAgent().FetchParentChildren(item_info, page)
+                except Exception as err:
+                    raise err
         elif isinstance(item_info, DanbooruItemInfo):
             return self.GetDanbooruAgent().FetchParentChildren(item_info, page)
         elif isinstance(item_info, YandereItemInfo):
@@ -165,7 +298,13 @@ class WebImageAPI:
         if isinstance(item_info, PixivItemInfo):
             return self.GetPixivAgent().FetchUserInfo(item_info, old_user_info)
         elif isinstance(item_info, TwitterItemInfo):
-            return self.GetTwitterAgent().FetchUserInfo(item_info, old_user_info)
+            try:
+                return self.GetTwitterWebAgent().FetchUserInfo(item_info, old_user_info)
+            except:
+                try:
+                    return self.GetTwitterAgent().FetchUserInfo(item_info, old_user_info)
+                except Exception as err:
+                    raise err
         elif isinstance(item_info, DanbooruItemInfo):
             return self.GetDanbooruAgent().FetchUserInfo(item_info, old_user_info)
         elif isinstance(item_info, YandereItemInfo):
@@ -191,7 +330,13 @@ class WebImageAPI:
         if isinstance(item_info, PixivItemInfo):
             return self.GetPixivAgent().DownloadItem(item_info, output_path, replace)
         elif isinstance(item_info, TwitterItemInfo):
-            return self.GetTwitterAgent().DownloadItem(item_info, output_path, replace)
+            try:
+                return self.GetTwitterWebAgent().DownloadItem(item_info, output_path, replace)
+            except:
+                try:
+                    return self.GetTwitterAgent().DownloadItem(item_info, output_path, replace)
+                except Exception as err:
+                    raise err
         elif isinstance(item_info, DanbooruItemInfo):
             return self.GetDanbooruAgent().DownloadItem(item_info, output_path, replace)
         elif isinstance(item_info, YandereItemInfo):
@@ -289,11 +434,13 @@ class WebImageAPI:
     
     
     # private helper functions
-    def __InitAgent(self, agent_domain:DOMAIN, **init_args):
+    def __InitAgent(self, agent_domain:DOMAIN, special_arg=None, **init_args):
         if agent_domain == DOMAIN.PIXIV:
             self.__pixiv_agent = PixivAgent.instance(**init_args)
-        elif agent_domain == DOMAIN.TWITTER:
+        elif agent_domain == DOMAIN.TWITTER and special_arg == 'dev':
             self.__twitter_agent = TwitterAgent.instance(**init_args)
+        elif agent_domain == DOMAIN.TWITTER and special_arg == 'web':
+            self.__twitter_web_agent = TwitterWebAgent.instance(**init_args)
         elif agent_domain == DOMAIN.DANBOORU:
             self.__danbooru_agent = DanbooruAgent.instance(**init_args)
         elif agent_domain == DOMAIN.YANDERE:
@@ -305,3 +452,8 @@ class WebImageAPI:
         elif agent_domain == DOMAIN.EHENTAI:
             self.__ehentai_agent = EHentaiAgent.instance(**init_args)
     
+    def __CheckArgs(self, requirements:list, **kwargs):
+        for req in requirements:
+            if req not in kwargs or kwargs[req] is None:
+                return False
+        return True

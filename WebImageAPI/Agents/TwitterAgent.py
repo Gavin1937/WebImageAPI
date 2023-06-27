@@ -15,6 +15,14 @@ from typing import Union
 from pathlib import Path
 
 
+# This is a TwitterAgent implementation base on twitter's developer api.
+# 
+# Starting from early 2023, twitter force its free tier developer api to be write-only.
+# Thus, I need to replace TwitterAgent's backend with twitter's web client api.
+# 
+# checkout following articles for detail:
+# https://developer.twitter.com/en/docs/twitter-api
+
 @Singleton
 class TwitterAgent(BaseAgent):
     
@@ -160,7 +168,7 @@ class TwitterAgent(BaseAgent):
             user = item_info.details['user']
         
         name_list = [user['name']]
-        url_dict = {domain:f'https://twitter.com/{user["screen_name"]}'}
+        url_dict = {domain:[f'https://twitter.com/{user["screen_name"]}']}
         if old_user_info is not None:
             old_user_info.name_list = MergeDeDuplicate(old_user_info.name_list, name_list)
             if domain in old_user_info.url_dict:

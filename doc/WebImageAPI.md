@@ -11,7 +11,7 @@ Table Of Content
       * [\_\_init\_\_(WebImageAPI):](#__init__webimageapi)
     * [**Agent Setup**](#agent-setup)
       * [**SetPixivTokens(WebImageAPI, refresh\_token:str):**](#setpixivtokenswebimageapi-refresh_tokenstr)
-      * [**SetTwitterTokens(WebImageAPI, consumer\_key:str, consumer\_secret:str, access\_token:str, access\_token\_secret:str, bearer\_token:str):**](#settwittertokenswebimageapi-consumer_keystr-consumer_secretstr-access_tokenstr-access_token_secretstr-bearer_tokenstr)
+      * [**SetTwitterTokens(WebImageAPI, agent\_type:str, ...):**](#settwittertokenswebimageapi-agent_typestr-)
       * [**SetEHentaiAuthInfo(WebImageAPI, ipb\_member\_id:str, ipb\_pass\_hash:str):**](#setehentaiauthinfowebimageapi-ipb_member_idstr-ipb_pass_hashstr)
       * [**GetEHentaiIgnorePeekHour(self) -\> bool:**](#getehentaiignorepeekhourself---bool)
       * [**SetEHentaiIgnorePeekHour(self, whether\_ignore:bool) -\> None:**](#setehentaiignorepeekhourself-whether_ignorebool---none)
@@ -59,15 +59,32 @@ I highly recommend you to stick with this class and let it to handle everything 
   * **refresh_token**:  string, pixiv refresh_token
 * You need to call this function before using any of the `PixivAgent` features
 
-#### **SetTwitterTokens(WebImageAPI, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str, bearer_token:str):**
+#### **SetTwitterTokens(WebImageAPI, agent_type:str, ...):**
 
-* Setup TwitterAgent with supplied parameters
+* Setup TwitterAgent & TwitterWebAgent
 * Parameters:
-  * **consumer_key**:         string, twitter cunsumer api key
-  * **consumer_secret**:      string, twitter consumer api secret
-  * **access_token**:         string, twitter access token
-  * **access_token_secret**:  string, twitter access token secret
-  * **bearer_token**:         string, twitter bearer token
+  * **agent_type**: string, indicating which type of twitter agent to use. Can be: `web`, `dev`, `both`.
+  * if agent_type == `web`, initialize a `TwitterWebAgent`.
+    * Requires Param:
+      * **header_authorization**: string, Authorization in request header
+      * **header_x_client_uuid**: string, X-Client-Uuid in request header
+      * **header_x_csrf_token**: string, X-Csrf-Token in request header
+      * **cookie_auth_token**: string, auth_token in cookie
+      * **cookie_ct0**: string, ct0 in cookie
+      * **endpoint_userbyscreenname**: string, unique id for UserByScreenName endpoint
+      * **endpoint_usermedia**: string, unique id for UserMedia endpoint
+      * **endpoint_tweetdetail**: string, unique id for TweetDetail endpoint
+  * if agent_type == `dev`, initialize a `TwitterAgent`.
+    * Requires Param:
+      * **consumer_key**: string, consumer_key of your twitter app
+      * **consumer_secret**: string, consumer_secret of your twitter app
+      * **access_token**: string, access_token of your twitter app
+      * **access_token_secret**: string, access_token_secret of your twitter app
+      * **bearer_token**: string, bearer_token of your twitter app
+  * if agent_type == `both`, initialize both `TwitterWebAgent` and `TwitterAgent`.
+    * Require all the parameters listed above.
+  * WebImageAPI will prioritize `TwitterWebAgent` if possible.
+  * checkout [TwitterWebAgent](./Agents.md#6-class-twitterwebagent) for detail.
 
 #### **SetEHentaiAuthInfo(WebImageAPI, ipb\_member\_id:str, ipb\_pass\_hash:str):**
 

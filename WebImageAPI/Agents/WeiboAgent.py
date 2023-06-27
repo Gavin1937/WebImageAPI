@@ -115,7 +115,7 @@ class WeiboAgent(BaseAgent):
             name_list.append(user['name'])
         if 'screen_name' in user:
             name_list.append(user['screen_name'])
-        url_dict = {domain:f'https://m.weibo.cn/u/{user["id"]}'}
+        url_dict = {domain:[f'https://m.weibo.cn/u/{user["id"]}']}
         if old_user_info is not None:
             old_user_info.name_list = MergeDeDuplicate(old_user_info.name_list, name_list)
             if domain in old_user_info.url_dict:
