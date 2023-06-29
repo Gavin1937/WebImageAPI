@@ -6,7 +6,7 @@ from ..Types.Exceptions import WrongParentChildException
 from ..Utils import (
     TypeChecker, TypeMatcher,
     Clamp, MergeDeDuplicate,
-    mkCompFuncR
+    mkCompFuncR, IsValidProxies
 )
 from typing import Union
 from pathlib import Path
@@ -17,19 +17,13 @@ from time import sleep
 @Singleton
 class PixivAgent(BaseAgent):
     
-    # def __init__(self, refresh_token:str, proxies:str=None, max_try:int=5):
+    # def __init__(self, refresh_token:str, proxies:dict=None, max_try:int=5):
     def __init__(self, refresh_token:str, max_try:int=5):
         proxy_settings = {}
-        # if proxies is not None:
-        #     proxy_type = 'https'
-        #     ssl_verify = True
-        #     if not proxies.startswith(proxy_type):
-        #         proxy_type = 'http'
-        #         ssl_verify = False
-            
+        # if IsValidProxies(proxies):
         #     proxy_settings = {
-        #         'verify': ssl_verify,       # PAPI use https, an easy way is disable requests SSL verify
-        #         'proxies': { proxy_type: proxies, },
+        #         'verify': False,       # PAPI use https, an easy way is disable requests SSL verify
+        #         'proxies': proxies,
         #     }
         
         self.__api:AppPixivAPI = AppPixivAPI(**proxy_settings)
@@ -73,17 +67,11 @@ class PixivAgent(BaseAgent):
     # maybe its caused by underlying requests.Session doesn't take 'verify' parameter came from function kwargs?
     # or maybe underlying requests.Session.verify is set to True all the time and overwriting my setting?
     
-    # def SetProxies(self, proxies:str=None):
-    #     if proxies is not None:
-    #         proxy_type = 'https'
-    #         ssl_verify = True
-    #         if not proxies.startswith(proxy_type):
-    #             ssl_verify = False
-    #             proxy_type = 'http'
-            
+    # def SetProxies(self, proxies:dict):
+    #     if IsValidProxies(proxies):
     #         proxy_settings = {
-    #             'verify': ssl_verify,       # PAPI use https, an easy way is disable requests SSL verify
-    #             'proxies': { proxy_type: proxies, },
+    #             'verify': False,       # PAPI use https, an easy way is disable requests SSL verify
+    #             'proxies': proxies,
     #         }
     #         self.__api:AppPixivAPI = AppPixivAPI(**proxy_settings)
             

@@ -16,7 +16,7 @@ from bs4 import BeautifulSoup
 @Singleton
 class DanbooruAgent(BaseAgent):
     
-    def __init__(self, proxies:str=None):
+    def __init__(self, proxies:dict=None):
         # in order to use danbooru's api,
         # we need to set a custom user-agent for this project
         # instead of pretending to be a browser,
@@ -27,8 +27,8 @@ class DanbooruAgent(BaseAgent):
         super().__init__()
     
     # interfaces
-    def SetProxies(self, proxies:str=None):
-        self.__http = HTTPClient(default_proxies=proxies)
+    def SetProxies(self, proxies:dict):
+        self.__http.SetProxies(proxies)
     
     @TypeChecker(DanbooruItemInfo, (1,))
     def FetchItemInfoDetail(self, item_info:DanbooruItemInfo) -> DanbooruItemInfo:

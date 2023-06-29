@@ -99,3 +99,15 @@ def mkCompFuncR(operator:str, param1=None):
         return (lambda p1,p2: opfunc(p1, p2))
     else:
         return (lambda p1: opfunc(p1, param1))
+
+def IsValidProxies(proxies:dict) -> bool:
+    if not isinstance(proxies, dict):
+        return False
+    if 'http' not in proxies and 'https' not in proxies:
+        return False
+    if 'http' in proxies and not proxies['http'].startswith('http'):
+        return False
+    if 'https' in proxies and not proxies['https'].startswith('https'):
+        return False
+    return True
+

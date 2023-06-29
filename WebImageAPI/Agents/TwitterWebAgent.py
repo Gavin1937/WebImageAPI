@@ -30,7 +30,7 @@ class TwitterWebAgent(BaseAgent):
         header_authorization:str, header_x_client_uuid:str, header_x_csrf_token:str,
         cookie_auth_token:str, cookie_ct0:str, endpoint_userbyscreenname:str,
         endpoint_usermedia:str, endpoint_tweetdetail:str,
-        proxies:str=None, delay_val:float=0.0
+        proxies:dict=None, delay_val:float=0.0
     ):
         '''
         To initialize this agent, you need to collect following stuff from your browser.
@@ -139,7 +139,7 @@ class TwitterWebAgent(BaseAgent):
     
     
     # interfaces
-    def SetProxies(self, proxies):
+    def SetProxies(self, proxies:dict):
         self.__proxies = proxies
         self.__http.SetProxies(self.__proxies)
     

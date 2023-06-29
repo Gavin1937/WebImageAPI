@@ -27,8 +27,8 @@ class KonachanAgent(BaseAgent):
         super().__init__()
     
     # interfaces
-    def SetProxies(self, proxies:str=None):
-        self.__http = HTTPClient(default_proxies=proxies)
+    def SetProxies(self, proxies:dict):
+        self.__http.SetProxies(proxies)
     
     @TypeChecker(KonachanItemInfo, (1,))
     def FetchItemInfoDetail(self, item_info:KonachanItemInfo) -> KonachanItemInfo:

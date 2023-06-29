@@ -23,7 +23,7 @@ from datetime import datetime, timezone, timedelta
 @Singleton
 class EHentaiAgent(BaseAgent):
     
-    def __init__(self, ignore_peek_hour:bool=False, ipb_member_id:str=None, ipb_pass_hash:str=None, proxies:str=None):
+    def __init__(self, ignore_peek_hour:bool=False, ipb_member_id:str=None, ipb_pass_hash:str=None, proxies:dict=None):
         self.__api_url = 'https://api.e-hentai.org/api.php'
         self.__proxies = proxies
         self.__headers = {
@@ -54,8 +54,8 @@ class EHentaiAgent(BaseAgent):
         super().__init__()
     
     # interfaces
-    def SetProxies(self, proxies:str=None):
-        self.__http = HTTPClient(default_proxies=proxies)
+    def SetProxies(self, proxies:dict):
+        self.__http.SetProxies(proxies)
     
     def SetEHentaiAuthInfo(self, ipb_member_id:str, ipb_pass_hash:str):
         self.__ipb_member_id:str = ipb_member_id

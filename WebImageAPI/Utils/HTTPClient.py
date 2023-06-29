@@ -1,6 +1,6 @@
 
 from .Variables import PROJECT_USERAGENT
-from .Functions import GetMD5
+from .Functions import GetMD5, IsValidProxies
 from .UrlParser import UrlParser
 from ..Types.Exceptions import FileMD5NotMatchingException
 import requests
@@ -18,7 +18,7 @@ class HTTPClient:
         self,
         default_headers:dict=None,
         default_cookies:dict=None,
-        default_proxies:str=None,
+        default_proxies:dict=None,
         delay_value:tuple=None
     ) -> None:
         '''
@@ -26,7 +26,8 @@ class HTTPClient:
         Param:
             default_headers  => dict, default header to use inside this client (default None)
             default_cookies  => dict, default cookies to use inside this client (default None)
-            default_proxies  => str, default proxy url to use inside this client (default None)
+            default_proxies  => dict, default proxies url to use inside this client (default None)
+                                (e.g. {'http':'http://localhost', 'https':'https://localhost'})
             delay_value      => tuple[number, number], a two number tuple for random delay
                                 default set to None (disable)
                                 if set to any valid value, HTTPClient will place a random delay
@@ -35,12 +36,7 @@ class HTTPClient:
         '''
         self.__headers:dict = { 'User-Agent': PROJECT_USERAGENT } if default_headers is None else default_headers
         self.__cookies:dict = {} if default_cookies is None else default_cookies
-        self.__proxies:dict = {}
-        if default_proxies is not None:
-            proxy_type = 'https'
-            if not default_proxies.startswith(proxy_type):
-                proxy_type = 'http'
-            self.__proxies = { proxy_type: default_proxies }
+        self.__proxies:dict = default_proxies if IsValidProxies(default_proxies) else {}
         self.__session:requests.Session = requests.session()
         self.__session.headers.update(self.__headers)
         self.__session.cookies.update(self.__cookies)
@@ -65,18 +61,15 @@ class HTTPClient:
     
     def SetCookies(self, cookies:dict) -> None:
         self.__cookies = cookies
-        self.__session.cookies.update(self.__headers)
+        self.__session.cookies.update(self.__cookies)
     
     def GetProxies(self) -> dict:
         return self.__proxies
     
-    def SetProxies(self, proxies:str) -> None:
-        if proxies is not None:
-            proxy_type = 'https'
-            if not proxies.startswith(proxy_type):
-                proxy_type = 'http'
-            self.__proxies = { proxy_type:proxies }
-            self.__session.proxies.update(self.__headers)
+    def SetProxies(self, proxies:dict) -> None:
+        if IsValidProxies(proxies):
+            self.__proxies = proxies
+            self.__session.proxies.update(self.__proxies)
     
     def GetDelayValue(self) -> tuple:
         return self.__delay_val

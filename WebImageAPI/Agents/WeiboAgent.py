@@ -15,7 +15,7 @@ from pathlib import Path
 @Singleton
 class WeiboAgent(BaseAgent):
     
-    def __init__(self, proxies:str=None):
+    def __init__(self, proxies:dict=None):
         # m.weibo.cn api research
         # 
         # older api with examples
@@ -35,8 +35,8 @@ class WeiboAgent(BaseAgent):
         super().__init__()
     
     # interfaces
-    def SetProxies(self, proxies:str=None):
-        self.__http = HTTPClient(default_proxies=proxies)
+    def SetProxies(self, proxies:dict):
+        self.__http.SetProxies(proxies)
     
     @TypeChecker(WeiboItemInfo, (1,))
     def FetchItemInfoDetail(self, item_info:WeiboItemInfo) -> WeiboItemInfo:

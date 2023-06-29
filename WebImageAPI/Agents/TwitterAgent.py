@@ -6,7 +6,8 @@ from ..Types.Exceptions import WrongParentChildException
 from ..Utils import (
     TypeChecker, TypeMatcher,
     Clamp, MergeDeDuplicate,
-    UrlParser, HTTPClient
+    UrlParser, HTTPClient,
+    IsValidProxies
 )
 from tweepy import OAuth1UserHandler, API, Client, Cursor
 from tweepy.errors import TweepyException, Unauthorized
@@ -26,15 +27,12 @@ from pathlib import Path
 @Singleton
 class TwitterAgent(BaseAgent):
     
-    def __init__(self, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str, bearer_token:str, proxies:str=None, max_try:int=5):
+    def __init__(self, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str, bearer_token:str, proxies:dict=None, max_try:int=5):
         auth = OAuth1UserHandler(
             consumer_key, consumer_secret, access_token, access_token_secret
         )
         
-        if proxies and not proxies.startswith('https'):
-            proxies = None
-        
-        self.__proxies = proxies
+        self.__proxies = proxies if IsValidProxies(proxies) else {}
         self.__http = HTTPClient(default_proxies=self.__proxies)
         self.__consumer_key = consumer_key
         self.__consumer_secret = consumer_secret
@@ -64,16 +62,13 @@ class TwitterAgent(BaseAgent):
         'Get tweepy.API object'
         return self.__api
     
-    def SetProxies(self, proxies:str=None):
-        if proxies is not None:
+    def SetProxies(self, proxies:dict):
+        if IsValidProxies(proxies):
             auth = OAuth1UserHandler(
                 self.__consumer_key, self.__consumer_secret, self.__access_token, self.__access_token_secret
             )
             
-            if not proxies.startswith('https'):
-                proxies = None
             self.__proxies = proxies
-            
             exception = None
             sleeptime = 10
             for count in range(self.__max_try):

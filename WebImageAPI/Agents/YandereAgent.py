@@ -15,7 +15,7 @@ from pathlib import Path
 @Singleton
 class YandereAgent(BaseAgent):
     
-    def __init__(self, proxies:str=None):
+    def __init__(self, proxies:dict=None):
         # similar to DanbooruAgent,
         # in order to use yande.re's api,
         # we need to set a custom user-agent for this project
@@ -27,8 +27,8 @@ class YandereAgent(BaseAgent):
         super().__init__()
     
     # interfaces
-    def SetProxies(self, proxies:str=None):
-        self.__http = HTTPClient(default_proxies=proxies)
+    def SetProxies(self, proxies:dict):
+        self.__http.SetProxies(proxies)
     
     @TypeChecker(YandereItemInfo, (1,))
     def FetchItemInfoDetail(self, item_info:YandereItemInfo) -> YandereItemInfo:
