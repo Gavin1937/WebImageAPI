@@ -2,7 +2,10 @@
 from .BaseAgent import BaseAgent
 from .Singleton import Singleton
 from ..Types import PixivItemInfo, UserInfo, DOMAIN
-from ..Types.Exceptions import WrongParentChildException
+from ..Types.Exceptions import (
+    WrongParentChildException,
+    BadWebItemInfoException
+)
 from ..Utils import (
     TypeChecker, TypeMatcher,
     Clamp, MergeDeDuplicate,
@@ -113,7 +116,7 @@ class PixivAgent(BaseAgent):
                     }
                 }]
         else:
-            raise WrongParentChildException(item_info.parent_child, 'Input PixivItemInfo is empty or invalid.')
+            raise BadWebItemInfoException(item_info.__name__)
         return item_info
     
     @TypeMatcher(['self', PixivItemInfo, int])

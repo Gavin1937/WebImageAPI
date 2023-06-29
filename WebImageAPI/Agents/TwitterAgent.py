@@ -2,7 +2,10 @@
 from .BaseAgent import BaseAgent
 from .Singleton import Singleton
 from ..Types import TwitterItemInfo, UserInfo, DOMAIN
-from ..Types.Exceptions import WrongParentChildException
+from ..Types.Exceptions import (
+    WrongParentChildException,
+    BadWebItemInfoException
+)
 from ..Utils import (
     TypeChecker, TypeMatcher,
     Clamp, MergeDeDuplicate,
@@ -101,7 +104,7 @@ class TwitterAgent(BaseAgent):
         elif item_info.IsChild():
             item_info.details = self.__api.get_status(item_info.status_id, include_entities=True, tweet_mode='extended')._json
         else:
-            raise ValueError('Input TwitterItemInfo is empty or invalid.')
+            raise BadWebItemInfoException(item_info.__name__)
         
         return item_info
     

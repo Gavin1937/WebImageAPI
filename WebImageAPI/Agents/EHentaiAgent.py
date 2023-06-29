@@ -4,6 +4,7 @@ from .Singleton import Singleton
 from ..Types import EHentaiItemInfo, UserInfo, DOMAIN
 from ..Types.Exceptions import (
     WrongParentChildException,
+    BadWebItemInfoException,
     EHentaiInPeekHourException,
     EHentaiExcessViewingLimit,
     FileMD5NotMatchingException,
@@ -148,7 +149,7 @@ class EHentaiAgent(BaseAgent):
                 ]
             }
         else:
-            raise ValueError('Input EHentaiItemInfo is empty or invalid.')
+            raise BadWebItemInfoException(item_info.__name__)
         
         item_info.details = self.__http.PostJson(self.__api_url, json=post_param)
         

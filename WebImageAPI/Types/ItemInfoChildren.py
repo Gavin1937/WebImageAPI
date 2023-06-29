@@ -6,6 +6,7 @@ from .Exceptions import NotSupportURLException
 
 
 class PixivItemInfo(WebItemInfo):
+    __name__ = 'PixivItemInfo'
     def __init__(self, url:str=None, **kwargs) -> None:
         self.pid:int = None
         _url = url
@@ -47,6 +48,7 @@ class PixivItemInfo(WebItemInfo):
 
 
 class TwitterItemInfo(WebItemInfo):
+    __name__ = 'TwitterItemInfo'
     def __init__(self, url:str=None, **kwargs) -> None:
         self.screen_name:str = None
         self.status_id:str = None
@@ -82,6 +84,7 @@ class TwitterItemInfo(WebItemInfo):
 
 
 class DanbooruItemInfo(WebItemInfo):
+    __name__ = 'DanbooruItemInfo'
     def _PostInitAnalyzing(self) -> None:
         if self.domain != DOMAIN.DANBOORU:
             raise NotSupportURLException('Invalid url, you must supply a danbooru url.')
@@ -101,6 +104,7 @@ class DanbooruItemInfo(WebItemInfo):
 
 
 class YandereItemInfo(WebItemInfo):
+    __name__ = 'YandereItemInfo'
     def _PostInitAnalyzing(self) -> None:
         if self.domain != DOMAIN.YANDERE:
             raise NotSupportURLException('Invalid url, you must supply a yande.re url.')
@@ -120,6 +124,7 @@ class YandereItemInfo(WebItemInfo):
 
 
 class KonachanItemInfo(WebItemInfo):
+    __name__ = 'KonachanItemInfo'
     def _PostInitAnalyzing(self) -> None:
         if self.domain != DOMAIN.KONACHAN:
             raise NotSupportURLException('Invalid url, you must supply a konachan.com url.')
@@ -139,6 +144,7 @@ class KonachanItemInfo(WebItemInfo):
 
 
 class WeiboItemInfo(WebItemInfo):
+    __name__ = 'WeiboItemInfo'
     def __init__(self, url:str=None, **kwargs) -> None:
         self.weibo_id:str = None
         if 'weibo_id' in kwargs and 'parent_child' in kwargs:
@@ -174,6 +180,7 @@ class WeiboItemInfo(WebItemInfo):
 
 
 class EHentaiItemInfo(WebItemInfo):
+    __name__ = 'EHentaiItemInfo'
     def __init__(self, url) -> None:
         self.gallery_id:str = None
         self.other:dict = None

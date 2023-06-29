@@ -6,6 +6,8 @@ from ..Utils import UrlParser, TypeChecker
 class WebItemInfo:
     'Base class contains Web Item Information'
     
+    __name__ = 'WebItemInfo'
+    
     def __init__(self, url:str):
         self.url:str = url
         self.parsed_url:UrlParser = UrlParser(self.url)

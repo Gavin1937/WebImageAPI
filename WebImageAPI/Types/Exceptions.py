@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 
 __all__ = [
     'WrongParentChildException',
+    'BadWebItemInfoException',
     'FileMD5NotMatchingException',
     'NotSupportURLException',
     'EHentaiInPeekHourException',
@@ -19,6 +20,12 @@ class WrongParentChildException(Exception):
             self.message:str = message
         else:
             self.message = f'Input WebItemInfo\'s parent_child state is wrong. ({self.parent_child.ToStr()})'
+        super().__init__(self.message)
+
+class BadWebItemInfoException(Exception):
+    def __init__(self, item_info_name:str):
+        self.item_info_name:str = item_info_name
+        self.message:str = f'Input {item_info_name} is empty or invalid.'
         super().__init__(self.message)
 
 class FileMD5NotMatchingException(Exception):

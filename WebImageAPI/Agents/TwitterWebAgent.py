@@ -2,7 +2,10 @@
 from .BaseAgent import BaseAgent
 from .Singleton import Singleton
 from ..Types import TwitterItemInfo, UserInfo, DOMAIN
-from ..Types.Exceptions import WrongParentChildException
+from ..Types.Exceptions import (
+    WrongParentChildException,
+    BadWebItemInfoException
+)
 from ..Utils import (
     TypeChecker, TypeMatcher,
     Clamp, MergeDeDuplicate,
@@ -190,7 +193,7 @@ class TwitterWebAgent(BaseAgent):
                 return None
             get_legacy = func
         else:
-            raise ValueError('Input TwitterItemInfo is empty or invalid.')
+            raise BadWebItemInfoException(item_info.__name__)
         
         try:
             res = self.__http.GetJson(url, params=params)

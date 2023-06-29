@@ -180,15 +180,22 @@ class WebImageAPI:
             raise ValueError('Please initialize PixivAgent through WebImageAPI.SetPixivTokens() first.')
         return self.__pixiv_agent
     
-    def GetTwitterAgent(self) -> TwitterAgent:
-        if self.__twitter_agent is None:
+    def GetTwitterAgent(self, which_one:str='web') -> Union[TwitterAgent,TwitterWebAgent]:
+        '''
+        Get exiting, initialized TwitterAgent or TwitterWebAgent
+        Param:
+            which_one    => str, if set to 'web', return TwitterWebAgent.
+                            If set to 'dev', return TwitterAgent.
+                            Default 'web'
+        '''
+        if which_one not in ['web', 'dev']:
+            raise ValueError('Invalid "which_one" value, it must be either "web" or "dev".')
+        if which_one == 'web' and self.__twitter_web_agent is not None:
+            return self.__twitter_web_agent
+        elif which_one == 'dev' and self.__twitter_agent is not None:
+            return self.__twitter_agent
+        else:
             raise ValueError('Please initialize TwitterAgent through WebImageAPI.SetTwitterTokens() first.')
-        return self.__twitter_agent
-    
-    def GetTwitterWebAgent(self) -> TwitterAgent:
-        if self.__twitter_web_agent is None:
-            raise ValueError('Please initialize TwitterWebAgent through WebImageAPI.SetTwitterTokens() first.')
-        return self.__twitter_web_agent
     
     def GetDanbooruAgent(self) -> DanbooruAgent:
         if self.__danbooru_agent is None:
@@ -229,13 +236,7 @@ class WebImageAPI:
         if isinstance(item_info, PixivItemInfo):
             return self.GetPixivAgent().FetchItemInfoDetail(item_info)
         elif isinstance(item_info, TwitterItemInfo):
-            try:
-                return self.GetTwitterWebAgent().FetchItemInfoDetail(item_info)
-            except:
-                try:
-                    return self.GetTwitterAgent().FetchItemInfoDetail(item_info)
-                except Exception as err:
-                    raise err
+            return self.GetTwitterAgent().FetchItemInfoDetail(item_info)
         elif isinstance(item_info, DanbooruItemInfo):
             return self.GetDanbooruAgent().FetchItemInfoDetail(item_info)
         elif isinstance(item_info, YandereItemInfo):
@@ -262,13 +263,7 @@ class WebImageAPI:
         if isinstance(item_info, PixivItemInfo):
             return self.GetPixivAgent().FetchParentChildren(item_info, page)
         elif isinstance(item_info, TwitterItemInfo):
-            try:
-                return self.GetTwitterWebAgent().FetchParentChildren(item_info, page)
-            except:
-                try:
-                    return self.GetTwitterAgent().FetchParentChildren(item_info, page)
-                except Exception as err:
-                    raise err
+            return self.GetTwitterAgent().FetchParentChildren(item_info, page)
         elif isinstance(item_info, DanbooruItemInfo):
             return self.GetDanbooruAgent().FetchParentChildren(item_info, page)
         elif isinstance(item_info, YandereItemInfo):
@@ -298,13 +293,7 @@ class WebImageAPI:
         if isinstance(item_info, PixivItemInfo):
             return self.GetPixivAgent().FetchUserInfo(item_info, old_user_info)
         elif isinstance(item_info, TwitterItemInfo):
-            try:
-                return self.GetTwitterWebAgent().FetchUserInfo(item_info, old_user_info)
-            except:
-                try:
-                    return self.GetTwitterAgent().FetchUserInfo(item_info, old_user_info)
-                except Exception as err:
-                    raise err
+            return self.GetTwitterAgent().FetchUserInfo(item_info, old_user_info)
         elif isinstance(item_info, DanbooruItemInfo):
             return self.GetDanbooruAgent().FetchUserInfo(item_info, old_user_info)
         elif isinstance(item_info, YandereItemInfo):
@@ -330,13 +319,7 @@ class WebImageAPI:
         if isinstance(item_info, PixivItemInfo):
             return self.GetPixivAgent().DownloadItem(item_info, output_path, replace)
         elif isinstance(item_info, TwitterItemInfo):
-            try:
-                return self.GetTwitterWebAgent().DownloadItem(item_info, output_path, replace)
-            except:
-                try:
-                    return self.GetTwitterAgent().DownloadItem(item_info, output_path, replace)
-                except Exception as err:
-                    raise err
+            return self.GetTwitterAgent().DownloadItem(item_info, output_path, replace)
         elif isinstance(item_info, DanbooruItemInfo):
             return self.GetDanbooruAgent().DownloadItem(item_info, output_path, replace)
         elif isinstance(item_info, YandereItemInfo):

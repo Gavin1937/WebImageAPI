@@ -2,7 +2,10 @@
 from .BaseAgent import BaseAgent
 from .Singleton import Singleton
 from ..Types import DanbooruItemInfo, UserInfo, DOMAIN
-from ..Types.Exceptions import WrongParentChildException
+from ..Types.Exceptions import (
+    WrongParentChildException,
+    BadWebItemInfoException
+)
 from ..Utils import (
     TypeChecker, TypeMatcher,
     Clamp, MergeDeDuplicate,
@@ -43,7 +46,7 @@ class DanbooruAgent(BaseAgent):
         if item_info.IsParent() or item_info.IsChild():
             item_info.details = self.__http.GetJson(self.__NormalURLToApi(item_info.url))
         else:
-            raise ValueError('Input DanbooruItemInfo is empty or invalid.')
+            raise BadWebItemInfoException(item_info.__name__)
         
         return item_info
     

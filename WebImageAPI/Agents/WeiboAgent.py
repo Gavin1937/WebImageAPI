@@ -2,7 +2,10 @@
 from .BaseAgent import BaseAgent
 from .Singleton import Singleton
 from ..Types import WeiboItemInfo, UserInfo, DOMAIN
-from ..Types.Exceptions import WrongParentChildException
+from ..Types.Exceptions import (
+    WrongParentChildException,
+    BadWebItemInfoException
+)
 from ..Utils import (
     TypeChecker, TypeMatcher,
     Clamp, MergeDeDuplicate,
@@ -58,7 +61,7 @@ class WeiboAgent(BaseAgent):
                 f'https://m.weibo.cn/api/statuses/show?id={weibo_id}'
             )
         else:
-            raise ValueError('Input WeiboItemInfo is empty or invalid.')
+            raise BadWebItemInfoException(item_info.__name__)
         
         return item_info
     

@@ -18,7 +18,7 @@ Table Of Content
       * [**GetEHentaiNextPeekHour(self) -\> tuple:**](#getehentainextpeekhourself---tuple)
     * [**Agent Getters**](#agent-getters)
       * [**GetPixivAgent(WebImageAPI) -\> PixivAgent:**](#getpixivagentwebimageapi---pixivagent)
-      * [**GetTwitterAgent(WebImageAPI) -\> TwitterAgent:**](#gettwitteragentwebimageapi---twitteragent)
+      * [**GetTwitterAgent(WebImageAPI, which\_one:str='web') -\> Union\[TwitterAgent,TwitterWebAgent\]:**](#gettwitteragentwebimageapi-which_onestrweb---uniontwitteragenttwitterwebagent)
       * [**GetDanbooruAgent(WebImageAPI) -\> DanbooruAgent:**](#getdanbooruagentwebimageapi---danbooruagent)
       * [**GetYandereAgent(WebImageAPI) -\> YandereAgent:**](#getyandereagentwebimageapi---yandereagent)
       * [**GetKonachanAgent(WebImageAPI) -\> KonachanAgent:**](#getkonachanagentwebimageapi---konachanagent)
@@ -128,9 +128,14 @@ I highly recommend you to stick with this class and let it to handle everything 
 
 * Get existing, initialized `PixivAgent`
 
-#### **GetTwitterAgent(WebImageAPI) -> TwitterAgent:**
+#### **GetTwitterAgent(WebImageAPI, which_one:str='web') -> Union[TwitterAgent,TwitterWebAgent]:**
 
-* Get existing, initialized `TwitterAgent`
+* Get existing, initialized `TwitterAgent` or `TwitterWebAgent`
+* Parameter:
+  * **which_one**: string
+    * If set to `web`, return TwitterWebAgent.
+    * If set to `dev`, return TwitterAgent.
+    * Default `web`
 
 #### **GetDanbooruAgent(WebImageAPI) -> DanbooruAgent:**
 

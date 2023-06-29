@@ -2,7 +2,10 @@
 from .BaseAgent import BaseAgent
 from .Singleton import Singleton
 from ..Types import KonachanItemInfo, UserInfo, DOMAIN, PARENT_CHILD
-from ..Types.Exceptions import WrongParentChildException
+from ..Types.Exceptions import (
+    WrongParentChildException,
+    BadWebItemInfoException
+)
 from ..Utils import (
     TypeChecker, TypeMatcher,
     Clamp, MergeDeDuplicate,
@@ -45,7 +48,7 @@ class KonachanAgent(BaseAgent):
                 self.__NormalURLToApi(item_info.url, item_info.parent_child)
             )
         else:
-            raise ValueError('Input KonachanItemInfo is empty or invalid.')
+            raise BadWebItemInfoException(item_info.__name__)
         
         return item_info
     
