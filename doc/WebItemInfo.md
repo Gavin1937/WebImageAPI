@@ -27,8 +27,8 @@ Table Of Content
 * [3. class TwitterItemInfo](#3-class-twitteriteminfo)
   * [Additional Members](#additional-members-1)
     * [**TwitterItemInfo.screen\_name**](#twitteriteminfoscreen_name)
-    * [**\_\_init\_\_(TwitterItemInfo, url:str=None, \*\*kwargs) -\> None:**](#__init__twitteriteminfo-urlstrnone-kwargs---none)
     * [**TwitterItemInfo.status\_id**](#twitteriteminfostatus_id)
+    * [**\_\_init\_\_(TwitterItemInfo, url:str=None, \*\*kwargs) -\> None:**](#__init__twitteriteminfo-urlstrnone-kwargs---none)
 * [4. class DanbooruItemInfo](#4-class-danbooruiteminfo)
 * [5. class YandereItemInfo](#5-class-yandereiteminfo)
 * [6. class KonachanItemInfo](#6-class-konachaniteminfo)
@@ -142,7 +142,7 @@ integer member stores the id for a pixiv user or artworks.
   * **url:** string url, can be None
   * If **url** is None, you must parent_child & input pixiv id as kwargs
     * **parent_child:** PARENT_CHILD state
-    * **pid:** string|int pixiv id
+    * **pid:** string | int pixiv id
 
 # 3. class TwitterItemInfo
 
@@ -154,7 +154,11 @@ Sharing all the common members and methods from base class.
 
 ### **TwitterItemInfo.screen_name**
 
-string user tweeter screen name
+string  twitter user screen name
+
+### **TwitterItemInfo.status_id**
+
+string tweet status id
 
 ### **\_\_init\_\_(TwitterItemInfo, url:str=None, \*\*kwargs) -> None:**
 
@@ -165,10 +169,6 @@ string user tweeter screen name
     * **parent_child:** PARENT_CHILD state
     * **screen_name:** string twitter screen name, this is mandatory
     * **status_id:** string twitter status id, this is mandatory for child
-
-### **TwitterItemInfo.status_id**
-
-string tweet status id
 
 
 # 4. class DanbooruItemInfo

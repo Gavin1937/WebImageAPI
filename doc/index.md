@@ -10,6 +10,7 @@ Table Of Content
   * [Parent Child State](#parent-child-state)
     * [Parent Page](#parent-page)
     * [Child Page](#child-page)
+    * [Examples:](#examples)
 * [2. Types \& Utility Classes](#2-types--utility-classes)
   * [Enum Class DOMAIN](#enum-class-domain)
     * [**Values**](#values)
@@ -49,6 +50,7 @@ Table Of Content
 * [5. class WebImageAPI](#5-class-webimageapi)
 * [6. Exceptions:](#6-exceptions)
 * [7. Quick Start](#7-quick-start)
+* [8. Getting Authentication Tokens](#8-getting-authentication-tokens)
 
 </details>
 
@@ -76,32 +78,33 @@ WebImageAPI differentiate supported website's pages in two kinds.
 
 A page that contains artist/user/gallery information and links to children pages.
 
-* Examples:
-  * Pixiv:
-    * Parent: https://www.pixiv.net/users/11
-    * Child: https://www.pixiv.net/artworks/106725373
-  * Twitter:
-    * Parent: https://twitter.com/github
-    * Child: https://twitter.com/github/status/1638273045587546134
-  * Danbooru:
-    * Parent: https://danbooru.donmai.us/posts
-    * Child: https://danbooru.donmai.us/posts/1
-  * yande.re:
-    * Parent: https://yande.re/post
-    * Child: https://yande.re/post/show/12345
-  * konachan:
-    * Parent: https://konachan.com/post
-    * Child: https://konachan.com/post/show/1
-  * weibo:
-    * Parent: https://m.weibo.cn/u/1954940747
-    * Child: https://m.weibo.cn/detail/4883581258435481
-  * e-hentai:
-    * Parent: https://e-hentai.org/g/2510385/e39a66a86e/
-    * Child: https://e-hentai.org/s/9b00cf1ccc/2510385-1
-
 ### Child Page
 
-A page that contains image.
+A page that contains image(s).
+
+### Examples:
+
+* Pixiv:
+  * Parent: https://www.pixiv.net/users/11
+  * Child: https://www.pixiv.net/artworks/106725373
+* Twitter:
+  * Parent: https://twitter.com/github
+  * Child: https://twitter.com/github/status/1638273045587546134
+* Danbooru:
+  * Parent: https://danbooru.donmai.us/posts
+  * Child: https://danbooru.donmai.us/posts/1
+* yande.re:
+  * Parent: https://yande.re/post
+  * Child: https://yande.re/post/show/12345
+* konachan:
+  * Parent: https://konachan.com/post
+  * Child: https://konachan.com/post/show/1
+* weibo:
+  * Parent: https://m.weibo.cn/u/1954940747
+  * Child: https://m.weibo.cn/detail/4883581258435481
+* e-hentai:
+  * Parent: https://e-hentai.org/g/2510385/e39a66a86e/
+  * Child: https://e-hentai.org/s/9b00cf1ccc/2510385-1
 
 # 2. Types & Utility Classes
 
@@ -329,4 +332,8 @@ Custom Exceptions uses in WebImageAPI
 Checkout [quick_start.py](../demo/quick_start.py)
 
 Be sure to run it from `demo` directory
+
+# 8. Getting Authentication Tokens
+
+[Details](./GettingAuthTokens.md)
 

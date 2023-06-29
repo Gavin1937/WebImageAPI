@@ -61,6 +61,7 @@ pip install -U WebImageAPI-*-py3-none-any.whl
 |---------|-------------------------------------------------------------------------------------------------------------------|
 | Pixiv   | [get pixiv refresh_token follow upbit's tutorial](https://gist.github.com/upbit/6edda27cb1644e94183291109b8a5fde) |
 | Twitter | [get twitter consumer_key, consumer_secret, access_token, access_token_secret](https://developer.twitter.com/en/docs/twitter-api/getting-started/getting-access-to-the-twitter-api)  |
+| Twitter Web Client | [get twitter web client api authentication tokens](./doc/GettingAuthTokens.md#1-twitter-web-client-authentication-tokens)  |
 
 
 # [Documentaion](./doc/index.md)

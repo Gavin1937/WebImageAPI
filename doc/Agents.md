@@ -28,9 +28,9 @@ Table Of Content
     * [**DownloadRawUrl(PixivAgent, raw\_url:str, output\_path:Union\[str,Path\], replace:bool=False):**](#downloadrawurlpixivagent-raw_urlstr-output_pathunionstrpath-replaceboolfalse)
 * [5. class TwitterAgent](#5-class-twitteragent)
   * [Additional Methods](#additional-methods-1)
-    * [**\_\_init\_\_(TwitterAgent, consumer\_key:str, consumer\_secret:str, access\_token:str, access\_token\_secret:str, bearer\_token:str, max\_try:int=5):**](#__init__twitteragent-consumer_keystr-consumer_secretstr-access_tokenstr-access_token_secretstr-bearer_tokenstr-max_tryint5)
+    * [**\_\_init\_\_(TwitterAgent, consumer\_key:str, consumer\_secret:str, access\_token:str, access\_token\_secret:str, bearer\_token:str, proxies:dict=None, max\_try:int=5):**](#__init__twitteragent-consumer_keystr-consumer_secretstr-access_tokenstr-access_token_secretstr-bearer_tokenstr-proxiesdictnone-max_tryint5)
     * [**GetAPI(TwitterAgent) -\> tweepy.API:**](#getapitwitteragent---tweepyapi)
-    * [**SetProxies(TwitterAgent, proxies:str=None):**](#setproxiestwitteragent-proxiesstrnone)
+    * [**SetProxies(TwitterAgent, proxies:dict):**](#setproxiestwitteragent-proxiesdict)
     * [**GetParentItemInfo(TwitterAgent, item\_info:TwitterItemInfo) -\> TwitterItemInfo:**](#getparentiteminfotwitteragent-item_infotwitteriteminfo---twitteriteminfo)
     * [**IsFollowedUser(TwitterAgent, item\_info:TwitterItemInfo) -\> bool:**](#isfollowedusertwitteragent-item_infotwitteriteminfo---bool)
     * [**FollowUser(TwitterAgent, item\_info:TwitterItemInfo) -\> bool:**](#followusertwitteragent-item_infotwitteriteminfo---bool)
@@ -38,33 +38,33 @@ Table Of Content
 * [6. class TwitterWebAgent](#6-class-twitterwebagent)
   * [Additional Methods](#additional-methods-2)
     * [**\_\_init\_\_(TwitterWebAgent, ...):**](#__init__twitterwebagent-)
-    * [**SetProxies(TwitterWebAgent, proxies:str=None):**](#setproxiestwitterwebagent-proxiesstrnone)
+    * [**SetProxies(TwitterWebAgent, proxies:dict):**](#setproxiestwitterwebagent-proxiesdict)
     * [**GetParentItemInfo(TwitterWebAgent, item\_info:TwitterItemInfo) -\> TwitterItemInfo:**](#getparentiteminfotwitterwebagent-item_infotwitteriteminfo---twitteriteminfo)
     * [**IsFollowedUser(TwitterWebAgent, item\_info:TwitterItemInfo) -\> bool:**](#isfollowedusertwitterwebagent-item_infotwitteriteminfo---bool)
 * [7. class DanbooruAgent](#7-class-danbooruagent)
   * [Additional Methods](#additional-methods-3)
-    * [**\_\_init\_\_(DanbooruAgent, proxies:str=None):**](#__init__danbooruagent-proxiesstrnone)
-    * [**SetProxies(DanbooruAgent, proxies:str=None):**](#setproxiesdanbooruagent-proxiesstrnone)
+    * [**\_\_init\_\_(DanbooruAgent, proxies:dict=None):**](#__init__danbooruagent-proxiesdictnone)
+    * [**SetProxies(DanbooruAgent, proxies:dict):**](#setproxiesdanbooruagent-proxiesdict)
     * [**FindSource(DanbooruAgent, item\_info:DanbooruItemInfo) -\> str:**](#findsourcedanbooruagent-item_infodanbooruiteminfo---str)
 * [8. class YandereAgent](#8-class-yandereagent)
   * [Additional Methods](#additional-methods-4)
-    * [**\_\_init\_\_(YandereAgent, proxies:str=None):**](#__init__yandereagent-proxiesstrnone)
-    * [**SetProxies(YandereAgent, proxies:str=None):**](#setproxiesyandereagent-proxiesstrnone)
+    * [**\_\_init\_\_(YandereAgent, proxies:dict=None):**](#__init__yandereagent-proxiesdictnone)
+    * [**SetProxies(YandereAgent, proxies:dict):**](#setproxiesyandereagent-proxiesdict)
     * [**FindSource(YandereAgent, item\_info:YandereItemInfo) -\> str:**](#findsourceyandereagent-item_infoyandereiteminfo---str)
 * [9. class KonachanAgent](#9-class-konachanagent)
   * [Additional Methods](#additional-methods-5)
-    * [**\_\_init\_\_(KonachanAgent, proxies:str=None):**](#__init__konachanagent-proxiesstrnone)
-    * [**SetProxies(KonachanAgent, proxies:str=None):**](#setproxieskonachanagent-proxiesstrnone)
+    * [**\_\_init\_\_(KonachanAgent, proxies:dict=None):**](#__init__konachanagent-proxiesdictnone)
+    * [**SetProxies(KonachanAgent, proxies:dict):**](#setproxieskonachanagent-proxiesdict)
     * [**FindSource(KonachanAgent, item\_info:KonachanItemInfo) -\> str:**](#findsourcekonachanagent-item_infokonachaniteminfo---str)
 * [10. class WeiboAgent](#10-class-weiboagent)
   * [Additional Methods](#additional-methods-6)
-    * [**\_\_init\_\_(WeiboAgent, proxies:str=None):**](#__init__weiboagent-proxiesstrnone)
-    * [**SetProxies(WeiboAgent, proxies:str=None):**](#setproxiesweiboagent-proxiesstrnone)
+    * [**\_\_init\_\_(WeiboAgent, proxies:dict=None):**](#__init__weiboagent-proxiesdictnone)
+    * [**SetProxies(WeiboAgent, proxies:dict):**](#setproxiesweiboagent-proxiesdict)
 * [11. class EHentaiAgent](#11-class-ehentaiagent)
   * [E-Hentai Peek Hour](#e-hentai-peek-hour)
   * [Additional Methods](#additional-methods-7)
-    * [**\_\_init\_\_(EHentaiAgent, ipb\_member\_id:str=None, ipb\_pass\_hash:str=None, proxies:str=None):**](#__init__ehentaiagent-ipb_member_idstrnone-ipb_pass_hashstrnone-proxiesstrnone)
-    * [**SetProxies(EHentaiAgent, proxies:str=None):**](#setproxiesehentaiagent-proxiesstrnone)
+    * [**\_\_init\_\_(EHentaiAgent, ipb\_member\_id:str=None, ipb\_pass\_hash:str=None, proxies:dict=None):**](#__init__ehentaiagent-ipb_member_idstrnone-ipb_pass_hashstrnone-proxiesdictnone)
+    * [**SetProxies(EHentaiAgent, proxies:dict):**](#setproxiesehentaiagent-proxiesdict)
     * [**SetEHentaiAuthInfo(EHentaiAgent, ipb\_member\_id:str, ipb\_pass\_hash:str):**](#setehentaiauthinfoehentaiagent-ipb_member_idstr-ipb_pass_hashstr)
     * [**GetIgnorePeekHour(EHentaiAgent) -\> bool:**](#getignorepeekhourehentaiagent---bool)
     * [**SetIgnorePeekHour(EHentaiAgent, whether\_ignore:bool):**](#setignorepeekhourehentaiagent-whether_ignorebool)
@@ -142,7 +142,7 @@ Note:
 
 All child class of `BaseAgent` are [singleton classes](https://en.wikipedia.org/wiki/Singleton_pattern).
 
-This design decision is because I don't want to initialize the same `Agent` class multiple times during the run time, so I uses singleton to avoid re-initialize and authenticated session copying.
+I made this design decision because I don't want to initialize the same `Agent` class multiple times during the run time, so I use singleton to avoid re-initialization and duplicating authentication sessions.
 
 ## Methods
 
@@ -179,16 +179,16 @@ This Agent only accept [PixivItemInfo](./WebItemInfo.md#2-class-pixiviteminfo)
 ### **GetParentItemInfo(PixivAgent, item_info:PixivItemInfo) -> PixivItemInfo:**
 
 * Get the parent PixivItemInfo for a child PixivItemInfo.
-* Param:
-  * item_info    => PixivItemInfo Child
+* Parameters:
+  * **item_info**: PixivItemInfo Child
 * Returns:
   * A parent PixivItemInfo
 
 ### **IsFollowedUser(PixivAgent, item_info:PixivItemInfo) -> bool:**
 
 * Is input PixivItemInfo points to an user that is followed by current account.
-* Param:
-  * item_info    => PixivItemInfo to check
+* Parameters:
+  * **item_info**: PixivItemInfo to check
 * Returns:
   * True if is followed
   * False if not
@@ -196,8 +196,8 @@ This Agent only accept [PixivItemInfo](./WebItemInfo.md#2-class-pixiviteminfo)
 ### **FollowUser(PixivAgent, item_info:PixivItemInfo) -> bool:**
 
 * Follow an user that item_info points to.
-* Param:
-  * item_info    => PixivItemInfo Parent to check
+* Parameters:
+  * **item_info**: PixivItemInfo Parent to check
 * Returns:
   * True if success
   * False if failed
@@ -205,8 +205,8 @@ This Agent only accept [PixivItemInfo](./WebItemInfo.md#2-class-pixiviteminfo)
 ### **UnfollowUser(PixivAgent, item_info:PixivItemInfo) -> bool:**
 
 * Unfollow an user that item_info points to.
-* Param:
-  * item_info    => PixivItemInfo Parent to check
+* Parameters:
+  * **item_info**: PixivItemInfo Parent to check
 * Returns:
   * True if success
   * False if failed
@@ -214,8 +214,8 @@ This Agent only accept [PixivItemInfo](./WebItemInfo.md#2-class-pixiviteminfo)
 ### **IsAIArtwork(PixivAgent, item_info:PixivItemInfo) -> bool:**
 
 * Is input child PixivItemInfo points to an AI-Generated artwork
-* Param:
-  * item_info    => PixivItemInfo Child to check
+* Parameters:
+  * **item_info**: PixivItemInfo Child to check
 * Returns:
   * True if is AI-Generated artwork
   * False if not
@@ -223,11 +223,11 @@ This Agent only accept [PixivItemInfo](./WebItemInfo.md#2-class-pixiviteminfo)
 ### **FetchParentChildrenById(PixivAgent, item_info:PixivItemInfo, operator:str, id:int, max_page:int=10) -> list:**
 
 * Fetch a Parent PixivItemInfo\'s Children by comparing with children id
-* Param:
-  * item_info    => PixivItemInfo Parent to fetch
-  * operator     => str one comparison operators. Valid operators: <, >, <=, >=, =, ==, !=
-  * id           => int id number >= 1
-  * max_page     => maximum page to search, default 10
+* Parameters:
+  * **item_info**: PixivItemInfo Parent to fetch
+  * **operator**: str one comparison operators. Valid operators: <, >, <=, >=, =, ==, !=
+  * **id**: int id number >= 1
+  * **max_page**: maximum page to search, default 10
 * Returns:
   * list of PixivItemInfo fetched, also edit original "item_info"
 
@@ -235,10 +235,10 @@ This Agent only accept [PixivItemInfo](./WebItemInfo.md#2-class-pixiviteminfo)
 
 * Download a supplied pixiv raw url
 * Raw url have domain: i.pximg.net
-* Param:
-  * raw_url      => str raw url to download
-  * output_path  => str|Path of a directory for downloaded file
-  * replace      => bool flag, whether replace if download file already exists
+* Parameters:
+  * **raw_url**: str raw url to download
+  * **output_path**: str|Path of a directory for downloaded file
+  * **replace**: bool flag, whether replace if download file already exists
 
 # 5. class TwitterAgent
 
@@ -254,10 +254,11 @@ This Agent only accept [TwitterItemInfo](./WebItemInfo.md#3-class-twitteriteminf
 * Thus, I need to replace TwitterAgent's backend with twitter's web client api.
 * checkout following articles for detail:
   * [https://developer.twitter.com/en/docs/twitter-api](https://developer.twitter.com/en/docs/twitter-api)
+  * [https://twittercommunity.com/t/453-you-currently-have-access-to-twitter-api-v2-endpoints-and-limited-v1-1-endpoints-only/194140](https://twittercommunity.com/t/453-you-currently-have-access-to-twitter-api-v2-endpoints-and-limited-v1-1-endpoints-only/194140)
 
 ## Additional Methods
 
-### **\_\_init\_\_(TwitterAgent, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str, bearer_token:str, max_try:int=5):**
+### **\_\_init\_\_(TwitterAgent, consumer_key:str, consumer_secret:str, access_token:str, access_token_secret:str, bearer_token:str, proxies:dict=None, max_try:int=5):**
 
 * Constructor for TwitterAgent class
 * You need to pass in required/optional parameters for authentication in [TwitterAgent.instance() function](#instanceself-args)
@@ -267,7 +268,7 @@ This Agent only accept [TwitterItemInfo](./WebItemInfo.md#3-class-twitteriteminf
   * **access_token**:         string, twitter access token
   * **access_token_secret**:  string, twitter access token secret
   * **bearer_token**:         string, twitter bearer token
-  * **proxies**:              string, a proxy server url string, default None, disabled
+  * **proxies**:              dictionary, proxy server urls, default None, disabled. (e.g. `{'http':'http://localhost', 'https':'https://localhost'}`)
   * **max_try**:              integer, max retry number
 * This Agent uses tweepy.OAuth1UserHandler() and tweepy.API() to authenticate with twitter.
 * [2023-04-01]: Twitter will change their api policy within 30 days. Therefore, this Agent may be affect by the api policy changes.
@@ -277,26 +278,26 @@ This Agent only accept [TwitterItemInfo](./WebItemInfo.md#3-class-twitteriteminf
 
 * Get tweepy.API object created in the background
 
-### **SetProxies(TwitterAgent, proxies:str=None):**
+### **SetProxies(TwitterAgent, proxies:dict):**
 
 * Set proxy for TwitterAgent
 * This function will perform a re-authentication with Twitter
 * Parameters
-  * **proxies**:              string, a proxy server url string, default None, disabled
+  * **proxies**:              dictionary, proxy server urls. (e.g.: `{'http':'http://localhost', 'https':'https://localhost'}`)
 
 ### **GetParentItemInfo(TwitterAgent, item_info:TwitterItemInfo) -> TwitterItemInfo:**
 
 * Get the parent TwitterItemInfo for a child TwitterItemInfo.
-* Param:
-  * item_info    => TwitterItemInfo Child
+* Parameters:
+  * **item_info**: TwitterItemInfo Child
 * Returns:
   * A parent TwitterItemInfo
 
 ### **IsFollowedUser(TwitterAgent, item_info:TwitterItemInfo) -> bool:**
 
 * Is input TwitterItemInfo points to an user that is followed by current account.
-* Param:
-  * item_info    => TwitterItemInfo to check
+* Parameters:
+  * **item_info**: TwitterItemInfo to check
 * Returns:
   * True if is followed
   * False if not
@@ -305,8 +306,8 @@ This Agent only accept [TwitterItemInfo](./WebItemInfo.md#3-class-twitteriteminf
 
 * Follow an user that item_info points to.
 * The proxy setting does not apply to this function.
-* Param:
-  * item_info    => TwitterItemInfo Parent to check
+* Parameters:
+  * **item_info**: TwitterItemInfo Parent to check
 * Returns:
   * True if success
   * False if failed
@@ -315,8 +316,8 @@ This Agent only accept [TwitterItemInfo](./WebItemInfo.md#3-class-twitteriteminf
 
 * Unfollow an user that item_info points to.
 * The proxy setting does not apply to this function.
-* Param:
-  * item_info    => TwitterItemInfo Parent to check
+* Parameters:
+  * **item_info**: TwitterItemInfo Parent to check
 * Returns:
   * True if success
   * False if failed
@@ -335,6 +336,7 @@ This Agent only accept [TwitterItemInfo](./WebItemInfo.md#3-class-twitteriteminf
 * Thus, I need to replace TwitterAgent's backend with twitter's web client api.
 * checkout following articles for detail:
   * [https://developer.twitter.com/en/docs/twitter-api](https://developer.twitter.com/en/docs/twitter-api)
+  * [https://twittercommunity.com/t/453-you-currently-have-access-to-twitter-api-v2-endpoints-and-limited-v1-1-endpoints-only/194140](https://twittercommunity.com/t/453-you-currently-have-access-to-twitter-api-v2-endpoints-and-limited-v1-1-endpoints-only/194140)
 
 ## Additional Methods
 
@@ -385,28 +387,28 @@ This Agent only accept [TwitterItemInfo](./WebItemInfo.md#3-class-twitteriteminf
   * **endpoint_userbyscreenname**: str, unique id for UserByScreenName endpoint
   * **endpoint_usermedia**: str, unique id for UserMedia endpoint
   * **endpoint_tweetdetail**: str, unique id for TweetDetail endpoint
-  * **proxies**: string, a proxy server url string, default None, disabled
+  * **proxies**: dictionary, proxy server urls, default None, disabled. (e.g. `{'http':'http://localhost', 'https':'https://localhost'}`)
   * **delay_val**: float, seconds between each request, default 0.0
 
-### **SetProxies(TwitterWebAgent, proxies:str=None):**
+### **SetProxies(TwitterWebAgent, proxies:dict):**
 
 * Set proxy for TwitterWebAgent
 * Parameters
-  * **proxies**:              string, a proxy server url string, default None, disabled
+  * **proxies**: dictionary, proxy server urls. (e.g. `{'http':'http://localhost', 'https':'https://localhost'}`)
 
 ### **GetParentItemInfo(TwitterWebAgent, item_info:TwitterItemInfo) -> TwitterItemInfo:**
 
 * Get the parent TwitterItemInfo for a child TwitterItemInfo.
-* Param:
-  * item_info    => TwitterItemInfo Child
+* Parameters:
+  * **item_info**: TwitterItemInfo Child
 * Returns:
   * A parent TwitterItemInfo
 
 ### **IsFollowedUser(TwitterWebAgent, item_info:TwitterItemInfo) -> bool:**
 
 * Is input TwitterItemInfo points to an user that is followed by current account.
-* Param:
-  * item_info    => TwitterItemInfo to check
+* Parameters:
+  * **item_info**: TwitterItemInfo to check
 * Returns:
   * True if is followed
   * False if not
@@ -421,23 +423,23 @@ This Agent only accept [DanbooruItemInfo](./WebItemInfo.md#4-class-danbooruitemi
 
 ## Additional Methods
 
-### **\_\_init\_\_(DanbooruAgent, proxies:str=None):**
+### **\_\_init\_\_(DanbooruAgent, proxies:dict=None):**
 
 * Constructor for DanbooruAgent class
 * You can pass in optional parameters via [DanbooruAgent.instance() function](#instanceself-args)
 * Parameters:
-  * **proxies**:              string, a proxy server url string, default None, disabled
+  * **proxies**: dictionary, proxy server urls, default None, disabled. (e.g. `{'http':'http://localhost', 'https':'https://localhost'}`)
 
-### **SetProxies(DanbooruAgent, proxies:str=None):**
+### **SetProxies(DanbooruAgent, proxies:dict):**
 
 * Set proxy for DanbooruAgent
 * Parameters
-  * **proxies**:              string, a proxy server url string, default None, disabled
+  * **proxies**: dictionary, proxy server urls. (e.g. `{'http':'http://localhost', 'https':'https://localhost'}`)
 
 ### **FindSource(DanbooruAgent, item_info:DanbooruItemInfo) -> str:**
 
 * Find the source of a Child DanbooruItemInfo.
-* Param:
+* Parameters:
   * **item_info**: DanbooruItemInfo Child
 * Returns:
   * str url to the source if has one
@@ -453,23 +455,23 @@ This Agent only accept [YandereItemInfo](./WebItemInfo.md#5-class-yandereiteminf
 
 ## Additional Methods
 
-### **\_\_init\_\_(YandereAgent, proxies:str=None):**
+### **\_\_init\_\_(YandereAgent, proxies:dict=None):**
 
 * Constructor for YandereAgent class
 * You can pass in optional parameters via [YandereAgent.instance() function](#instanceself-args)
 * Parameters:
-  * **proxies**:              string, a proxy server url string, default None, disabled
+  * **proxies**: dictoinary, a proxy server url string, default None, disabled. (e.g. `{'http':'http://localhost', 'https':'https://localhost'}`)
 
-### **SetProxies(YandereAgent, proxies:str=None):**
+### **SetProxies(YandereAgent, proxies:dict):**
 
 * Set proxy for YandereAgent
 * Parameters
-  * **proxies**:              string, a proxy server url string, default None, disabled
+  * **proxies**: dictionary, proxy server urls. (e.g. `{'http':'http://localhost', 'https':'https://localhost'}`)
 
 ### **FindSource(YandereAgent, item_info:YandereItemInfo) -> str:**
 
 * Find the source of a Child YandereItemInfo.
-* Param:
+* Parameters:
   * **item_info**: YandereItemInfo Child
 * Returns:
   * str url to the source if has one
@@ -485,23 +487,23 @@ This Agent only accept [KonachanItemInfo](./WebItemInfo.md#6-class-konachanitemi
 
 ## Additional Methods
 
-### **\_\_init\_\_(KonachanAgent, proxies:str=None):**
+### **\_\_init\_\_(KonachanAgent, proxies:dict=None):**
 
 * Constructor for KonachanAgent class
 * You can pass in optional parameters via [KonachanAgent.instance() function](#instanceself-args)
 * Parameters:
-  * **proxies**:              string, a proxy server url string, default None, disabled
+  * **proxies**: dictionary, proxy server urls, default None, disabled. (e.g. `{'http':'http://localhost', 'https':'https://localhost'}`)
 
-### **SetProxies(KonachanAgent, proxies:str=None):**
+### **SetProxies(KonachanAgent, proxies:dict):**
 
 * Set proxy for KonachanAgent
 * Parameters
-  * **proxies**:              string, a proxy server url string, default None, disabled
+  * **proxies**: dictionary, proxy server urls. (e.g. `{'http':'http://localhost', 'https':'https://localhost'}`)
 
 ### **FindSource(KonachanAgent, item_info:KonachanItemInfo) -> str:**
 
 * Find the source of a Child KonachanItemInfo.
-* Param:
+* Parameters:
   * **item_info**: KonachanItemInfo Child
 * Returns:
   * str url to the source if has one
@@ -517,18 +519,18 @@ This Agent only accept [WeiboItemInfo](./WebItemInfo.md#7-class-weiboiteminfo)
 
 ## Additional Methods
 
-### **\_\_init\_\_(WeiboAgent, proxies:str=None):**
+### **\_\_init\_\_(WeiboAgent, proxies:dict=None):**
 
 * Constructor for WeiboAgent class
 * You can pass in optional parameters via [WeiboAgent.instance() function](#instanceself-args)
 * Parameters:
-  * **proxies**:              string, a proxy server url string, default None, disabled
+  * **proxies**: dictionary, proxy server urls, default None, disabled. (e.g. `{'http':'http://localhost', 'https':'https://localhost'}`)
 
-### **SetProxies(WeiboAgent, proxies:str=None):**
+### **SetProxies(WeiboAgent, proxies:dict):**
 
 * Set proxy for DanbooruAgent
 * Parameters
-  * **proxies**:              string, a proxy server url string, default None, disabled
+  * **proxies**: dictoinary, proxy server urls. (e.g. `{'http':'http://localhost', 'https':'https://localhost'}`)
 
 # 11. class EHentaiAgent
 
@@ -575,7 +577,7 @@ EH maintainers use a set of rules to control the website's load
 
 ## Additional Methods
 
-### **\_\_init\_\_(EHentaiAgent, ipb\_member\_id:str=None, ipb\_pass\_hash:str=None, proxies:str=None):**
+### **\_\_init\_\_(EHentaiAgent, ipb\_member\_id:str=None, ipb\_pass\_hash:str=None, proxies:dict=None):**
 
 * Constructor for EHentaiAgent class
 * You can pass in optional parameters via [EHentaiAgent.instance() function](#instanceself-args)
@@ -590,15 +592,15 @@ EH maintainers use a set of rules to control the website's load
   * under the Cookies drop down menu
   * select https://e-hentai.org
 * Parameters:
-  * **proxies**:              string, a proxy server url string, default None, disabled
-  * **ipb\_member\_id**:      string, ipb_member_id in EHentai cookies
-  * **ipb\_pass\_hash**:      string, ipb_pass_has in EHentai cookies
+  * **proxies**: dictionary, proxy server urls, default None, disabled. (e.g. `{'http':'http://localhost', 'https':'https://localhost'}`)
+  * **ipb\_member\_id**: string, ipb_member_id in EHentai cookies
+  * **ipb\_pass\_hash**: string, ipb_pass_has in EHentai cookies
 
-### **SetProxies(EHentaiAgent, proxies:str=None):**
+### **SetProxies(EHentaiAgent, proxies:dict):**
 
 * Set proxy for DanbooruAgent
 * Parameters
-  * **proxies**:              string, a proxy server url string, default None, disabled
+  * **proxies**: dictionary, proxy server urls. (e.g. `{'http':'http://localhost', 'https':'https://localhost'}`)
 
 ### **SetEHentaiAuthInfo(EHentaiAgent, ipb\_member\_id:str, ipb\_pass\_hash:str):**
 

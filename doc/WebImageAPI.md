@@ -148,7 +148,7 @@ I highly recommend you to stick with this class and let it to handle everything 
 
 #### **FetchItemInfoDetail(WebImageAPI, item_info:WebItemInfo) -> WebItemInfo:**
 
-* An abstraction function for all Agents, you can pass in any child `WebItemInfo` into this function and let it to handle agents for you.
+* An abstraction function for all Agents, you can pass in any `WebItemInfo` into this function and let it to handle agents for you.
 * Fetch & Fill-In `detail` member for supplied WebItemInfo.
 * Paremters
   * **item_info**:   WebItemInfo to fetch
@@ -157,7 +157,7 @@ I highly recommend you to stick with this class and let it to handle everything 
 
 #### **FetchParentChildren(WebImageAPI, item_info:WebItemInfo, page:int=1) -> list:**
 
-* An abstraction function for all Agents, you can pass in any child `WebItemInfo` into this function and let it to handle agents for you.
+* An abstraction function for all Agents, you can pass in any `WebItemInfo` into this function and let it to handle agents for you.
 * Fetch a Parent WebItemInfo's Children
 * Parameters:
   * **item_info**:   WebItemInfo Parent to fetch
@@ -167,7 +167,7 @@ I highly recommend you to stick with this class and let it to handle everything 
 
 #### **FetchUserInfo(WebImageAPI, item_info:WebItemInfo, old_user_info:UserInfo=None) -> UserInfo:**
 
-* An abstraction function for all Agents, you can pass in any child `WebItemInfo` into this function and let it to handle agents for you.
+* An abstraction function for all Agents, you can pass in any `WebItemInfo` into this function and let it to handle agents for you.
 * Fetch a WebItemInfo's UserInfo
 * Parameters:
   * **item_info**:         PixivItemInfo Parent to fetch
@@ -179,7 +179,7 @@ I highly recommend you to stick with this class and let it to handle everything 
 
 #### **DownloadItem(WebImageAPI, item_info:WebItemInfo, output_path:Union[str,Path], replace:bool=False):**
 
-* An abstraction function for all Agents, you can pass in any child `WebItemInfo` into this function and let it to handle agents for you.
+* An abstraction function for all Agents, you can pass in any `WebItemInfo` into this function and let it to handle agents for you.
 * Download supplied WebItemInfo
 * Parameters:
   * **item_info**:     WebItemInfo Child to download
@@ -217,7 +217,7 @@ I highly recommend you to stick with this class and let it to handle everything 
 * An abstraction function that converts any child details dictionary into a child `WebItemInfo` with specified DOMAIN
 * Parameters:
   * **domain**:        DOMAIN, domain of details
-  * **details**:       any (usually dict|list), details to set
+  * **details**:       any (usually dict | list), details to set
 * Returns:
   * If domain is valid, return `WebItemInfo` specified by domain
   * Else, raise ValueError
