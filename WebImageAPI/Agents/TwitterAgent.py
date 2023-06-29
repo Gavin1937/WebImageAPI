@@ -112,12 +112,12 @@ class TwitterAgent(BaseAgent):
     
     
     @TypeMatcher(['self', TwitterItemInfo, int])
-    def FetchParentChildren(self, item_info:TwitterItemInfo, count:int=30) -> list:
+    def FetchParentChildren(self, item_info:TwitterItemInfo, page:int=1) -> list:
         '''
         Fetch a Parent TwitterItemInfo\'s Children
         Param:
             item_info  => TwitterItemInfo Parent to fetch
-            count      => int count number >= 1
+            page       => int page number >= 1
         Returns:
             list of TwitterItemInfo fetched, also edit original "item_info"
         '''
@@ -125,7 +125,7 @@ class TwitterAgent(BaseAgent):
         if not item_info.IsParent():
             raise WrongParentChildException(item_info.parent_child, 'Input TwitterItemInfo must be a parent.')
         
-        count = Clamp(count, 1)
+        page = Clamp(page, 1)
         
         details = []
         output = []
@@ -135,11 +135,12 @@ class TwitterAgent(BaseAgent):
             tweet_mode='extended',
             exclude_replies=True,
             include_rts=False,
-            count=count,
-        ).items(count)
-        for status in cursor:
-            details.append(status._json)
-            output.append(TwitterItemInfo.FromChildDetails(status._json))
+            count=30,
+        ).page(page)
+        for page in cursor:
+            for status in page:
+                details.append(status._json)
+                output.append(TwitterItemInfo.FromChildDetails(status._json))
         item_info.details = details
         
         return output

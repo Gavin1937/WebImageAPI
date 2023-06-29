@@ -202,12 +202,12 @@ class TwitterWebAgent(BaseAgent):
     
     
     @TypeMatcher(['self', TwitterItemInfo, int])
-    def FetchParentChildren(self, item_info:TwitterItemInfo, count:int=20) -> list:
+    def FetchParentChildren(self, item_info:TwitterItemInfo, page:int=1) -> list:
         '''
         Fetch a Parent TwitterItemInfo\'s Children
         Param:
             item_info  => TwitterItemInfo Parent to fetch
-            count      => int count number >= 1
+            page       => int page number >= 1
         Returns:
             list of TwitterItemInfo fetched, also edit original "item_info"
         '''
@@ -220,28 +220,20 @@ class TwitterWebAgent(BaseAgent):
         
         
         userid = item_info.details['id_str']
-        count = Clamp(count, 1)
+        page = Clamp(page, 1)
         url = self.__GenApiUrl('UserMedia')
         next_cursor = None
-        limit = 50
         output = []
         
-        while count > 0:
-            # get current page length
-            current_page_length = 0
-            if count > limit:
-                current_page_length = limit
-                count -= limit
-            else:
-                current_page_length = count
-                count = 0
-            
+        # while count > 0:
+        for _ in range(page):
             # get request
+            count = 30
             res = None
             try:
                 params = self.__GenParams({
                     'userId':userid,
-                    'count':current_page_length,
+                    'count':count,
                     'cursor':next_cursor,
                 })
                 res = self.__http.GetJson(url, params=params)
