@@ -37,7 +37,7 @@ class PixivAgent(BaseAgent):
         sleeptime = 10
         for count in range(max_try):
             try:
-                self.__api.auth(refresh_token=refresh_token)
+                self.__api.auth(refresh_token=self.__refresh_token)
                 break
             except PixivError as err:
                 exception = err

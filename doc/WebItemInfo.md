@@ -140,7 +140,7 @@ integer member stores the id for a pixiv user or artworks.
 * constructor of PixivItemInfo
 * Parameters:
   * **url:** string url, can be None
-  * If **url** is None, you must parent_child & input pixiv id as kwargs
+  * If **url** is None, you must supply parent_child & pid as kwargs
     * **parent_child:** PARENT_CHILD state
     * **pid:** string | int pixiv id
 
