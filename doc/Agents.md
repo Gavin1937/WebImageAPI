@@ -363,11 +363,11 @@ This Agent only accept [TwitterItemInfo](./WebItemInfo.md#3-class-twitteriteminf
   * We need to use 3 endpoints in this agent: `UserByScreenName`, `UserMedia`, `TweetDetail`
   * So, you need to find their dedicate `{UNIQUE_STR_ID}` from your browser's dev tool.
 
-  * Usually, twitter web client will make a request to `UserByScreenName` endpoint when you visit an user's homepage. (e.g. [https://twitter.com/twitterdev](https://twitter.com/twitterdev))
+  * Usually, twitter web client will make a request to `UserByScreenName` endpoint when you visit an user's homepage. (e.g. [https://twitter.com/elonmusk](https://twitter.com/elonmusk))
 
-  * And, it will make another request to 'UserMedia' endpoint when you visit a user's media page. (e.g. [https://twitter.com/TwitterDev/media](https://twitter.com/TwitterDev/media))
+  * And, it will make another request to 'UserMedia' endpoint when you visit a user's media page. (e.g. [https://twitter.com/elonmusk/media](https://twitter.com/elonmusk/media))
 
-  * Finally, it will make a request to 'TweetDetail' endpoint when you visit a tweet. (e.g. [https://twitter.com/TwitterDev/status/1585707921433923585](https://twitter.com/TwitterDev/status/1585707921433923585))
+  * Finally, it will make a request to 'TweetDetail' endpoint when you visit a tweet. (e.g. [https://twitter.com/elonmusk/status/1688485935816581120](https://twitter.com/elonmusk/status/1688485935816581120))
 
   * For example, if you found following request when visiting a twitter user's homepage:
     * `https://twitter.com/i/api/graphql/abcdefg123456-/UserByScreenName?....`
