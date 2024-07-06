@@ -21,7 +21,7 @@ class DOMAIN(IntEnum):
         domain = domain.lower()
         if domain in ['pixiv','pixiv.net','pximg.net']:
             return DOMAIN.PIXIV
-        elif domain in ['twitter','twitter.com','m.twitter.com']:
+        elif domain in ['twitter','twitter.com','m.twitter.com','x.com']:
             return DOMAIN.TWITTER
         elif domain in ['danbooru','danbooru.donmai.us']:
             return DOMAIN.DANBOORU
@@ -41,7 +41,7 @@ class DOMAIN(IntEnum):
             raise ValueError('Invalid parameter "url", it must be a string.')
         if 'pixiv.net' in url or 'pximg.net' in url:
             return DOMAIN.PIXIV
-        elif 'twitter.com' in url:
+        elif 'twitter.com' in url or 'x.com' in url:
             return DOMAIN.TWITTER
         elif 'danbooru.donmai.us' in url:
             return DOMAIN.DANBOORU

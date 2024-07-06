@@ -110,6 +110,7 @@ class TwitterWebAgent(BaseAgent):
         }
         self.__request_params = {
             'features': {
+            'rweb_tipjar_consumption_enabled': True,
             'hidden_profile_likes_enabled': False,
             'responsive_web_graphql_exclude_directive_enabled': True,
             'verified_phone_label_enabled': False,
@@ -130,7 +131,13 @@ class TwitterWebAgent(BaseAgent):
             'tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled': True,
             'longform_notetweets_rich_text_read_enabled': True,
             'longform_notetweets_inline_media_enabled': True,
-            'responsive_web_enhance_cards_enabled': False
+            'responsive_web_enhance_cards_enabled': False,
+            'articles_preview_enabled':True,
+            'responsive_web_twitter_article_tweet_consumption_enabled':True,
+            'communities_web_enable_tweet_community_results_fetch':True,
+            'creator_subscriptions_quote_tweet_preview_enabled':True,
+            'c9s_tweet_anatomy_moderator_badge_enabled':True,
+            'rweb_video_timestamps_enabled':True,
             },
             'variables': {
             "includePromotedContent":True,
@@ -162,7 +169,15 @@ class TwitterWebAgent(BaseAgent):
         get_legacy = None
         if item_info.IsParent():
             url = self.__GenApiUrl('UserByScreenName')
-            params = self.__GenParams({'screen_name': item_info.screen_name})
+            params = self.__GenParams(
+                features={
+                    'subscriptions_verification_info_is_identity_verified_enabled':True,
+                    'subscriptions_feature_can_gift_premium':True,
+                    'responsive_web_twitter_article_notes_tab_enabled':True,
+                    'hidden_profile_subscriptions_enabled':True,
+                },
+                variables={'screen_name': item_info.screen_name},
+            )
             def func(detail):
                 return {
                     'id_str': detail['data']['user']['result']['rest_id'],
@@ -172,7 +187,7 @@ class TwitterWebAgent(BaseAgent):
             get_legacy = func
         elif item_info.IsChild():
             url = self.__GenApiUrl('TweetDetail')
-            params = self.__GenParams({
+            params = self.__GenParams(variables={
                 "focalTweetId": str(item_info.status_id),
                 "referrer":"profile",
                 "with_rux_injections":False,
@@ -234,7 +249,7 @@ class TwitterWebAgent(BaseAgent):
             count = 30
             res = None
             try:
-                params = self.__GenParams({
+                params = self.__GenParams(variables={
                     'userId':userid,
                     'count':count,
                     'cursor':next_cursor,
@@ -244,14 +259,18 @@ class TwitterWebAgent(BaseAgent):
                 raise err
             
             # extract useful info & find next cursor
-            for status in res['data']['user']['result']['timeline_v2']['timeline']['instructions'][0]['entries']:
+            entries = [i for i in res['data']['user']['result']['timeline_v2']['timeline']['instructions'] if i['type'] == 'TimelineAddEntries'][0]
+            for status in entries['entries']:
                 entryType = status['content']['entryType']
-                if entryType == 'TimelineTimelineItem':
-                    output.append(TwitterItemInfo.FromChildDetails({
-                        'user': status['content']['itemContent']['tweet_results']['result']['core']['user_results']['result']['legacy'],
-                        **status['content']['itemContent']['tweet_results']['result']['legacy']
-                    }))
-                elif entryType == 'TimelineTimelineCursor' and 'bottom' in status['entryId']:
+                if entryType == 'TimelineTimelineModule':
+                    user = status['content']['items'][0]['item']['itemContent']['tweet_results']['result']['core']['user_results']['result']['legacy']
+                    for item in status['content']['items']:
+                        if 'legacy' not in item['item']['itemContent']['tweet_results']['result']['__typename'] == 'Tweet':
+                            output.append(TwitterItemInfo.FromChildDetails({
+                                'user': user,
+                                **item['item']['itemContent']['tweet_results']['result']['legacy']
+                            }))
+                elif entryType == 'TimelineTimelineCursor' and status['content']['cursorType'] == 'Bottom':
                     next_cursor = status['content']['value']
         
         return output
@@ -380,8 +399,9 @@ class TwitterWebAgent(BaseAgent):
         val = self.__endpoints[endpoint]
         return f'{self.__api_base_url}{val}/{endpoint}'
     
-    def __GenParams(self, variables:dict) -> dict:
+    def __GenParams(self, features:dict=dict(), variables:dict=dict()) -> dict:
         loc_fea = deepcopy(self.__request_params['features'])
+        loc_fea.update(features)
         loc_var = deepcopy(self.__request_params['variables'])
         loc_var.update(variables)
         return {
