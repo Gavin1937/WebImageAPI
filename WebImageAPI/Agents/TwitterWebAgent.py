@@ -49,23 +49,23 @@ class TwitterWebAgent(BaseAgent):
         
         twitter api endpoints:
             Twitter's web client api endpoints are in this format:
-            https://twitter.com/i/api/graphql/{UNIQUE_STR_ID}/{ENDPOINT_NAME}
+            https://x.com/i/api/graphql/{UNIQUE_STR_ID}/{ENDPOINT_NAME}
             
             where {UNIQUE_STR_ID} is an unique str id for its dedicated {ENDPOINT_NAME}
             We need to use 3 endpoints in this agent: 'UserByScreenName', 'UserMedia', 'TweetDetail'
             So, you need to find their dedicate {UNIQUE_STR_ID} from your browser's dev tool.
             
             Usually, twitter web client will make a request to 'UserByScreenName' endpoint 
-            when you visit an user's homepage. (e.g. https://twitter.com/elonmusk)
+            when you visit an user's homepage. (e.g. https://x.com/elonmusk)
             
             And, it will make another request to 'UserMedia' endpoint when you visit a user's media page.
-            (e.g. https://twitter.com/elonmusk/media)
+            (e.g. https://x.com/elonmusk/media)
             
             Finally, it will make a request to 'TweetDetail' endpoint when you visit a tweet.
-            (e.g. https://twitter.com/elonmusk/status/1688485935816581120)
+            (e.g. https://x.com/elonmusk/status/1688485935816581120)
             
             For example, if you found following request when visiting a twitter user's homepage:
-            https://twitter.com/i/api/graphql/abcdefg123456-/UserByScreenName?....
+            https://x.com/i/api/graphql/abcdefg123456-/UserByScreenName?....
             
             you found your unique str id for UserByScreenName: 'abcdefg123456-'
             
@@ -83,7 +83,7 @@ class TwitterWebAgent(BaseAgent):
             'X-Twitter-Client-Language': 'en',
             'Sec-Ch-Ua-Mobile': '?0',
             'Sec-Ch-Ua-Platform': '"Windows"',
-            'Referer': 'https://twitter.com/',
+            'Referer': 'https://x.com/',
             
             # differ for different user, must have
             'Authorization': header_authorization,
@@ -102,7 +102,7 @@ class TwitterWebAgent(BaseAgent):
             default_proxies=self.__proxies,
             delay_value=self.__delay_val
         )
-        self.__api_base_url = 'https://twitter.com/i/api/graphql/'
+        self.__api_base_url = 'https://x.com/i/api/graphql/'
         self.__endpoints = {
             'UserByScreenName': endpoint_userbyscreenname,
             'UserMedia': endpoint_usermedia,
@@ -299,7 +299,7 @@ class TwitterWebAgent(BaseAgent):
             user = item_info.details['user']
         
         name_list = [user['name']]
-        url_dict = {domain:[f'https://twitter.com/{user["screen_name"]}']}
+        url_dict = {domain:[f'https://x.com/{user["screen_name"]}']}
         if old_user_info is not None:
             old_user_info.name_list = MergeDeDuplicate(old_user_info.name_list, name_list)
             if domain in old_user_info.url_dict:

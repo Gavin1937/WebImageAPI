@@ -55,11 +55,11 @@ class TwitterItemInfo(WebItemInfo):
         if 'screen_name' in kwargs and 'parent_child' in kwargs:
             if kwargs['parent_child'] == PARENT_CHILD.PARENT:
                 self.screen_name = kwargs['screen_name']
-                url = f'https://twitter.com/{self.screen_name}'
+                url = f'https://x.com/{self.screen_name}'
             elif kwargs['parent_child'] == PARENT_CHILD.CHILD:
                 self.screen_name = kwargs['screen_name']
                 self.status_id = kwargs['status_id']
-                url = f'https://twitter.com/{self.screen_name}/status/{self.status_id}'
+                url = f'https://x.com/{self.screen_name}/status/{self.status_id}'
         super().__init__(url)
     
     def _PostInitAnalyzing(self) -> None:
@@ -77,7 +77,7 @@ class TwitterItemInfo(WebItemInfo):
     
     def FromChildDetails(details) -> TwitterItemInfo:
         output = TwitterItemInfo(
-            f'https://twitter.com/{details["user"]["screen_name"]}/status/{details["id_str"]}'
+            f'https://x.com/{details["user"]["screen_name"]}/status/{details["id_str"]}'
         )
         output.details = details
         return output

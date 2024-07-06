@@ -167,7 +167,7 @@ class TwitterAgent(BaseAgent):
             user = item_info.details['user']
         
         name_list = [user['name']]
-        url_dict = {domain:[f'https://twitter.com/{user["screen_name"]}']}
+        url_dict = {domain:[f'https://x.com/{user["screen_name"]}']}
         if old_user_info is not None:
             old_user_info.name_list = MergeDeDuplicate(old_user_info.name_list, name_list)
             if domain in old_user_info.url_dict:
