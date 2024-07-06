@@ -30,7 +30,7 @@ class WebImageAPI:
         self, agent_type:str,
         
         # agent_type == 'web'
-        header_authorization:str=None, header_x_client_uuid:str=None,
+        header_authorization:str=None,
         header_x_csrf_token:str=None, cookie_auth_token:str=None,
         cookie_ct0:str=None, endpoint_userbyscreenname:str=None,
         endpoint_usermedia:str=None, endpoint_tweetdetail:str=None,
@@ -48,7 +48,6 @@ class WebImageAPI:
             if agent_type == 'web', initialize a TwitterWebAgent.
             Requires Param:
                 header_authorization        => str, Authorization in request header
-                header_x_client_uuid        => str, X-Client-Uuid in request header
                 header_x_csrf_token         => str, X-Csrf-Token in request header
                 cookie_auth_token           => str, auth_token in cookie
                 cookie_ct0                  => str, ct0 in cookie
@@ -71,12 +70,12 @@ class WebImageAPI:
         if agent_type == 'web':
             check = self.__CheckArgs(
                 [
-                'header_authorization', 'header_x_client_uuid',
+                'header_authorization',
                 'header_x_csrf_token', 'cookie_auth_token',
                 'cookie_ct0', 'endpoint_userbyscreenname',
                 'endpoint_usermedia', 'endpoint_tweetdetail'
                 ],
-                header_authorization=header_authorization, header_x_client_uuid=header_x_client_uuid,
+                header_authorization=header_authorization,
                 header_x_csrf_token=header_x_csrf_token, cookie_auth_token=cookie_auth_token,
                 cookie_ct0=cookie_ct0, endpoint_userbyscreenname=endpoint_userbyscreenname,
                 endpoint_usermedia=endpoint_usermedia, endpoint_tweetdetail=endpoint_tweetdetail
@@ -85,7 +84,7 @@ class WebImageAPI:
                 raise ValueError('Missing required parameters.')
             self.__InitAgent(
                 DOMAIN.TWITTER, special_arg='web',
-                header_authorization=header_authorization, header_x_client_uuid=header_x_client_uuid,
+                header_authorization=header_authorization,
                 header_x_csrf_token=header_x_csrf_token, cookie_auth_token=cookie_auth_token,
                 cookie_ct0=cookie_ct0, endpoint_userbyscreenname=endpoint_userbyscreenname,
                 endpoint_usermedia=endpoint_usermedia, endpoint_tweetdetail=endpoint_tweetdetail
@@ -112,7 +111,7 @@ class WebImageAPI:
         elif agent_type == 'both':
             check = self.__CheckArgs(
                 [
-                'header_authorization', 'header_x_client_uuid',
+                'header_authorization',
                 'header_x_csrf_token', 'cookie_auth_token',
                 'cookie_ct0', 'endpoint_userbyscreenname',
                 'endpoint_usermedia', 'endpoint_tweetdetail',
@@ -120,7 +119,7 @@ class WebImageAPI:
                 'access_token', 'access_token_secret',
                 'bearer_token'
                 ],
-                header_authorization=header_authorization, header_x_client_uuid=header_x_client_uuid,
+                header_authorization=header_authorization,
                 header_x_csrf_token=header_x_csrf_token, cookie_auth_token=cookie_auth_token,
                 cookie_ct0=cookie_ct0, endpoint_userbyscreenname=endpoint_userbyscreenname,
                 endpoint_usermedia=endpoint_usermedia, endpoint_tweetdetail=endpoint_tweetdetail,
@@ -132,7 +131,7 @@ class WebImageAPI:
                 raise ValueError('Missing required parameters.')
             self.__InitAgent(
                 DOMAIN.TWITTER, special_arg='web',
-                header_authorization=header_authorization, header_x_client_uuid=header_x_client_uuid,
+                header_authorization=header_authorization,
                 header_x_csrf_token=header_x_csrf_token, cookie_auth_token=cookie_auth_token,
                 cookie_ct0=cookie_ct0, endpoint_userbyscreenname=endpoint_userbyscreenname,
                 endpoint_usermedia=endpoint_usermedia, endpoint_tweetdetail=endpoint_tweetdetail

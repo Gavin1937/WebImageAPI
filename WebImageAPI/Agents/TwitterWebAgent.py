@@ -30,7 +30,7 @@ from pathlib import Path
 class TwitterWebAgent(BaseAgent):
     
     def __init__(self,
-        header_authorization:str, header_x_client_uuid:str, header_x_csrf_token:str,
+        header_authorization:str, header_x_csrf_token:str,
         cookie_auth_token:str, cookie_ct0:str, endpoint_userbyscreenname:str,
         endpoint_usermedia:str, endpoint_tweetdetail:str,
         proxies:dict=None, delay_val:float=0.0
@@ -40,7 +40,6 @@ class TwitterWebAgent(BaseAgent):
         
         From request header to twitter api:
             Authorization
-            X-Client-Uuid
             X-Csrf-Token
         
         From cookies:
@@ -87,7 +86,6 @@ class TwitterWebAgent(BaseAgent):
             
             # differ for different user, must have
             'Authorization': header_authorization,
-            'X-Client-Uuid': header_x_client_uuid,
             'X-Csrf-Token': header_x_csrf_token,
         }
         self.__cookies = {

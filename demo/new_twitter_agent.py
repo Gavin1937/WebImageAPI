@@ -31,7 +31,6 @@ twitter_token = {
 
 twitter_web_token = {
     'header_authorization': 'YOUR TWITTER HEADER authorization',
-    'header_x_client_uuid': 'YOUR TWITTER HEADER x_client_uuid',
     'header_x_csrf_token': 'YOUR TWITTER HEADER x_csrf_token',
     'cookie_auth_token': 'YOUR TWITTER cookie auth_token',
     'cookie_ct0': 'YOUR TWITTER cookie ct0',

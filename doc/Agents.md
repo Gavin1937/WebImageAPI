@@ -349,7 +349,6 @@ This Agent only accept [TwitterItemInfo](./WebItemInfo.md#3-class-twitteriteminf
 
 * From request header to twitter api:
   * **Authorization**
-  * **X-Client-Uuid**
   * **X-Csrf-Token**
 
 * From cookies:
@@ -380,7 +379,6 @@ This Agent only accept [TwitterItemInfo](./WebItemInfo.md#3-class-twitteriteminf
 
 * Parameters:
   * **header_authorization**: str, Authorization in request header
-  * **header_x_client_uuid**: str, X-Client-Uuid in request header
   * **header_x_csrf_token**: str, X-Csrf-Token in request header
   * **cookie_auth_token**: str, auth_token in cookie
   * **cookie_ct0**: str, ct0 in cookie

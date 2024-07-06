@@ -67,7 +67,6 @@ I highly recommend you to stick with this class and let it to handle everything 
   * if agent_type == `web`, initialize a `TwitterWebAgent`.
     * Requires Param:
       * **header_authorization**: string, Authorization in request header
-      * **header_x_client_uuid**: string, X-Client-Uuid in request header
       * **header_x_csrf_token**: string, X-Csrf-Token in request header
       * **cookie_auth_token**: string, auth_token in cookie
       * **cookie_ct0**: string, ct0 in cookie

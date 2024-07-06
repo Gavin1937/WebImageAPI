@@ -28,7 +28,6 @@ Then, open your browser's dev tool and go to `Fetch/XHR` tab under `Network` tab
 In any request appears under `Fetch/XHR` tab, find following 3 things under its headers section.
 
 * **Authorization**
-* **X-Client-Uuid**
 * **X-Csrf-Token**
 
 
